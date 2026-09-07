@@ -1,0 +1,62 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Location Data Contract",
+  "description": "Schema for loading historical location data into the Unity client.",
+  "type": "object",
+  "required": ["id", "name", "eras", "arMarkers"],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "coordinates": {
+      "type": "object",
+      "properties": {
+        "lat": { "type": "number" },
+        "lng": { "type": "number" }
+      },
+      "required": ["lat", "lng"]
+    },
+    "eras": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "year": { "type": "integer" },
+          "displayName": { "type": "string" },
+          "visualStyleId": { "type": "string" }
+        },
+        "required": ["id", "year", "displayName", "visualStyleId"]
+      }
+    },
+    "arMarkers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string" },
+          "eraId": { "type": "string" },
+          "relativePosition": {
+            "type": "object",
+            "properties": {
+              "x": { "type": "number" },
+              "y": { "type": "number" },
+              "z": { "type": "number" }
+            },
+            "required": ["x", "y", "z"]
+          },
+          "assetType": {
+            "type": "string",
+            "enum": ["3D_MODEL", "2D_SPRITE", "UI_LABEL"]
+          },
+          "assetReference": { "type": "string" }
+        },
+        "required": ["id", "eraId", "relativePosition", "assetType", "assetReference"]
+      }
+    }
+  }
+}
+

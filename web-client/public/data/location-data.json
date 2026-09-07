@@ -1,0 +1,39 @@
+{
+  "id": "quang-tri-citadel",
+  "name": "Thành cổ Quảng Trị",
+  "coordinates": {
+    "lat": 16.7451,
+    "lng": 107.1953
+  },
+  "eras": [
+    {
+      "id": "1946",
+      "year": 1946,
+      "displayName": "Quá khứ (1946)",
+      "visualStyleId": "style_antique_sketch"
+    },
+    {
+      "id": "present",
+      "year": 2026,
+      "displayName": "Hiện tại",
+      "visualStyleId": "style_modern_3d"
+    }
+  ],
+  "arMarkers": [
+    {
+      "id": "marker-bunker-1",
+      "eraId": "1946",
+      "relativePosition": { "x": 10.0, "y": 0.0, "z": 5.0 },
+      "assetType": "3D_MODEL",
+      "assetReference": "bunker_1946"
+    },
+    {
+      "id": "marker-soldier-1",
+      "eraId": "1946",
+      "relativePosition": { "x": -5.0, "y": 0.0, "z": -12.0 },
+      "assetType": "2D_SPRITE",
+      "assetReference": "soldier_sprite"
+    }
+  ]
+}
+
