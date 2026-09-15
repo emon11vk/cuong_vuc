@@ -1,0 +1,11 @@
+{
+  "name": "dinh-khac",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix web-client run dev",
+    "build": "npm --prefix web-client run build",
+    "lint": "npm --prefix web-client run lint",
+    "preview": "npm --prefix web-client run preview"
+  }
+}

@@ -1,5 +1,6 @@
-@import "tailwindcss";
-@source "./**/*.{js,ts,jsx,tsx}";
+@import "tailwindcss" source(none);
+@source "../index.html";
+@source "./";
 
 body {
   margin: 0;
@@ -7,3 +8,10 @@ body {
   overflow: hidden;
   background-color: #111827; /* gray-900 */
 }
+
+.maplibregl-ctrl-group button.maplibregl-ctrl-camera {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+

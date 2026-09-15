@@ -56,8 +56,7 @@ export const NavigationPanel: React.FC = () => {
     const lat = parseFloat(result.lat);
     const lng = parseFloat(result.lon);
     
-    // Di chuyển người chơi và tìm đường đến đích
-    setUserLocation(lat, lng);
+    // Tìm đường đến đích (không dịch chuyển tức thời để người dùng có thể đi theo)
     calculateRoute(lat, lng);
     
     setResults([]);

@@ -888,6 +888,11 @@ export class ThreeDModelLayer implements maplibregl.CustomLayerInterface {
             this.renderer.state.reset();
         }
 
+        // Fix: Tắt blending và cấu hình lại depth test để tránh bị xung đột WebGL state với MapLibre
+        _gl.disable(_gl.BLEND);
+        _gl.enable(_gl.DEPTH_TEST);
+        _gl.depthMask(true);
+
         this.renderer.render(this.scene, this.camera);
         this.map.triggerRepaint();
     }

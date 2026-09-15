@@ -4,6 +4,7 @@ import Map, { Marker, GeolocateControl, NavigationControl, Source, Layer } from 
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useGameStore } from '../../store/gameStore';
 import { ThreeDModelLayer } from './ThreeDModelLayer';
+import { CameraModeControl } from './CameraModeControl';
 import {
   hanoi1946WaterGeoJSON,
   hanoi1946CitadelGeoJSON,
@@ -17,6 +18,7 @@ export const MapLoader: React.FC = () => {
   const setUserLocation = useGameStore((state) => state.setUserLocation);
   const cameraMode = useGameStore((state) => state.cameraMode);
   const sliderValue = useGameStore((state) => state.sliderValue);
+  const routeGeoJSON = useGameStore((state) => state.routeGeoJSON);
   const [labelLayerId, setLabelLayerId] = useState<string | undefined>(undefined);
   const mapRef = useRef<any>(null);
 
@@ -345,6 +347,7 @@ export const MapLoader: React.FC = () => {
             }
           }}
         />
+        <CameraModeControl position="top-right" />
         
         {/* Render Marker người chơi gọn gàng (không bị vòng tròn xanh khổng lồ che phủ) */}
         <Marker longitude={userLocation.lng} latitude={userLocation.lat} anchor="center">
@@ -355,6 +358,40 @@ export const MapLoader: React.FC = () => {
             <div className="w-8 h-8 bg-blue-400/40 rounded-full absolute animate-ping pointer-events-none" />
           </div>
         </Marker>
+
+        {/* 6. Lớp vẽ Lộ trình đường đi (Routing) bằng OSRM */}
+        {routeGeoJSON && (
+          <Source id="osrm-route-source" type="geojson" data={routeGeoJSON}>
+            <Layer
+              id="osrm-route-line-layer"
+              type="line"
+              layout={{
+                'line-join': 'round',
+                'line-cap': 'round'
+              }}
+              paint={{
+                'line-color': '#3b82f6', // Màu xanh dương (blue-500)
+                'line-width': 6,
+                'line-opacity': 0.8
+              }}
+            />
+            {/* Viền ngoài cho đường đi thêm nổi bật */}
+            <Layer
+              id="osrm-route-outline-layer"
+              type="line"
+              layout={{
+                'line-join': 'round',
+                'line-cap': 'round'
+              }}
+              paint={{
+                'line-color': '#1e3a8a', // Màu xanh dương đậm
+                'line-width': 10,
+                'line-opacity': 0.5
+              }}
+              beforeId="osrm-route-line-layer"
+            />
+          </Source>
+        )}
 
       </Map>
 
