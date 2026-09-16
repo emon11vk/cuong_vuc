@@ -2,41 +2,123 @@ import React from 'react';
 import { useGameStore } from '../../store/gameStore';
 import { motion } from 'framer-motion';
 
+const ERAS = [
+  {
+    id: '1946' as const,
+    label: 'Hà Nội 1946',
+    sublabel: 'Thời kháng chiến',
+    icon: '🕰',
+    sliderValue: 0,
+  },
+  {
+    id: 'present' as const,
+    label: 'Hiện Tại',
+    sublabel: '2026',
+    icon: '🗺',
+    sliderValue: 1,
+  },
+] as const;
+
+type EraId = (typeof ERAS)[number]['id'];
+
 export const TimelineSlider: React.FC = () => {
-  const sliderValue = useGameStore((state) => state.sliderValue);
   const setSliderValue = useGameStore((state) => state.setSliderValue);
   const setEraId = useGameStore((state) => state.setEraId);
+  const sliderValue = useGameStore((state) => state.sliderValue);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = parseFloat(e.target.value);
-    setSliderValue(val);
-    if (val < 0.5) {
-      setEraId('1946');
-    } else {
-      setEraId('present');
-    }
+  const activeEraId: EraId = sliderValue < 0.5 ? '1946' : 'present';
+
+  const selectEra = (era: (typeof ERAS)[number]) => {
+    setSliderValue(era.sliderValue);
+    setEraId(era.id);
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ y: 100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.8, ease: "easeOut", delay: 0.5 }}
-      className="absolute bottom-8 left-1/2 transform -translate-x-1/2 w-[80%] max-w-lg bg-black/50 backdrop-blur-md p-4 rounded-2xl shadow-xl border border-white/20 pointer-events-auto"
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+      className="absolute bottom-28 sm:bottom-8 left-1/2 -translate-x-1/2 pointer-events-auto"
+      style={{ zIndex: 30 }}
     >
-      <div className="flex justify-between text-white/80 font-bold mb-2 px-2 text-sm">
-        <span>Quá khứ (1946)</span>
-        <span>Hiện tại (2026)</span>
+      <div
+        className="flex items-center gap-px rounded-xl overflow-hidden shadow-2xl border"
+        style={{
+          background: 'rgba(18, 10, 4, 0.88)',
+          backdropFilter: 'blur(14px)',
+          borderColor: 'rgba(212, 160, 23, 0.3)',
+        }}
+      >
+        {/* Decorative divider line between buttons */}
+        {ERAS.map((era, idx) => {
+          const isActive = era.id === activeEraId;
+          return (
+            <React.Fragment key={era.id}>
+              <button
+                onClick={() => selectEra(era)}
+                aria-pressed={isActive}
+                aria-label={`Chọn thời đại: ${era.label}`}
+                className="relative flex items-center gap-2.5 px-5 py-3 transition-all duration-300 min-w-[130px] sm:min-w-[160px] focus-visible:outline-none group"
+                style={{
+                  background: isActive
+                    ? 'rgba(212, 160, 23, 0.18)'
+                    : 'transparent',
+                }}
+              >
+                {/* Active indicator bar (top) */}
+                {isActive && (
+                  <motion.div
+                    layoutId="era-active-bar"
+                    className="absolute top-0 left-0 right-0 h-0.5 rounded-b"
+                    style={{ background: '#d4a017' }}
+                    transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  />
+                )}
+
+                {/* Icon */}
+                <span
+                  className="text-xl leading-none shrink-0 transition-transform duration-300 group-hover:scale-110"
+                  role="img"
+                  aria-hidden
+                >
+                  {era.icon}
+                </span>
+
+                {/* Text */}
+                <div className="flex flex-col items-start">
+                  <span
+                    className="text-xs font-bold leading-tight"
+                    style={{
+                      fontFamily: "'Playfair Display', serif",
+                      color: isActive ? '#f5c842' : '#a89070',
+                      transition: 'color 0.3s',
+                    }}
+                  >
+                    {era.label}
+                  </span>
+                  <span
+                    className="text-[10px] font-medium leading-tight mt-0.5"
+                    style={{
+                      color: isActive ? 'rgba(245,200,66,0.7)' : 'rgba(168,144,112,0.5)',
+                      transition: 'color 0.3s',
+                    }}
+                  >
+                    {era.sublabel}
+                  </span>
+                </div>
+              </button>
+
+              {/* Vertical divider between buttons */}
+              {idx < ERAS.length - 1 && (
+                <div
+                  className="w-px self-stretch"
+                  style={{ background: 'rgba(212, 160, 23, 0.2)' }}
+                />
+              )}
+            </React.Fragment>
+          );
+        })}
       </div>
-      <input
-        type="range"
-        min="0"
-        max="1"
-        step="0.01"
-        value={sliderValue}
-        onChange={handleChange}
-        className="w-full h-3 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-amber-500"
-      />
     </motion.div>
   );
 };

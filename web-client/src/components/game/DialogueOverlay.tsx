@@ -7,19 +7,55 @@ export const DialogueOverlay = () => {
 
   return (
     <div className="absolute bottom-0 left-0 w-full p-2 pb-20 sm:p-8 sm:pb-12 flex justify-center z-50 pointer-events-none">
-      <div className="pointer-events-auto bg-black/90 border-2 border-gray-600 rounded-lg p-4 sm:p-6 max-w-3xl w-full text-white shadow-2xl backdrop-blur-sm mx-2">
-        <h3 className="text-lg sm:text-xl font-bold text-yellow-500 mb-1 sm:mb-2 font-mono uppercase tracking-widest">
+      <div
+        className="pointer-events-auto rounded-lg p-4 sm:p-6 max-w-3xl w-full shadow-2xl mx-2 border"
+        style={{
+          background: 'rgba(18, 10, 4, 0.95)',
+          backdropFilter: 'blur(16px)',
+          borderColor: 'rgba(212, 160, 23, 0.3)',
+        }}
+      >
+        {/* Speaker name */}
+        <h3
+          className="text-base sm:text-lg font-bold mb-1 sm:mb-2 uppercase tracking-widest"
+          style={{
+            color: '#d4a017',
+            fontFamily: "'Playfair Display', serif",
+            letterSpacing: '0.1em',
+          }}
+        >
           {currentDialogue.speaker}
         </h3>
-        <p className="text-sm sm:text-lg leading-relaxed italic mb-2 sm:mb-4">
-          "{currentDialogue.text}"
+
+        {/* Dialogue text */}
+        <p
+          className="text-sm sm:text-base leading-relaxed italic mb-3 sm:mb-4"
+          style={{ color: '#e8d9b8', fontFamily: "'Inter', sans-serif" }}
+        >
+          &ldquo;{currentDialogue.text}&rdquo;
         </p>
+
+        {/* Action button */}
         <div className="flex justify-end">
-          <button 
+          <button
             onClick={() => setDialogue(null)}
-            className="px-3 py-1.5 sm:px-4 sm:py-2 bg-gray-700 hover:bg-gray-600 rounded text-xs sm:text-sm font-bold uppercase transition-colors"
+            className="px-4 py-2 sm:px-5 sm:py-2 rounded text-xs sm:text-sm font-semibold uppercase tracking-wider transition-all duration-150 active:scale-95"
+            style={{
+              background: 'rgba(212, 160, 23, 0.15)',
+              color: '#d4a017',
+              border: '1px solid rgba(212, 160, 23, 0.4)',
+              fontFamily: "'Inter', sans-serif",
+            }}
+            onMouseEnter={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.background = 'rgba(212,160,23,0.28)';
+            }}
+            onMouseLeave={(e) => {
+              (e.currentTarget as HTMLButtonElement).style.background = 'rgba(212,160,23,0.15)';
+            }}
           >
-            Tiếp tục [Space]
+            Tiếp tục
+            {/* Show [Space] hint only on non-touch (keyboard) contexts */}
+            <span className="hidden sm:inline ml-1 opacity-50 font-mono text-[10px]">[Space]</span>
           </button>
         </div>
       </div>

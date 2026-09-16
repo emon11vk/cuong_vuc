@@ -1,5 +1,6 @@
 import { useHanoiStore } from '../../store/useHanoiStore';
 import { useState } from 'react';
+import { CheckCircle2, XCircle } from 'lucide-react';
 
 export const TriviaOverlay = () => {
   const { activeTrivia, setTrivia } = useHanoiStore();
@@ -12,36 +13,74 @@ export const TriviaOverlay = () => {
     if (showResult) return;
     setSelected(index);
     setShowResult(true);
-    
-    // Auto close after showing result for a bit
+
+    // Give player enough time to read the correct answer: 5s instead of 3s
     setTimeout(() => {
       setTrivia(null);
       setSelected(null);
       setShowResult(false);
-    }, 3000);
+    }, 5000);
   };
 
+  const isCorrect = (idx: number) => idx === activeTrivia.correctIndex;
+
   return (
-    <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-50 pointer-events-auto backdrop-blur-sm p-2 sm:p-4">
-      <div className="bg-gray-900 border-2 border-yellow-600/50 rounded-xl p-4 sm:p-8 max-w-2xl w-full text-white shadow-2xl max-h-[90vh] overflow-y-auto">
-        <div className="text-yellow-500 font-bold uppercase tracking-widest text-xs sm:text-sm mb-2 sm:mb-4 text-center">
-          Thông tin Lịch sử
+    <div
+      className="absolute inset-0 flex items-center justify-center z-50 pointer-events-auto p-3 sm:p-6"
+      style={{ background: 'rgba(12, 7, 2, 0.88)', backdropFilter: 'blur(8px)' }}
+    >
+      <div
+        className="w-full max-w-2xl rounded-xl shadow-2xl max-h-[90vh] overflow-y-auto border"
+        style={{
+          background: 'rgba(22, 13, 5, 0.98)',
+          borderColor: 'rgba(212, 160, 23, 0.4)',
+        }}
+      >
+        {/* Header */}
+        <div
+          className="px-5 sm:px-8 py-4 sm:py-5 border-b"
+          style={{ borderColor: 'rgba(212, 160, 23, 0.2)' }}
+        >
+          <p
+            className="text-[11px] font-semibold uppercase tracking-widest mb-1"
+            style={{ color: '#d4a017', letterSpacing: '0.15em' }}
+          >
+            Hồ Sơ Lịch Sử
+          </p>
+          <h2
+            className="text-base sm:text-xl font-bold leading-snug"
+            style={{
+              color: '#f4edd8',
+              fontFamily: "'Playfair Display', serif",
+            }}
+          >
+            {activeTrivia.question}
+          </h2>
         </div>
-        <h2 className="text-lg sm:text-2xl font-semibold mb-4 sm:mb-8 text-center leading-tight">
-          {activeTrivia.question}
-        </h2>
-        
-        <div className="space-y-3">
+
+        {/* Options */}
+        <div className="px-5 sm:px-8 py-4 sm:py-6 space-y-2.5">
           {activeTrivia.options.map((option, idx) => {
-            let btnClass = "w-full text-left p-3 sm:p-4 rounded text-sm sm:text-base bg-gray-800 border border-gray-700 hover:bg-gray-700 transition-colors";
-            
+            let bgColor = 'rgba(255,255,255,0.04)';
+            let borderColor = 'rgba(212,160,23,0.15)';
+            let textColor = '#c8b08a';
+            let icon = null;
+
             if (showResult) {
-              if (idx === activeTrivia.correctIndex) {
-                btnClass = "w-full text-left p-3 sm:p-4 rounded text-sm sm:text-base bg-green-900/50 border border-green-500 text-green-300";
+              if (isCorrect(idx)) {
+                bgColor = 'rgba(45,106,79,0.35)';
+                borderColor = '#22c55e';
+                textColor = '#86efac';
+                icon = <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: '#22c55e' }} />;
               } else if (idx === selected) {
-                btnClass = "w-full text-left p-3 sm:p-4 rounded text-sm sm:text-base bg-red-900/50 border border-red-500 text-red-300";
+                bgColor = 'rgba(139,27,27,0.35)';
+                borderColor = '#ef4444';
+                textColor = '#fca5a5';
+                icon = <XCircle className="w-4 h-4 shrink-0" style={{ color: '#ef4444' }} />;
               } else {
-                btnClass = "w-full text-left p-3 sm:p-4 rounded text-sm sm:text-base bg-gray-800 border border-gray-700 opacity-50";
+                bgColor = 'rgba(255,255,255,0.02)';
+                borderColor = 'rgba(212,160,23,0.08)';
+                textColor = '#6b5b3e';
               }
             }
 
@@ -50,22 +89,59 @@ export const TriviaOverlay = () => {
                 key={idx}
                 disabled={showResult}
                 onClick={() => handleSelect(idx)}
-                className={btnClass}
+                className="w-full text-left flex items-center gap-3 p-3 sm:p-4 rounded-lg transition-all duration-150 border disabled:cursor-default active:scale-[0.99]"
+                style={{
+                  background: bgColor,
+                  borderColor,
+                  color: textColor,
+                  fontFamily: "'Inter', sans-serif",
+                }}
+                onMouseEnter={(e) => {
+                  if (!showResult) (e.currentTarget as HTMLButtonElement).style.background = 'rgba(212,160,23,0.1)';
+                }}
+                onMouseLeave={(e) => {
+                  if (!showResult) (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.04)';
+                }}
               >
-                <span className="font-mono mr-3 text-gray-400">
-                  {String.fromCharCode(65 + idx)}.
+                <span
+                  className="w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold shrink-0"
+                  style={{
+                    background: showResult ? 'transparent' : 'rgba(212,160,23,0.15)',
+                    color: '#d4a017',
+                    border: '1px solid rgba(212,160,23,0.3)',
+                  }}
+                >
+                  {String.fromCharCode(65 + idx)}
                 </span>
-                {option}
+                <span className="text-sm sm:text-base flex-1">{option}</span>
+                {icon}
               </button>
             );
           })}
         </div>
 
+        {/* Result feedback */}
         {showResult && (
-          <div className={`mt-4 sm:mt-6 text-center font-bold text-base sm:text-lg animate-pulse ${
-            selected === activeTrivia.correctIndex ? 'text-green-500' : 'text-red-500'
-          }`}>
-            {selected === activeTrivia.correctIndex ? 'Chính xác! Đã xác nhận thông tin.' : 'Không chính xác. Hồ sơ lịch sử có khác biệt.'}
+          <div
+            className="px-5 sm:px-8 pb-5 sm:pb-6 flex items-center gap-2.5"
+          >
+            {selected === activeTrivia.correctIndex ? (
+              <div
+                className="flex items-center gap-2 text-sm font-semibold rounded-lg px-4 py-2 w-full"
+                style={{ background: 'rgba(45,106,79,0.3)', color: '#86efac', border: '1px solid rgba(34,197,94,0.3)' }}
+              >
+                <CheckCircle2 className="w-4 h-4" />
+                Chính xác! Hồ sơ được xác nhận.
+              </div>
+            ) : (
+              <div
+                className="flex items-center gap-2 text-sm font-semibold rounded-lg px-4 py-2 w-full"
+                style={{ background: 'rgba(139,27,27,0.3)', color: '#fca5a5', border: '1px solid rgba(239,68,68,0.3)' }}
+              >
+                <XCircle className="w-4 h-4" />
+                Không chính xác. Đáp án đúng đã được đánh dấu.
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -2,16 +2,92 @@
 @source "../index.html";
 @source "./";
 
+/* ─── Design tokens ──────────────────────────────────────────── */
+:root {
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+
+  /* Wartime palette */
+  --color-parchment: #f4edd8;
+  --color-parchment-dark: #e8d9b8;
+  --color-sepia-900: #1c1007;
+  --color-sepia-800: #2e1c0a;
+  --color-sepia-700: #3d2512;
+  --color-amber-war: #d4a017;
+  --color-amber-bright: #f5c842;
+  --color-red-danger: #c0392b;
+  --color-green-safe: #2d6a4f;
+}
+
+/* ─── Base ───────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #111827; /* gray-900 */
+  background-color: #111827;
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
 }
 
+/* ─── Browser surfaces ──────────────────────────────────────── */
+/* Text selection — amber/sepia to match the wartime world */
+::selection {
+  background-color: #d4a01760;
+  color: #1c1007;
+}
+
+/* Custom scrollbar for result dropdowns */
+.hanoi-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+.hanoi-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.hanoi-scrollbar::-webkit-scrollbar-thumb {
+  background: #d4a017;
+  border-radius: 3px;
+}
+
+/* Focus ring — amber glow consistent across all interactive elements */
+:focus-visible {
+  outline: 2px solid var(--color-amber-war);
+  outline-offset: 2px;
+}
+
+/* ─── Range input (era toggle fallback) ─────────────────────── */
+input[type="range"].era-slider {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: #3d2512;
+  cursor: pointer;
+}
+input[type="range"].era-slider::-webkit-slider-thumb {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-amber-war);
+  border: 2px solid var(--color-parchment);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+  cursor: pointer;
+}
+
+/* ─── MapLibre control overrides ────────────────────────────── */
 .maplibregl-ctrl-group button.maplibregl-ctrl-camera {
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
 }
 
+/* Push MapLibre native controls down a bit so they don't collide with Enter AR */
+.maplibregl-ctrl-top-right {
+  top: 3rem !important;
+}
