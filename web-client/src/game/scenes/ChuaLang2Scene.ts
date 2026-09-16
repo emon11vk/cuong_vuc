@@ -41,14 +41,14 @@ export class ChuaLang2Scene extends Scene {
     this.enemyBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
 
     // Collisions
-    this.physics.add.overlap(this.playerBullets, this.enemies, (e, b) => {
+    this.physics.add.overlap(this.playerBullets, this.enemies, (b, e) => {
       (e as unknown as Enemy).takeDamage(50);
       (b as Bullet).die();
     });
-    this.physics.add.overlap(this.playerBullets, this.tank, (t, b) => {
+    this.physics.add.overlap(this.playerBullets, this.tank, (b, t) => {
       (b as Bullet).die(); // Tank is immune to bullets
     });
-    this.physics.add.overlap(this.enemyBullets, this.player, (p, b) => {
+    this.physics.add.overlap(this.enemyBullets, this.player, (b, p) => {
       (p as unknown as Player).takeDamage(10);
       (b as Bullet).die();
     });
@@ -60,7 +60,7 @@ export class ChuaLang2Scene extends Scene {
 
     useHanoiStore.getState().setDialogue({
       speaker: 'Mai',
-      text: 'A French half-track is coming! Click/Tap the road to place a Lunge Mine, then shoot the escorts. When the tank hits the mine, press SPACE (or ACTION) to detonate!'
+      text: 'Xe thiết giáp bán tải của Pháp đang đến! Click/Chạm vào đường để đặt Bom, sau đó bắn những kẻ đi theo. Khi xe tăng chạm vào bom, nhấn SPACE (hoặc nút HÀNH ĐỘNG) để kích nổ!'
     });
 
     this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
@@ -82,7 +82,7 @@ export class ChuaLang2Scene extends Scene {
     this.tank.x += (this.tankSpeed * delta) / 1000;
 
     if (this.tank.x > 1024) {
-      this.gameOver('The tank breached the barricade!');
+      this.gameOver('Xe tăng đã phá vỡ rào chắn!');
       return;
     }
 
@@ -98,12 +98,12 @@ export class ChuaLang2Scene extends Scene {
         this.triggerWin();
       } else {
         // Triggered too early
-        this.gameOver('You triggered the mine too early! The tank destroyed you.');
+        this.gameOver('Bạn đã kích nổ mìn quá sớm! Xe tăng đã tiêu diệt bạn.');
       }
     }
 
     if (this.player.health <= 0) {
-      this.gameOver('You were killed by the escorts!');
+      this.gameOver('Bạn đã bị giết bởi lính hộ tống!');
       return;
     }
 
@@ -138,8 +138,8 @@ export class ChuaLang2Scene extends Scene {
     this.scene.pause();
     useHanoiStore.getState().endGame(true);
     useHanoiStore.getState().setDialogue({
-      speaker: 'Gunner Hoàng',
-      text: 'Incredible! The half-track is destroyed. You bought us enough time to relocate the artillery!'
+      speaker: 'Pháo thủ Hoàng',
+      text: 'Thật không thể tin được! Chiếc xe bán tải đã bị phá hủy. Bạn đã câu đủ thời gian để chúng tôi di dời pháo!'
     });
   }
 }

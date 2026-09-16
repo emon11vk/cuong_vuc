@@ -52,14 +52,14 @@ export class ChuaLang3Scene extends Scene {
     this.enemyBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
 
     // Bullet collisions
-    this.physics.add.overlap(this.playerBullets, this.enemies, (e, b) => {
+    this.physics.add.overlap(this.playerBullets, this.enemies, (b, e) => {
       (e as unknown as Enemy).takeDamage(50);
       (b as Bullet).die();
     });
     this.physics.add.collider(this.playerBullets, this.walls, (b) => (b as Bullet).die());
     this.physics.add.collider(this.enemyBullets, this.walls, (b) => (b as Bullet).die());
     
-    this.physics.add.overlap(this.enemyBullets, this.player, (p, b) => {
+    this.physics.add.overlap(this.enemyBullets, this.player, (b, p) => {
       (p as unknown as Player).takeDamage(10);
       (b as Bullet).die();
     });
@@ -67,7 +67,7 @@ export class ChuaLang3Scene extends Scene {
     // Player
     this.player = new Player(this, 50, 50);
     this.physics.add.collider(this.player, this.walls);
-    this.physics.add.overlap(this.player, this.uxos, () => this.gameOver('You stepped on a UXO!'), undefined, this);
+    this.physics.add.overlap(this.player, this.uxos, () => this.gameOver('Bạn đã giẫm phải bom mìn chưa nổ (UXO)!'), undefined, this);
 
     // Win Zone
     this.winZone = this.add.rectangle(950, 700, 100, 100, 0x00ff00, 0.5);
@@ -86,7 +86,7 @@ export class ChuaLang3Scene extends Scene {
     
     useHanoiStore.getState().setDialogue({
       speaker: 'Mai',
-      text: 'Memorize the path! The fog will roll in soon. Get to the command post (bottom right) before the mortar strike in 60 seconds. Watch out for red UXOs!'
+      text: 'Hãy ghi nhớ con đường! Sương mù sẽ ập đến ngay. Đi tới sở chỉ huy (dưới cùng bên phải) trước khi có cuộc tấn công bằng súng cối sau 60 giây. Hãy coi chừng bom mìn (UXO) màu đỏ!'
     });
 
     this.time.delayedCall(5000, () => {
@@ -97,7 +97,7 @@ export class ChuaLang3Scene extends Scene {
 
   update(time: number, delta: number) {
     if (this.player.health <= 0) {
-      this.gameOver('You were killed!');
+      this.gameOver('Bạn đã hy sinh!');
       return;
     }
 
@@ -118,7 +118,7 @@ export class ChuaLang3Scene extends Scene {
     if (this.fogEnabled) {
       this.timeLeft -= delta;
       if (this.timeLeft <= 0) {
-        this.gameOver('Time ran out! The mortar strike destroyed the area.');
+        this.gameOver('Hết thời gian! Cuộc tấn công bằng súng cối đã phá hủy khu vực.');
         return;
       }
 
@@ -138,11 +138,11 @@ export class ChuaLang3Scene extends Scene {
     this.scene.pause();
     useHanoiStore.getState().endGame(true);
     useHanoiStore.getState().setTrivia({
-      question: 'What strategic role did the suburban areas like Chùa Láng and the Tô Lịch River play during the 60-day battle?',
+      question: 'Khu vực ngoại thành như Chùa Láng và sông Tô Lịch đóng vai trò chiến lược nào trong trận chiến 60 ngày đêm?',
       options: [
-        'They were where the French high command was located.',
-        'They served as crucial supply lines and defensive perimeters protecting the inner city.',
-        'They were completely abandoned on the first day of fighting.'
+        'Nơi đây là bộ chỉ huy tối cao của Pháp.',
+        'Chúng đóng vai trò là tuyến đường tiếp tế quan trọng và vành đai phòng thủ bảo vệ khu vực nội thành.',
+        'Chúng bị bỏ hoang hoàn toàn vào ngày đầu tiên của trận chiến.'
       ],
       correctIndex: 1
     });

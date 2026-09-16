@@ -60,11 +60,11 @@ export class Level3Scene extends Scene {
     this.enemyBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
 
     // Bullet collisions
-    this.physics.add.overlap(this.playerBullets, this.enemies, (e, b) => {
+    this.physics.add.overlap(this.playerBullets, this.enemies, (b, e) => {
       (e as unknown as Enemy).takeDamage(50);
       (b as Bullet).die();
     });
-    this.physics.add.overlap(this.enemyBullets, this.player, (p, b) => {
+    this.physics.add.overlap(this.enemyBullets, this.player, (b, p) => {
       (p as unknown as Player).takeDamage(10);
       (b as Bullet).die();
     });
@@ -81,14 +81,14 @@ export class Level3Scene extends Scene {
     });
 
     useHanoiStore.getState().setDialogue({
-      speaker: 'Commissar Lê',
-      text: 'The French are searching the river from Long Bien bridge. Wade through the water. Do not move when the searchlights pass over you, and keep quiet! (Move right to row, freeze to lower noise)'
+      speaker: 'Chính ủy Lê',
+      text: 'Quân Pháp đang tìm kiếm trên sông từ cầu Long Biên. Lội qua nước. Đứng im khi đèn pha chiếu qua và giữ im lặng! (Di chuyển để chèo, đứng im để giảm tiếng ồn)'
     });
   }
 
   update(time: number, delta: number) {
     if (this.player.health <= 0) {
-      this.gameOver('You were killed!');
+      this.gameOver('Bạn đã hy sinh!');
       return;
     }
 
@@ -113,7 +113,7 @@ export class Level3Scene extends Scene {
     useHanoiStore.getState().setNoiseLevel(this.noiseAccumulator);
 
     if (this.noiseAccumulator >= 100) {
-      this.gameOver('You made too much noise! The French heard you.');
+      this.gameOver('Bạn đã tạo ra quá nhiều tiếng ồn! Quân Pháp đã nghe thấy bạn.');
       return;
     }
 
@@ -123,7 +123,7 @@ export class Level3Scene extends Scene {
         const playerBounds = this.player.getBounds();
         const lightBounds = light.getBounds();
         if (Phaser.Geom.Intersects.RectangleToRectangle(playerBounds, lightBounds)) {
-          this.gameOver('You were spotted moving in the searchlight!');
+          this.gameOver('Bạn đã bị phát hiện khi di chuyển trong ánh đèn pha!');
           return;
         }
       }
@@ -155,11 +155,11 @@ export class Level3Scene extends Scene {
     this.scene.pause();
     useHanoiStore.getState().endGame(true);
     useHanoiStore.getState().setTrivia({
-      question: 'How did the Capital Regiment successfully evacuate thousands of troops without alerting the nearby French forces?',
+      question: 'Trung đoàn Thủ đô đã sơ tán thành công hàng ngàn quân mà không báo động cho quân Pháp gần đó như thế nào?',
       options: [
-        'They launched a massive frontal diversionary attack.',
-        'They crossed the Red River silently at night under heavy fog, beneath the bridge.',
-        'They surrendered and were deported.'
+        'Họ tiến hành một cuộc tấn công nghi binh quy mô lớn ở mặt trận.',
+        'Họ lội qua sông Hồng trong sương mù dày đặc vào ban đêm, dưới chân cầu.',
+        'Họ đầu hàng và bị trục xuất.'
       ],
       correctIndex: 1
     });

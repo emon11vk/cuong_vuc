@@ -79,9 +79,9 @@ export class Level1Scene extends Scene {
     // Add NPC
     const commander = new NPC(this, 100, 300, 'Commander');
     commander.setDialogue([
-      { speaker: 'Commissar Lê', text: 'Vinh! We must move through the houses! The street is patrolled by French armor.' },
-      { speaker: 'Commissar Lê', text: 'Stand near the brown walls and hold SPACE to break through (đục tường)!' },
-      { speaker: 'Commissar Lê', text: 'Use your mouse to aim and click to shoot any enemies inside the houses. Go!' }
+      { speaker: 'Chính ủy Lê', text: 'Vinh! Chúng ta phải di chuyển qua các ngôi nhà! Phố đang bị xe thiết giáp Pháp tuần tra.' },
+      { speaker: 'Chính ủy Lê', text: 'Đứng gần các bức tường màu nâu và giữ phím SPACE để đục tường!' },
+      { speaker: 'Chính ủy Lê', text: 'Dùng chuột để nhắm và click để bắn bất cứ kẻ thù nào trong nhà. Đi thôi!' }
     ]);
     this.npcs.add(commander);
 
@@ -103,12 +103,12 @@ export class Level1Scene extends Scene {
     this.physics.add.collider(this.enemyBullets, this.walls, (b) => (b as Bullet).die());
     this.physics.add.collider(this.enemyBullets, this.breakableWalls, (b) => (b as Bullet).die());
     
-    this.physics.add.overlap(this.playerBullets, this.enemies, (e, b) => {
+    this.physics.add.overlap(this.playerBullets, this.enemies, (b, e) => {
       (e as unknown as Enemy).takeDamage(50);
       (b as Bullet).die();
     });
     
-    this.physics.add.overlap(this.enemyBullets, this.player, (p, b) => {
+    this.physics.add.overlap(this.enemyBullets, this.player, (b, p) => {
       (p as unknown as Player).takeDamage(10);
       (b as Bullet).die();
     });
@@ -118,8 +118,8 @@ export class Level1Scene extends Scene {
     this.physics.add.overlap(this.player, winZone, this.triggerWin, undefined, this);
 
     useHanoiStore.getState().setDialogue({
-      speaker: 'Commander',
-      text: 'Defend the safehouse! Use WASD/Joystick to move and Click/Tap to shoot. Hold out until the enemies are cleared!'
+      speaker: 'Chỉ huy',
+      text: 'Bảo vệ cơ sở an toàn! Dùng phím WASD/Joystick để di chuyển và Click/Chạm để bắn. Hãy cầm cự cho đến khi tiêu diệt hết kẻ thù!'
     });
 
     // Input
@@ -206,8 +206,8 @@ export class Level1Scene extends Scene {
     this.scene.pause();
     useHanoiStore.getState().endGame(false);
     useHanoiStore.getState().setDialogue({
-      speaker: 'System',
-      text: 'You were killed in action. Try again.'
+      speaker: 'Hệ thống',
+      text: 'Bạn đã hy sinh. Hãy thử lại.'
     });
   }
 
@@ -215,11 +215,11 @@ export class Level1Scene extends Scene {
     this.scene.pause();
     useHanoiStore.getState().endGame(true);
     useHanoiStore.getState().setTrivia({
-      question: 'What tactic did the Capital Regiment use to move safely between houses in the Old Quarter?',
+      question: 'Trung đoàn Thủ đô đã sử dụng chiến thuật nào để di chuyển an toàn giữa các ngôi nhà trong Khu Phố Cổ?',
       options: [
-        'Using the sewer system exclusively.',
-        '"Đục tường" - breaking holes through the walls of adjacent houses.',
-        'Wearing French uniforms as disguises.'
+        'Chỉ sử dụng hệ thống cống ngầm.',
+        '"Đục tường" - đục lỗ xuyên qua tường của các ngôi nhà liền kề.',
+        'Mặc đồng phục của quân Pháp để ngụy trang.'
       ],
       correctIndex: 1
     });

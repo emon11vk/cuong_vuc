@@ -22,26 +22,26 @@ export const TriviaOverlay = () => {
   };
 
   return (
-    <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-50 pointer-events-auto backdrop-blur-sm p-4">
-      <div className="bg-gray-900 border-2 border-yellow-600/50 rounded-xl p-8 max-w-2xl w-full text-white shadow-2xl">
-        <div className="text-yellow-500 font-bold uppercase tracking-widest text-sm mb-4 text-center">
-          Historical Intelligence
+    <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-50 pointer-events-auto backdrop-blur-sm p-2 sm:p-4">
+      <div className="bg-gray-900 border-2 border-yellow-600/50 rounded-xl p-4 sm:p-8 max-w-2xl w-full text-white shadow-2xl max-h-[90vh] overflow-y-auto">
+        <div className="text-yellow-500 font-bold uppercase tracking-widest text-xs sm:text-sm mb-2 sm:mb-4 text-center">
+          Thông tin Lịch sử
         </div>
-        <h2 className="text-2xl font-semibold mb-8 text-center leading-tight">
+        <h2 className="text-lg sm:text-2xl font-semibold mb-4 sm:mb-8 text-center leading-tight">
           {activeTrivia.question}
         </h2>
         
         <div className="space-y-3">
           {activeTrivia.options.map((option, idx) => {
-            let btnClass = "w-full text-left p-4 rounded bg-gray-800 border border-gray-700 hover:bg-gray-700 transition-colors";
+            let btnClass = "w-full text-left p-3 sm:p-4 rounded text-sm sm:text-base bg-gray-800 border border-gray-700 hover:bg-gray-700 transition-colors";
             
             if (showResult) {
               if (idx === activeTrivia.correctIndex) {
-                btnClass = "w-full text-left p-4 rounded bg-green-900/50 border border-green-500 text-green-300";
+                btnClass = "w-full text-left p-3 sm:p-4 rounded text-sm sm:text-base bg-green-900/50 border border-green-500 text-green-300";
               } else if (idx === selected) {
-                btnClass = "w-full text-left p-4 rounded bg-red-900/50 border border-red-500 text-red-300";
+                btnClass = "w-full text-left p-3 sm:p-4 rounded text-sm sm:text-base bg-red-900/50 border border-red-500 text-red-300";
               } else {
-                btnClass = "w-full text-left p-4 rounded bg-gray-800 border border-gray-700 opacity-50";
+                btnClass = "w-full text-left p-3 sm:p-4 rounded text-sm sm:text-base bg-gray-800 border border-gray-700 opacity-50";
               }
             }
 
@@ -62,10 +62,10 @@ export const TriviaOverlay = () => {
         </div>
 
         {showResult && (
-          <div className={`mt-6 text-center font-bold text-lg animate-pulse ${
+          <div className={`mt-4 sm:mt-6 text-center font-bold text-base sm:text-lg animate-pulse ${
             selected === activeTrivia.correctIndex ? 'text-green-500' : 'text-red-500'
           }`}>
-            {selected === activeTrivia.correctIndex ? 'Correct! Intelligence confirmed.' : 'Incorrect. The historical record differs.'}
+            {selected === activeTrivia.correctIndex ? 'Chính xác! Đã xác nhận thông tin.' : 'Không chính xác. Hồ sơ lịch sử có khác biệt.'}
           </div>
         )}
       </div>

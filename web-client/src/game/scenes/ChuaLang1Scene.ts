@@ -48,11 +48,11 @@ export class ChuaLang1Scene extends Scene {
     this.enemyBullets = this.physics.add.group({ classType: Bullet, runChildUpdate: true });
 
     // Bullet collisions
-    this.physics.add.overlap(this.playerBullets, this.enemies, (e, b) => {
+    this.physics.add.overlap(this.playerBullets, this.enemies, (b, e) => {
       (e as unknown as Enemy).takeDamage(50);
       (b as Bullet).die();
     });
-    this.physics.add.overlap(this.enemyBullets, this.player, (p, b) => {
+    this.physics.add.overlap(this.enemyBullets, this.player, (b, p) => {
       (p as unknown as Player).takeDamage(10);
       (b as Bullet).die();
     });
@@ -61,14 +61,14 @@ export class ChuaLang1Scene extends Scene {
     this.npcs = this.add.group({ classType: NPC, runChildUpdate: true });
     const mai = new NPC(this, 150, 700, 'Mai');
     mai.setDialogue([
-      { speaker: 'Mai', text: 'Vinh, the water is deep here. Move slowly to conserve stamina.' },
-      { speaker: 'Mai', text: 'When the French fire flares, hold SPACE to dive underwater, but watch your breath (stamina)!' }
+      { speaker: 'Mai', text: 'Vinh, nước ở đây sâu đấy. Di chuyển từ từ để tiết kiệm thể lực.' },
+      { speaker: 'Mai', text: 'Khi quân Pháp bắn pháo sáng, hãy giữ phím SPACE để lặn xuống nước, nhưng hãy chú ý hơi thở (thể lực) của bạn!' }
     ]);
     this.npcs.add(mai);
 
     useHanoiStore.getState().setDialogue({
       speaker: 'Mai',
-      text: 'The French are firing flares! When the screen flashes yellow, press SPACE (or ACTION button) to dive underwater. Watch your stamina!'
+      text: 'Quân Pháp đang bắn pháo sáng! Khi màn hình chớp màu vàng, nhấn SPACE (hoặc nút HÀNH ĐỘNG) để lặn xuống nước. Chú ý thể lực của bạn!'
     });
 
     // Flare visual
@@ -99,7 +99,7 @@ export class ChuaLang1Scene extends Scene {
 
   update(_time: number, delta: number) {
     if (this.player.health <= 0) {
-      this.gameOver('You were killed!');
+      this.gameOver('Bạn đã hy sinh!');
       return;
     }
 
@@ -135,11 +135,11 @@ export class ChuaLang1Scene extends Scene {
     useHanoiStore.getState().setNoiseLevel(this.noise);
 
     if (this.stamina <= 0) {
-      this.gameOver('You drowned from exhaustion!');
+      this.gameOver('Bạn đã chết đuối vì kiệt sức!');
     } else if (this.noise >= 100) {
-      this.gameOver('You made too much noise splashing!');
+      this.gameOver('Bạn văng nước tạo ra quá nhiều tiếng ồn!');
     } else if (this.isFlareActive && !isDiving) {
-      this.gameOver('You were spotted by the flare! Remember to dive (SPACE) when it gets bright.');
+      this.gameOver('Bạn đã bị phát hiện bởi pháo sáng! Hãy nhớ lặn (SPACE) khi trời sáng.');
     }
 
     // NPC updates
@@ -171,7 +171,7 @@ export class ChuaLang1Scene extends Scene {
     useHanoiStore.getState().endGame(true);
     useHanoiStore.getState().setDialogue({
       speaker: 'Mai',
-      text: 'You made it to the boat. The wounded are safe.'
+      text: 'Bạn đã đến được thuyền. Những người bị thương đã an toàn.'
     });
   }
 }

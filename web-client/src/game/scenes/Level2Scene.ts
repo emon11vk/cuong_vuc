@@ -61,12 +61,12 @@ export class Level2Scene extends Scene {
     this.physics.add.collider(this.playerBullets, this.crates, (b) => (b as Bullet).die());
     this.physics.add.collider(this.enemyBullets, this.crates, (b) => (b as Bullet).die());
     
-    this.physics.add.overlap(this.playerBullets, this.guards, (e, b) => {
+    this.physics.add.overlap(this.playerBullets, this.guards, (b, e) => {
       (e as unknown as Enemy).takeDamage(50);
       (b as Bullet).die();
     });
     
-    this.physics.add.overlap(this.enemyBullets, this.player, (p, b) => {
+    this.physics.add.overlap(this.enemyBullets, this.player, (b, p) => {
       (p as unknown as Player).takeDamage(10);
       (b as Bullet).die();
     });
@@ -80,7 +80,7 @@ export class Level2Scene extends Scene {
     setTimeout(() => {
       useHanoiStore.getState().setDialogue({
         speaker: 'Mai',
-        text: 'Láng Fort is guarded. Hold SHIFT (or ACTION button on mobile) to sneak and collect 3 explosive crates. Or you can just shoot them!'
+        text: 'Pháo đài Láng đang bị canh gác. Giữ phím SHIFT (hoặc nút HÀNH ĐỘNG trên điện thoại) để đi rón rén và thu thập 3 thùng thuốc nổ. Hoặc bạn có thể bắn hạ chúng!'
       });
     }, 1000);
   }
@@ -133,8 +133,8 @@ export class Level2Scene extends Scene {
     this.scene.pause();
     useHanoiStore.getState().endGame(false);
     useHanoiStore.getState().setDialogue({
-      speaker: 'System',
-      text: 'You were caught! Remember to hold SHIFT to move silently.'
+      speaker: 'Hệ thống',
+      text: 'Bạn đã bị phát hiện! Nhớ giữ phím SHIFT để di chuyển trong im lặng.'
     });
   }
 
@@ -142,11 +142,11 @@ export class Level2Scene extends Scene {
     this.scene.pause();
     useHanoiStore.getState().endGame(true);
     useHanoiStore.getState().setTrivia({
-      question: 'What iconic weapon, operated by a single soldier, was used by the Viet Minh to destroy French tanks at the cost of the user\'s life?',
+      question: 'Vũ khí mang tính biểu tượng nào, do một chiến sĩ thao tác, đã được Việt Minh sử dụng để phá hủy xe tăng Pháp với cái giá là tính mạng của người sử dụng?',
       options: [
-        'Bom ba càng (Lunge Mine)',
+        'Bom ba càng',
         'Bazooka',
-        'Molotov Cocktail'
+        'Bom xăng (Molotov Cocktail)'
       ],
       correctIndex: 0
     });
