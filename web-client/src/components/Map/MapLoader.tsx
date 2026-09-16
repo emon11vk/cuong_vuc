@@ -215,7 +215,30 @@ export const MapLoader: React.FC = () => {
           pitch: 60,
           bearing: 0
         }}
-        mapStyle="https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json"
+        mapStyle={{
+          version: 8,
+          sources: {
+            'osm-tiles': {
+              type: 'raster',
+              tiles: [
+                'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                'https://b.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png'
+              ],
+              tileSize: 256,
+              attribution: '© OpenStreetMap contributors'
+            }
+          },
+          layers: [
+            {
+              id: 'osm-tiles-layer',
+              type: 'raster',
+              source: 'osm-tiles',
+              minzoom: 0,
+              maxzoom: 19
+            }
+          ]
+        }}
         onLoad={onMapLoad}
         onContextMenu={handleContextMenu}
         onClick={handleMapClick}
