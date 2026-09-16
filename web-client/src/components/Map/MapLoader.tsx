@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Map, { Marker, GeolocateControl, NavigationControl, Source, Layer } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useGameStore } from '../../store/gameStore';
+import { useNavigate } from 'react-router-dom';
 import { ThreeDModelLayer } from './ThreeDModelLayer';
 import { CameraModeControl } from './CameraModeControl';
 import {
@@ -11,6 +12,16 @@ import {
   hanoi1946RoadsGeoJSON,
   hanoi1946LabelsGeoJSON
 } from '../../data/hanoi1946GeoData';
+import { MapPin } from 'lucide-react';
+
+const QUESTS = [
+  { id: 'level1', name: 'Đục tường (Chợ Đồng Xuân)', lat: 21.0371, lng: 105.8504 },
+  { id: 'level2', name: 'The Night Raid (Cửa Bắc)', lat: 21.0378, lng: 105.8427 },
+  { id: 'level3', name: 'The Retreat (Long Biên)', lat: 21.0423, lng: 105.8569 },
+  { id: 'chua_lang1', name: 'Mud & Lotus (Chùa Láng)', lat: 21.0215, lng: 105.8021 },
+  { id: 'chua_lang2', name: 'Láng Road Ambush (Đê Láng)', lat: 21.0205, lng: 105.8035 },
+  { id: 'chua_lang3', name: 'Courier Maze (FTU)', lat: 21.0232, lng: 105.8048 },
+];
 
 export const MapLoader: React.FC = () => {
   const fetchUserLocation = useGameStore((state) => state.fetchUserLocation);
@@ -21,6 +32,7 @@ export const MapLoader: React.FC = () => {
   const routeGeoJSON = useGameStore((state) => state.routeGeoJSON);
   const [labelLayerId, setLabelLayerId] = useState<string | undefined>(undefined);
   const mapRef = useRef<any>(null);
+  const navigate = useNavigate();
 
   const keysPressed = useRef(new Set<string>());
   const requestRef = useRef<number>(0);
@@ -358,6 +370,40 @@ export const MapLoader: React.FC = () => {
             <div className="w-8 h-8 bg-blue-400/40 rounded-full absolute animate-ping pointer-events-none" />
           </div>
         </Marker>
+
+        {/* --- QUEST MARKERS --- */}
+        {QUESTS.map((quest) => {
+          // Calculate distance to check if player is close enough to start
+          const dist = Math.sqrt(Math.pow(userLocation.lat - quest.lat, 2) + Math.pow(userLocation.lng - quest.lng, 2));
+          const isClose = dist < 0.005; // rough proximity
+
+          return (
+            <Marker key={quest.id} longitude={quest.lng} latitude={quest.lat} anchor="bottom">
+              <div 
+                className="flex flex-col items-center cursor-pointer transform hover:scale-110 transition-transform z-20 group"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  if (document.pointerLockElement) {
+                    document.exitPointerLock();
+                  }
+                  navigate(`/minigame/${quest.id}`);
+                }}
+              >
+                <div className="bg-yellow-500 text-black px-2 py-1 rounded shadow-lg font-bold text-xs whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity absolute -top-8 pointer-events-none">
+                  {quest.name}
+                </div>
+                <div className="bg-black text-yellow-500 rounded-full p-2 border-2 border-yellow-500 shadow-[0_0_15px_#eab308]">
+                  <MapPin className="w-5 h-5 animate-bounce" />
+                </div>
+                {isClose && (
+                  <div className="mt-1 bg-green-500 text-white text-[10px] font-bold px-1 rounded animate-pulse">
+                    AVAILABLE
+                  </div>
+                )}
+              </div>
+            </Marker>
+          );
+        })}
 
         {/* 6. Lớp vẽ Lộ trình đường đi (Routing) bằng OSRM */}
         {routeGeoJSON && (
