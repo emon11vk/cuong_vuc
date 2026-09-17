@@ -25,7 +25,7 @@ interface GameState {
 
 export const useGameStore = create<GameState>((set) => ({
   currentLocation: null,
-  userLocation: null,
+  userLocation: { lat: 21.02877, lng: 105.85235 }, // Mặc định: Trung tâm Hà Nội (Tháp Rùa - Hoàn Kiếm) để bản đồ luôn tải ngay
   currentEraId: 'present',
   isARMode: false,
   sliderValue: 1,
@@ -43,20 +43,18 @@ export const useGameStore = create<GameState>((set) => ({
   setGameModalOpen: (open) => set({ isGameModalOpen: open }),
   
   fetchUserLocation: () => {
-    if (navigator.geolocation) {
+    if (typeof navigator !== 'undefined' && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           set({ userLocation: { lat: position.coords.latitude, lng: position.coords.longitude } });
         },
         (error) => {
-          console.error('Error getting GPS location:', error);
-          // Fallback to Central Hanoi (Hồ Hoàn Kiếm / Tháp Rùa) if denied
+          console.warn('GPS location unavailable or denied, retaining default location:', error);
           set({ userLocation: { lat: 21.02877, lng: 105.85235 } });
         },
-        { enableHighAccuracy: true, timeout: 6000 }
+        { enableHighAccuracy: false, timeout: 5000, maximumAge: 60000 }
       );
     } else {
-      // Fallback to Central Hanoi
       set({ userLocation: { lat: 21.02877, lng: 105.85235 } });
     }
   },

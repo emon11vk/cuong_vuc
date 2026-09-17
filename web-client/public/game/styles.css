@@ -1,9 +1,27 @@
 /* ==========================================================================
    Cao Bá Quát — Đêm Chấm Thi (1841)
-   Taste Skill Aesthetic Redesign: Triều Nguyễn Cung Đình & Dạ Trường Thi
-   Materiality: Sơn Mài Thâm Trầm, Khảm Kim, Chu Sa Triện Son, Giấy Dó & Thẻ Bài
+   Mỹ thuật: Triều Nguyễn Cung Đình & Dạ Trường Thi (Sơn Mài, Vàng Thếp, Chu Sa)
+   
+   MỤC LỤC KIẾN TRÚC TỆP (TABLE OF CONTENTS):
+   1. Design Tokens & CSS Variables (:root)
+   2. Reset & Base Layout
+   3. Imperial Theater Frame & Corner Inlays (#game-wrapper)
+   4. Top Imperial HUD Bar (#rpg-hud)
+   5. Historical Warning & Sticky Banners
+   6. Canvas Viewport & Atmosphere (#canvas-container)
+   7. Interaction Prompts & Controls Hint
+   8. Dialogue Box & Visual Novel Theater (.dialogue-box)
+   9. Mobile Virtual Touch Controls (#touch-controls)
+   10. Modals: Minigame Khảo Thí & Từ Điển Khoa Cử
+   11. Summary Epilogue Decree Modal (Bản Án Đình Thần)
+   12. Centralized Keyframe Animations
+   13. Responsive Media Queries (Tablet, Mobile, Landscape)
+   14. Utility Classes
    ========================================================================== */
 
+/* ==========================================================================
+   1. Design Tokens & CSS Variables
+   ========================================================================== */
 :root {
   /* Imperial Palette (Bảng màu Triều Nguyễn) */
   --lacquer-black: #0c0a08;
@@ -54,7 +72,7 @@
 }
 
 /* ==========================================================================
-   Base Layout & Reset
+   2. Reset & Base Layout
    ========================================================================== */
 * {
   box-sizing: border-box;
@@ -81,7 +99,9 @@ body.theme-rpg {
   padding: 12px;
 }
 
-/* Outer Theater Wrapper with Imperial Inlaid Woodwork */
+/* ==========================================================================
+   3. Imperial Theater Frame & Corner Inlays
+   ========================================================================== */
 #game-wrapper {
   position: relative;
   width: 100vw;
@@ -134,7 +154,7 @@ body.theme-rpg {
 }
 
 /* ==========================================================================
-   Top HUD Bar (Khóa Thi Triều Đình)
+   4. Top Imperial HUD Bar (#rpg-hud)
    ========================================================================== */
 #rpg-hud {
   display: flex;
@@ -296,11 +316,6 @@ body.theme-rpg {
   font-size: 0.85rem;
 }
 
-@keyframes badgeGlow {
-  from { box-shadow: 0 0 4px var(--gold-glow); }
-  to { box-shadow: 0 0 16px rgba(229, 186, 99, 0.6); }
-}
-
 /* Bronze Bell Audio Button */
 .icon-btn {
   background: rgba(30, 22, 16, 0.8);
@@ -329,7 +344,7 @@ body.theme-rpg {
 }
 
 /* ==========================================================================
-   Historical Watershed Warning Banner
+   5. Historical Warning & Sticky Banners
    ========================================================================== */
 .rpg-banner-warning {
   position: absolute;
@@ -347,11 +362,6 @@ body.theme-rpg {
   width: 90%;
   color: #fff4e6;
   animation: warningPulse 2.4s infinite alternate ease-in-out;
-}
-
-@keyframes warningPulse {
-  0% { transform: translateX(-50%) scale(0.99); box-shadow: 0 4px 20px rgba(180, 20, 20, 0.6); }
-  100% { transform: translateX(-50%) scale(1.01); box-shadow: 0 8px 35px rgba(255, 60, 60, 0.85); }
 }
 
 .warning-title {
@@ -399,7 +409,7 @@ body.theme-rpg {
 }
 
 /* ==========================================================================
-   Canvas Viewport & Nocturnal Atmosphere
+   6. Canvas Viewport & Atmosphere (#canvas-container)
    ========================================================================== */
 #canvas-container {
   position: relative;
@@ -444,13 +454,9 @@ body.theme-rpg {
   animation: candleBreath 3.5s infinite ease-in-out;
 }
 
-@keyframes candleBreath {
-  0%, 100% { opacity: 0.6; transform: scale(1); }
-  35% { opacity: 0.85; transform: scale(1.02); }
-  70% { opacity: 0.5; transform: scale(0.98); }
-}
-
-/* Interaction Prompt Tag ([E] Nói chuyện) */
+/* ==========================================================================
+   7. Interaction Prompts & Controls Hint
+   ========================================================================== */
 .prompt-bubble {
   position: absolute;
   top: 72px;
@@ -466,11 +472,6 @@ body.theme-rpg {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 14px var(--gold-glow);
   z-index: 15;
   animation: promptBob 1.4s infinite alternate ease-in-out;
-}
-
-@keyframes promptBob {
-  0% { transform: translateX(-50%) translateY(0); }
-  100% { transform: translateX(-50%) translateY(-5px); }
 }
 
 .prompt-key {
@@ -521,7 +522,7 @@ body.theme-rpg {
 }
 
 /* ==========================================================================
-   Dialogue & Narrative Choice Overlay (Theatrical Staging)
+   8. Dialogue Box & Visual Novel Theater (.dialogue-box)
    ========================================================================== */
 .dialogue-box {
   position: absolute;
@@ -553,11 +554,6 @@ body.theme-rpg {
 .dialogue-box::-webkit-scrollbar-thumb {
   background: var(--gold-dim);
   border-radius: 4px;
-}
-
-@keyframes dialogueSlideUp {
-  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
-  to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
 
 .dialogue-inner {
@@ -820,11 +816,6 @@ body.theme-rpg {
   transition: var(--transition-fast);
 }
 
-@keyframes returnPulse {
-  0% { transform: scale(0.99); box-shadow: 0 0 10px rgba(161, 35, 35, 0.4); }
-  100% { transform: scale(1.02); box-shadow: 0 0 24px rgba(203, 45, 45, 0.85); }
-}
-
 .return-btn:active {
   transform: scale(0.97);
 }
@@ -853,7 +844,7 @@ body.theme-rpg {
 }
 
 /* ==========================================================================
-   Virtual Touch Controls (Mobile)
+   9. Mobile Virtual Touch Controls (#touch-controls)
    ========================================================================== */
 #touch-controls {
   display: none;
@@ -941,17 +932,8 @@ body.theme-rpg {
   background: linear-gradient(135deg, #cb2d2d 0%, #8b1818 100%);
 }
 
-@media (max-width: 1024px), (pointer: coarse), (hover: none) {
-  #touch-controls {
-    display: flex !important;
-  }
-  #controls-hint {
-    display: none !important;
-  }
-}
-
 /* ==========================================================================
-   Modals: Mini-Game (Quyển Thi Giấy Dó), Từ Điển, Tổng Kết Đình Thần
+   10. Modals: Minigame Khảo Thí & Từ Điển Khoa Cử
    ========================================================================== */
 .modal-overlay {
   position: fixed;
@@ -967,7 +949,9 @@ body.theme-rpg {
   backdrop-filter: blur(8px);
 }
 
-.scroll-inspect-card, .modal-card, .summary-card {
+.scroll-inspect-card, 
+.modal-card, 
+.summary-card {
   background: linear-gradient(180deg, #1d1611 0%, #120e0a 100%);
   border: 2px solid var(--gold-leaf);
   border-radius: var(--radius-md);
@@ -981,11 +965,6 @@ body.theme-rpg {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 35px var(--gold-glow);
   animation: modalEnter 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
-}
-
-@keyframes modalEnter {
-  from { transform: scale(0.92); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
 }
 
 /* Scroll Roller Cylinders (Trục Cuộn Gỗ Quyển Thi) */
@@ -1102,7 +1081,7 @@ body.theme-rpg {
   box-shadow: 0 0 12px rgba(39, 86, 64, 0.4);
 }
 
-/* Glossary specifics */
+/* Glossary Card specifics */
 .glossary-card {
   max-width: 480px;
 }
@@ -1147,12 +1126,8 @@ body.theme-rpg {
   margin-bottom: 14px;
 }
 
-.advisor-tag {
-  display: none !important;
-}
-
 /* ==========================================================================
-   Summary Epilogue: Imperial Verdict Decree (Bản Án Đình Thần)
+   11. Summary Epilogue Decree Modal (Bản Án Đình Thần)
    ========================================================================== */
 .summary-card {
   max-width: 720px;
@@ -1305,8 +1280,58 @@ body.theme-rpg {
 }
 
 /* ==========================================================================
-   Mobile Responsive Overrides (Dialogue & UI)
+   12. Centralized Keyframe Animations
    ========================================================================== */
+@keyframes badgeGlow {
+  from { box-shadow: 0 0 4px var(--gold-glow); }
+  to { box-shadow: 0 0 16px rgba(229, 186, 99, 0.6); }
+}
+
+@keyframes warningPulse {
+  0% { transform: translateX(-50%) scale(0.99); box-shadow: 0 4px 20px rgba(180, 20, 20, 0.6); }
+  100% { transform: translateX(-50%) scale(1.01); box-shadow: 0 8px 35px rgba(255, 60, 60, 0.85); }
+}
+
+@keyframes candleBreath {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  35% { opacity: 0.85; transform: scale(1.02); }
+  70% { opacity: 0.5; transform: scale(0.98); }
+}
+
+@keyframes promptBob {
+  0% { transform: translateX(-50%) translateY(0); }
+  100% { transform: translateX(-50%) translateY(-5px); }
+}
+
+@keyframes dialogueSlideUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes returnPulse {
+  0% { transform: scale(0.99); box-shadow: 0 0 10px rgba(161, 35, 35, 0.4); }
+  100% { transform: scale(1.02); box-shadow: 0 0 24px rgba(203, 45, 45, 0.85); }
+}
+
+@keyframes modalEnter {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ==========================================================================
+   13. Responsive Media Queries (Tablet, Mobile, Landscape)
+   ========================================================================== */
+/* Tablet & Touch Devices */
+@media (max-width: 1024px), (pointer: coarse), (hover: none) {
+  #touch-controls {
+    display: flex !important;
+  }
+  #controls-hint {
+    display: none !important;
+  }
+}
+
+/* Mobile Devices (<= 768px) */
 @media (max-width: 768px) {
   body.theme-rpg {
     padding: 0;
@@ -1424,6 +1449,7 @@ body.theme-rpg {
   }
 }
 
+/* Mobile Compact HUD (<= 640px) */
 @media (max-width: 640px) {
   #rpg-hud {
     height: 44px;
@@ -1467,6 +1493,7 @@ body.theme-rpg {
   }
 }
 
+/* Small Smartphone (<= 480px) */
 @media (max-width: 480px) {
   .dialogue-box {
     width: calc(100% - 10px);
@@ -1531,7 +1558,7 @@ body.theme-rpg {
   }
 }
 
-/* Mobile landscape (màn hình nằm ngang hẹp về chiều cao) */
+/* Mobile Landscape (Chiều cao hẹp <= 520px) */
 @media (max-height: 520px) {
   .dialogue-box {
     max-height: calc(100% - 32px);
@@ -1569,7 +1596,9 @@ body.theme-rpg {
   }
 }
 
+/* ==========================================================================
+   14. Utility Classes
+   ========================================================================== */
 .hidden {
   display: none !important;
 }
-

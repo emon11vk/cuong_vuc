@@ -909,8 +909,8 @@ class RPGGame {
     try {
       const res = await fetch('game_data.json');
       rpgState.gameData = await res.json();
-    } catch (e) {
-      console.warn("Nạp dữ liệu dự phòng...");
+    } catch (err) {
+      console.warn("Nạp dữ liệu dự phòng:", err);
     }
     this.setRoom('M0');
   }
@@ -1257,7 +1257,7 @@ class RPGGame {
         mascotLine = "<br><br><i>(Ngươi từng nhủ văn chương là gốc. Đêm nay những tài năng ấy đang đặt trong tay ngươi.)</i>";
       }
 
-      textEl.innerHTML = `${opener} Toàn văn hay. Chỉ vướng vài chữ. Ông ấy đặt xuống đĩa <span class='glossary-term' onclick='openGlossary(\"muội đèn\")'>muội đèn</span>: 'Chữa một nét, cứu một đời. Ông tính sao?'${mascotLine}`;
+      textEl.innerHTML = `${opener} Toàn văn hay. Chỉ vướng vài chữ. Ông ấy đặt xuống đĩa <span class='glossary-term' onclick="openGlossary('muội đèn')">muội đèn</span>: 'Chữa một nét, cứu một đời. Ông tính sao?'${mascotLine}`;
 
       const choices = [
         { id: "A", text: "Không. Việc này là tội.", score: 50, fb: "Ông ấy không nói thêm. Đĩa muội đèn vẫn để đó." },
@@ -1668,7 +1668,6 @@ function openGlossary(termKey) {
   const wordEl = document.getElementById('modal-term-word');
   const hanEl = document.getElementById('modal-term-han');
   const defEl = document.getElementById('modal-term-def');
-  const noteEl = document.getElementById('modal-term-note');
 
   const dict = {
     "phạm húy": { w: "Phạm húy", han: "犯諱", def: "Viết trúng tên thật của vua, chúa, hoàng tộc thời xưa. Lỗi này bị đánh trượt ngay lập tức dù văn hay tới đâu." },
@@ -1684,13 +1683,12 @@ function openGlossary(termKey) {
   wordEl.innerText = item.w;
   hanEl.innerText = item.han;
   defEl.innerText = item.def;
-  if (noteEl) {
-    noteEl.classList.add('hidden');
-  }
 
   modal.classList.remove('hidden');
   rpgAudio.playInteract();
 }
+
+window.openGlossary = openGlossary;
 
 document.getElementById('close-modal-btn').onclick = () => {
   document.getElementById('glossary-modal').classList.add('hidden');

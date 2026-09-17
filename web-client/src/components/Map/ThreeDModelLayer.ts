@@ -12,8 +12,8 @@ interface ModelMeta {
 
 export class ThreeDModelLayer implements maplibregl.CustomLayerInterface {
     public id: string = '3d-models-custom-layer';
-    public type: 'custom' = 'custom';
-    public renderingMode: '3d' = '3d';
+    public type = 'custom' as const;
+    public renderingMode = '3d' as const;
     
     private map!: maplibregl.Map;
     private camera!: THREE.Camera;
@@ -894,6 +894,5 @@ export class ThreeDModelLayer implements maplibregl.CustomLayerInterface {
         _gl.depthMask(true);
 
         this.renderer.render(this.scene, this.camera);
-        this.map.triggerRepaint();
     }
 }

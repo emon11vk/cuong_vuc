@@ -183,7 +183,13 @@ export const MapLoader: React.FC = () => {
       });
 
       // 2c. Custom Layer dùng Three.js để vẽ mô hình 3D (.glb)
-      map.addLayer(new ThreeDModelLayer(), firstLabelId);
+      // Tối ưu hóa: Trên thiết bị di động, bỏ qua layer 3D 127MB để tránh tràn RAM/VRAM làm sập WebGL (gây đen bản đồ)
+      const isMobile = typeof navigator !== 'undefined' && (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768);
+      if (!isMobile) {
+        map.addLayer(new ThreeDModelLayer(), firstLabelId);
+      } else {
+        console.info('📱 Thiết bị di động: Tối ưu hoá hiệu năng, chạy bản đồ 2D GIS mượt mà không quá tải WebGL.');
+      }
 
     } catch (e) {
       console.warn('Could not add 3D buildings layer', e);
@@ -205,22 +211,47 @@ export const MapLoader: React.FC = () => {
     }
   };
 
-  if (!userLocation) {
+  // Kiểm tra hỗ trợ WebGL
+  const isWebGLSupported = typeof window !== 'undefined' ? (() => {
+    try {
+      const canvas = document.createElement('canvas');
+      return Boolean(
+        window.WebGLRenderingContext &&
+        (canvas.getContext('webgl2') || canvas.getContext('webgl') || canvas.getContext('experimental-webgl'))
+      );
+    } catch {
+      return false;
+    }
+  })() : true;
+  if (!isWebGLSupported) {
     return (
-      <div className="w-full h-full flex items-center justify-center bg-stone-950 flex-col gap-3">
-        <div className="w-8 h-8 rounded-full border-2 border-t-transparent animate-spin" style={{ borderColor: '#d4a017', borderTopColor: 'transparent' }} />
-        <p className="text-sm font-medium" style={{ color: '#d4a017', fontFamily: "'Inter', sans-serif" }}>Đang xác định vị trí…</p>
+      <div className="w-full h-full flex items-center justify-center bg-stone-950 flex-col gap-4 p-6 text-center z-50">
+        <div className="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-2xl shadow-xl">
+          ⚠️
+        </div>
+        <h3 className="text-base sm:text-lg font-bold text-amber-400 font-cinzel">
+          Trình duyệt chưa bật đồ họa WebGL
+        </h3>
+        <p className="text-xs sm:text-sm text-stone-300 max-w-md">
+          Bản đồ tương tác cần hỗ trợ tăng tốc phần cứng đồ họa WebGL để hiển thị.
+        </p>
+        <div className="bg-stone-900/90 border border-amber-500/30 p-4 rounded-xl text-xs text-stone-300 max-w-md text-left space-y-2">
+          <p>• <b>Nếu đang mở trong Zalo / Messenger:</b> Bấm dấu 3 chấm <code>...</code> góc màn hình và chọn <b>"Mở bằng Safari"</b> (iPhone) hoặc <b>"Mở bằng Chrome"</b> (Android).</p>
+          <p>• <b>Nếu trên máy tính:</b> Vào Cài đặt trình duyệt (Settings) → Hệ thống (System) → Bật <i>"Sử dụng đồ họa tăng tốc khi khả dụng"</i>.</p>
+        </div>
       </div>
     );
   }
+
+  const activeLocation = userLocation || { lat: 21.02877, lng: 105.85235 };
 
   return (
     <div className="absolute inset-0 w-full h-full">
       <Map
         ref={mapRef}
         initialViewState={{
-          longitude: userLocation.lng,
-          latitude: userLocation.lat,
+          longitude: activeLocation.lng,
+          latitude: activeLocation.lat,
           zoom: 17,
           pitch: 60,
           bearing: 0
@@ -240,6 +271,13 @@ export const MapLoader: React.FC = () => {
             }
           },
           layers: [
+            {
+              id: 'map-background',
+              type: 'background',
+              paint: {
+                'background-color': '#dfd7c5' // Màu nền giấy bản đồ cổ, đảm bảo không bao giờ bị đen xì khi tile chưa tải xong
+              }
+            },
             {
               id: 'osm-tiles-layer',
               type: 'raster',
@@ -395,7 +433,7 @@ export const MapLoader: React.FC = () => {
         <CameraModeControl position="top-right" />
         
         {/* Render Marker người chơi gọn gàng (không bị vòng tròn xanh khổng lồ che phủ) */}
-        <Marker longitude={userLocation.lng} latitude={userLocation.lat} anchor="center">
+        <Marker longitude={activeLocation.lng} latitude={activeLocation.lat} anchor="center">
           <div className={`relative flex items-center justify-center ${cameraMode === 'fpv' ? 'hidden' : 'flex'}`}>
             <div className="w-5 h-5 bg-blue-600 rounded-full border-2 border-white shadow-lg z-10 flex items-center justify-center">
               <div className="w-2 h-2 bg-white rounded-full"></div>
