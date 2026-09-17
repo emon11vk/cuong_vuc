@@ -792,7 +792,6 @@ function renderStage(stageId) {
     btn.innerHTML = `
       <span class="choice-id">${c.id}</span>
       <span class="choice-content">${c.text}</span>
-      <span class="choice-meta">+${c.score}đ</span>
     `;
     btn.onclick = () => handleChoice(stage, c);
     choicesContainer.appendChild(btn);

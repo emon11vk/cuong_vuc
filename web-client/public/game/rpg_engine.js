@@ -725,11 +725,11 @@ const ROOMS = {
       { x: 920, y: 0, w: 40, h: 540 }
     ],
     npcs: [
-      { id: "ghost_1", name: "Sĩ Tử Nguyễn", type: "ghost_scholar", x: 260, y: 170, interactRadius: 65, dialogueKey: "ALT_GHOST" },
-      { id: "ghost_2", name: "Sĩ Tử Lê", type: "ghost_scholar", x: 370, y: 120, interactRadius: 65, dialogueKey: "ALT_GHOST" },
-      { id: "ghost_3", name: "Sĩ Tử Trần", type: "ghost_scholar", x: 480, y: 95, interactRadius: 65, dialogueKey: "ALT_GHOST" },
-      { id: "ghost_4", name: "Sĩ Tử Hoàng", type: "ghost_scholar", x: 590, y: 120, interactRadius: 65, dialogueKey: "ALT_GHOST" },
-      { id: "ghost_5", name: "Sĩ Tử Phạm", type: "ghost_scholar", x: 700, y: 170, interactRadius: 65, dialogueKey: "ALT_GHOST" }
+      { id: "ghost_1", name: "Sĩ Tử Nguyễn", type: "ghost_scholar", x: 260, y: 170, interactRadius: 65, dialogueKey: "ALT_GHOST_1" },
+      { id: "ghost_2", name: "Sĩ Tử Lê", type: "ghost_scholar", x: 370, y: 120, interactRadius: 65, dialogueKey: "ALT_GHOST_2" },
+      { id: "ghost_3", name: "Sĩ Tử Trần", type: "ghost_scholar", x: 480, y: 95, interactRadius: 65, dialogueKey: "ALT_GHOST_3" },
+      { id: "ghost_4", name: "Sĩ Tử Hoàng", type: "ghost_scholar", x: 590, y: 120, interactRadius: 65, dialogueKey: "ALT_GHOST_4" },
+      { id: "ghost_5", name: "Sĩ Tử Phạm", type: "ghost_scholar", x: 700, y: 170, interactRadius: 65, dialogueKey: "ALT_GHOST_5" }
     ],
     objects: [
       {
@@ -739,7 +739,7 @@ const ROOMS = {
         y: 240,
         w: 80,
         h: 40,
-        label: "Tỉnh Giấc & Trở Lại Đêm Ấy [E]",
+        label: "Tỉnh Giấc & Trở Lại Đêm Ấy",
         interactRadius: 80,
         dialogueKey: "ALT_RETURN"
       }
@@ -1130,7 +1130,7 @@ class RPGGame {
 
       const btn = document.createElement('button');
       btn.className = 'choice-btn';
-      btn.innerHTML = `<span class="choice-id">VÀO TRƯỜNG</span><span class="choice-content">Bước vào thư phòng đêm trước ngày đóng cổng trường.</span><span class="choice-meta">Khởi hành</span>`;
+      btn.innerHTML = `<span class="choice-id">VÀO TRƯỜNG</span><span class="choice-content">Bước vào thư phòng đêm trước ngày đóng cổng trường.</span>`;
       btn.onclick = () => {
         this.closeDialogue();
         this.setRoom('M1');
@@ -1157,7 +1157,7 @@ class RPGGame {
       nameEl.innerText = "Cao Bá Quát (Chu Thần)";
       if (roleEl) roleEl.innerText = "Đêm suy ngẫm trường quy";
       avatarEl.className = "speaker-avatar avatar-quat";
-      textEl.innerHTML = "Đêm. Trên bàn là tập <span class='glossary-term' onclick='openGlossary(\"trường quy\")'>[[trường quy]]</span>. <span class='glossary-term' onclick='openGlossary(\"phạm húy\")'>[[Phạm húy]]</span>, <span class='glossary-term' onclick='openGlossary(\"khiếm tị\")'>[[khiếm tị]]</span>, viết sai tên vua: trượt, bất kể văn hay đến đâu. Ta lật tới trang cuối rồi đặt bút xuống... Ta tự nhủ điều gì?";
+      textEl.innerHTML = "Đêm. Trên bàn là tập <span class='glossary-term' onclick='openGlossary(\"trường quy\")'>trường quy</span>. <span class='glossary-term' onclick='openGlossary(\"phạm húy\")'>Phạm húy</span>, <span class='glossary-term' onclick='openGlossary(\"khiếm tị\")'>khiếm tị</span>, viết sai tên vua: trượt, bất kể văn hay đến đâu. Ta lật tới trang cuối rồi đặt bút xuống... Ta tự nhủ điều gì?";
 
       const choices = [
         { id: "M1-A", text: "Phép là phép. Ta chấm theo lệ.", score: 30, flag: "TRONG_PHEP", fb: "Ngươi gấp sách, thổi nến." },
@@ -1168,7 +1168,7 @@ class RPGGame {
       choices.forEach(c => {
         const btn = document.createElement('button');
         btn.className = 'choice-btn';
-        btn.innerHTML = `<span class="choice-id">${c.id}</span><span class="choice-content">${c.text}</span><span class="choice-meta">+30đ</span>`;
+        btn.innerHTML = `<span class="choice-id">${c.id}</span><span class="choice-content">${c.text}</span>`;
         btn.onclick = () => {
           this.applyChoice("M1", c.score, { khuynh_huong: c.flag }, c.fb);
           setTimeout(() => {
@@ -1201,7 +1201,7 @@ class RPGGame {
       nameEl.innerText = "Cao Bá Quát (Sơ Khảo)";
       if (roleEl) roleEl.innerText = "Ngày chấm thứ hai";
       avatarEl.className = "speaker-avatar avatar-quat";
-      textEl.innerHTML = "Ngày chấm thứ hai. Quyển thứ mười bảy: văn khí mạnh, lập luận sắc, đáng hạng ưu. Nhưng đến dòng thứ tư, tay ta dừng bút — một chữ <span class='glossary-term' onclick='openGlossary(\"phạm húy\")'>[[phạm húy]]</span>! Quyển này theo <span class='glossary-term' onclick='openGlossary(\"trường quy\")'>[[trường quy]]</span> phải trượt. Xử lý thế nào?";
+      textEl.innerHTML = "Ngày chấm thứ hai. Quyển thứ mười bảy: văn khí mạnh, lập luận sắc, đáng hạng ưu. Nhưng đến dòng thứ tư, tay ta dừng bút — một chữ <span class='glossary-term' onclick='openGlossary(\"phạm húy\")'>phạm húy</span>! Quyển này theo <span class='glossary-term' onclick='openGlossary(\"trường quy\")'>trường quy</span> phải trượt. Xử lý thế nào?";
 
       const choices = [
         { id: "M2-A", text: "Phê trượt, đúng theo trường quy.", score: 50, fb: "Ngươi hạ bút. Tay hơi chậm lại." },
@@ -1212,7 +1212,7 @@ class RPGGame {
       choices.forEach(c => {
         const btn = document.createElement('button');
         btn.className = 'choice-btn';
-        btn.innerHTML = `<span class="choice-id">${c.id}</span><span class="choice-content">${c.text}</span><span class="choice-meta">+${c.score}đ</span>`;
+        btn.innerHTML = `<span class="choice-id">${c.id}</span><span class="choice-content">${c.text}</span>`;
         btn.onclick = () => {
           this.applyChoice("M2", c.score, c.flag || {}, c.fb);
           setTimeout(() => {
@@ -1257,7 +1257,7 @@ class RPGGame {
         mascotLine = "<br><br><i>(Ngươi từng nhủ văn chương là gốc. Đêm nay những tài năng ấy đang đặt trong tay ngươi.)</i>";
       }
 
-      textEl.innerHTML = `${opener} Toàn văn hay. Chỉ vướng vài chữ. Ông ấy đặt xuống đĩa <span class='glossary-term' onclick='openGlossary(\"muội đèn\")'>[[muội đèn]]</span>: 'Chữa một nét, cứu một đời. Ông tính sao?'${mascotLine}`;
+      textEl.innerHTML = `${opener} Toàn văn hay. Chỉ vướng vài chữ. Ông ấy đặt xuống đĩa <span class='glossary-term' onclick='openGlossary(\"muội đèn\")'>muội đèn</span>: 'Chữa một nét, cứu một đời. Ông tính sao?'${mascotLine}`;
 
       const choices = [
         { id: "M3-A", text: "Không. Việc này là tội.", score: 50, fb: "Ông ấy không nói thêm. Đĩa muội đèn vẫn để đó." },
@@ -1268,7 +1268,7 @@ class RPGGame {
       choices.forEach(c => {
         const btn = document.createElement('button');
         btn.className = 'choice-btn';
-        btn.innerHTML = `<span class="choice-id">${c.id}</span><span class="choice-content">${c.text}</span><span class="choice-meta">+${c.score}đ</span>`;
+        btn.innerHTML = `<span class="choice-id">${c.id}</span><span class="choice-content">${c.text}</span>`;
         btn.onclick = () => {
           this.applyChoice("M3", c.score, {}, c.fb);
           setTimeout(() => {
@@ -1301,7 +1301,7 @@ class RPGGame {
       nameEl.innerText = "Cao Bá Quát (Chu Thần)";
       if (roleEl) roleEl.innerText = "Canh ba — Sinh tử nhị nguyên";
       avatarEl.className = "speaker-avatar avatar-quat";
-      textEl.innerHTML = "Canh ba. Trường thi lặng như tờ. Trước mặt: hai mươi tư quyển thi, một đĩa <span class='glossary-term' onclick='openGlossary(\"muội đèn\")'>[[muội đèn]]</span>, một ngọn nến gần tàn. Ngoài kia, những người viết chúng đang chờ tin. Ngươi có chữa những chữ phạm quy ấy không?";
+      textEl.innerHTML = "Canh ba. Trường thi lặng như tờ. Trước mặt: hai mươi tư quyển thi, một đĩa <span class='glossary-term' onclick='openGlossary(\"muội đèn\")'>muội đèn</span>, một ngọn nến gần tàn. Ngoài kia, những người viết chúng đang chờ tin. Ngươi có chữa những chữ phạm quy ấy không?";
 
       const choices = [
         { id: "M4-A", text: "Chữa. Cứu người tài trước đã.", score: 50, target: "M5", fb: "Khớp sử liệu! Ngươi cùng Phan Nhạ nhúng ngọn bút vào muội đèn..." },
@@ -1311,7 +1311,7 @@ class RPGGame {
       choices.forEach(c => {
         const btn = document.createElement('button');
         btn.className = 'choice-btn';
-        btn.innerHTML = `<span class="choice-id">${c.id}</span><span class="choice-content">${c.text}</span><span class="choice-meta">+50đ</span>`;
+        btn.innerHTML = `<span class="choice-id">${c.id}</span><span class="choice-content">${c.text}</span>`;
         btn.onclick = () => {
           this.applyChoice("M4", c.score, {}, c.fb);
           setTimeout(() => {
@@ -1322,7 +1322,67 @@ class RPGGame {
         choicesEl.appendChild(btn);
       });
     }
-    // 10. END_ALT Ghost Scholar
+    // 10. END_ALT Ghost Scholars (5 sĩ tử mang thân phận và nỗi niềm riêng biệt)
+    else if (key === 'ALT_GHOST_1') {
+      nameEl.innerText = "Sĩ Tử Nguyễn (Bắc Hà)";
+      if (roleEl) roleEl.innerText = "Thư sinh mười năm đèn sách";
+      avatarEl.className = "speaker-avatar avatar-ghost";
+      textEl.innerHTML = "Bóng hình sĩ tử hiện ra trong màn sương lạnh, đôi mắt thâm quầng chất chứa nỗi u hoài nghẹn ngào:<br><br><i>'Mười năm ăn củ khoai củ sắn, chong đèn đọc sách đến mòn cả chiếu rách cả nghiên... Bài thi kinh nghĩa của tôi được quan khảo khen là thấu triệt đạo thánh hiền, sao nỡ vì một nét khuyết vô tình mà gạt tôi xuống bùn đen? Mẹ già mòn mỏi ngóng trông nơi quê nhà... nay tôi biết lấy mặt mũi nào về nhìn người?'</i>";
+
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.innerHTML = `<span class="choice-id">XÓT XA</span><span class="choice-content">Lòng Chu Thần trĩu nặng trước nỗi tủi hổ cay đắng của hàn sĩ nghèo...</span>`;
+      btn.onclick = () => this.closeDialogue();
+      choicesEl.appendChild(btn);
+    }
+    else if (key === 'ALT_GHOST_2') {
+      nameEl.innerText = "Sĩ Tử Lê (Thuận Hóa)";
+      if (roleEl) roleEl.innerText = "Nho sinh văn khí hiên ngang";
+      avatarEl.className = "speaker-avatar avatar-ghost";
+      textEl.innerHTML = "Một hồn ma phong thái hiên ngang, chắp tay nhìn thẳng vào mắt ngươi, cất giọng sang sảng mà đanh thép:<br><br><i>'Bài phú của tôi dốc lòng bàn về kế an dân trị thủy, ngợi ca đức sáng triều đình, hào khí ngút trời mây! Ngài là bậc danh sĩ Chu Thần văn hay nức tiếng Bắc Hà, ngài đọc ắt phải hiểu đâu là lòng son dạ sắt, đâu là mưu gian! Triều đình tuyển chọn hiền tài giúp nước, há lại chuộng một dấu son kiêng húy hơn là tấm lòng vì vạn dân sao?'</i>";
+
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.innerHTML = `<span class="choice-id">LẶNG IM</span><span class="choice-content">Nghe câu hỏi đâm trúng tâm can mà nghẹn lời không thể đối đáp...</span>`;
+      btn.onclick = () => this.closeDialogue();
+      choicesEl.appendChild(btn);
+    }
+    else if (key === 'ALT_GHOST_3') {
+      nameEl.innerText = "Sĩ Tử Trần (Nghệ An)";
+      if (roleEl) roleEl.innerText = "Lão sinh tóc bạc lều chõng";
+      avatarEl.className = "speaker-avatar avatar-ghost";
+      textEl.innerHTML = "Một bóng người lưng còng, mái tóc đã bạc phơ run rẩy trong gió lạnh, giọng nghẹn ngào như tiếng thở dài tan vào hư không:<br><br><i>'Mái đầu tôi đã bạc phơ nơi trường thi Thừa Thiên rồi Cao tiên sinh ơi... Đời tôi lều chõng bốn phen, đây là lần cuối cùng còn đủ sức vào kinh ứng thí. Chữ ấy chỉ là sơ suất buột tay lúc canh tàn mỏi mắt, lòng dạ nào dám bất kính với tôn miếu? Một nét bút gạt đi của ngài... là dập tắt cả một đời hy vọng của tôi rồi.'</i>";
+
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.innerHTML = `<span class="choice-id">BUỐT NHÓI</span><span class="choice-content">Nhìn mái đầu bạc trong sương khói mà ngón tay vô thức run rẩy...</span>`;
+      btn.onclick = () => this.closeDialogue();
+      choicesEl.appendChild(btn);
+    }
+    else if (key === 'ALT_GHOST_4') {
+      nameEl.innerText = "Sĩ Tử Hoàng (Quảng Nam)";
+      if (roleEl) roleEl.innerText = "Hậu bối ái mộ Chu Thần";
+      avatarEl.className = "speaker-avatar avatar-ghost";
+      textEl.innerHTML = "Chàng trai trẻ tuổi hiện lên với ánh mắt uất nghẹn, nở nụ cười chua xót nhìn thẳng vào ngươi:<br><br><i>'Tôi từng đọc thơ ngài: «Nhất sinh đê thủ bái hoa mai», hằng đêm chiêm bái khí phách ngạo nghễ không chịu luồn cúi của ngài! Nhưng đêm nay, đứng trước trường quy hủ bại bóp nghẹt người hiền, ngài lại sợ tội rụt tay, nhìn chúng tôi rơi vào tuyệt lộ... Hóa ra khí phách ngút trời của Chu Thần Cao Bá Quát cũng chỉ đến thế thôi sao?'</i>";
+
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.innerHTML = `<span class="choice-id">CẮN RĂNG</span><span class="choice-content">Từng lời như roi quất thẳng vào lòng tự tôn kiêu hãnh của bậc văn nhân...</span>`;
+      btn.onclick = () => this.closeDialogue();
+      choicesEl.appendChild(btn);
+    }
+    else if (key === 'ALT_GHOST_5') {
+      nameEl.innerText = "Sĩ Tử Phạm (Thanh Hóa)";
+      if (roleEl) roleEl.innerText = "Kẻ sĩ trăn trở vận nước";
+      avatarEl.className = "speaker-avatar avatar-ghost";
+      textEl.innerHTML = "Bóng sĩ tử đứng trầm ngâm quay lưng về phía hoàng thành, rồi ngoảnh lại cất tiếng thở dài xót xa:<br><br><i>'Tôi không oán ngài. Ngài giữ mình, đó là sự khôn ngoan nơi quan trường. Nhưng tôi chỉ đau đáu cho vận nước... Nếu những người tài danh cầm cân nảy mực đều chỉ biết cúi đầu tuân theo khuôn phép rập khuôn chết cứng, thì lấy ai dám đứng mũi chịu sào lúc phong ba? Đêm nay ngài cứu được thân mình... nhưng giang sơn đã mất đi bao dũng khí của kẻ sĩ!'</i>";
+
+      const btn = document.createElement('button');
+      btn.className = 'choice-btn';
+      btn.innerHTML = `<span class="choice-id">THỔN THỨC</span><span class="choice-content">Lời cảnh tỉnh vang vọng như hồi chuông giữa cõi mộng ảo...</span>`;
+      btn.onclick = () => this.closeDialogue();
+      choicesEl.appendChild(btn);
+    }
     else if (key === 'ALT_GHOST') {
       nameEl.innerText = "Linh Hồn Sĩ Tử";
       if (roleEl) roleEl.innerText = "Bóng hình trong mộng ảo";
@@ -1344,7 +1404,7 @@ class RPGGame {
 
       const btn = document.createElement('button');
       btn.className = 'return-btn';
-      btn.innerHTML = `Trở lại đêm ấy ↩ (Giữ nguyên điểm)`;
+      btn.innerHTML = `Trở lại đêm ấy ↩`;
       btn.onclick = () => {
         this.closeDialogue();
         this.setRoom('M4');
@@ -1357,7 +1417,7 @@ class RPGGame {
       if (roleEl) roleEl.innerText = "Án thẩm trường thi";
       avatarEl.className = "speaker-avatar avatar-nguc-quan";
 
-      let greeting = "Việc dùng muội đèn chữa bài thi đã bị phát giác! Bản án sơ thẩm là <span class='glossary-term' onclick='openGlossary(\"trảm quyết\")'>[[trảm quyết]]</span>. Trước mặt là <span class='glossary-term' onclick='openGlossary(\"tờ cung\")'>[[tờ cung]]</span> và cây bút. Ngươi khai thế nào?";
+      let greeting = "Việc dùng muội đèn chữa bài thi đã bị phát giác! Bản án sơ thẩm là <span class='glossary-term' onclick='openGlossary(\"trảm quyết\")'>trảm quyết</span>. Trước mặt là <span class='glossary-term' onclick='openGlossary(\"tờ cung\")'>tờ cung</span> và cây bút. Ngươi khai thế nào?";
       if (rpgState.flags.khuynh_huong === 'TRONG_PHEP') {
         greeting = "Kẻ luôn miệng xưng trọng phép tắc, hóa ra lại to gan đổi trắng thay đen nơi trường quy! Khai mau!";
       } else if (rpgState.flags.khuynh_huong === 'TRONG_TAI') {
@@ -1380,7 +1440,7 @@ class RPGGame {
       choices.forEach(c => {
         const btn = document.createElement('button');
         btn.className = 'choice-btn';
-        btn.innerHTML = `<span class="choice-id">${c.id}</span><span class="choice-content">${c.text}</span><span class="choice-meta">+${c.score}đ</span>`;
+        btn.innerHTML = `<span class="choice-id">${c.id}</span><span class="choice-content">${c.text}</span>`;
         btn.onclick = () => {
           this.applyChoice("M5", c.score, {}, c.fb, c.verbatim);
           setTimeout(() => {

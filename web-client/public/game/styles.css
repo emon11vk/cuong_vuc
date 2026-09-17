@@ -530,6 +530,7 @@ body.theme-rpg {
   transform: translateX(-50%);
   width: 94%;
   max-width: 980px;
+  max-height: calc(100% - 64px);
   background: linear-gradient(180deg, rgba(22, 17, 13, 0.98) 0%, rgba(14, 11, 8, 0.99) 100%);
   border: 2px solid var(--gold-leaf);
   border-radius: var(--radius-md);
@@ -537,6 +538,21 @@ body.theme-rpg {
   z-index: 50;
   backdrop-filter: blur(12px);
   animation: dialogueSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dialogue-box::-webkit-scrollbar {
+  width: 5px;
+}
+.dialogue-box::-webkit-scrollbar-track {
+  background: rgba(14, 11, 8, 0.8);
+}
+.dialogue-box::-webkit-scrollbar-thumb {
+  background: var(--gold-dim);
+  border-radius: 4px;
 }
 
 @keyframes dialogueSlideUp {
@@ -549,6 +565,8 @@ body.theme-rpg {
   display: flex;
   padding: 20px 24px;
   gap: 24px;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 /* Speaker Column & Lacquered Portrait Frame */
@@ -561,6 +579,14 @@ body.theme-rpg {
   border-right: 1px solid rgba(205, 163, 79, 0.25);
   padding-right: 20px;
   flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.speaker-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .avatar-frame-wrap {
@@ -634,8 +660,10 @@ body.theme-rpg {
 
 .dialogue-main {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
 }
 
 .dialogue-text {
@@ -644,7 +672,9 @@ body.theme-rpg {
   line-height: 1.75;
   color: #faf2e6;
   margin-bottom: 16px;
-  min-height: 52px;
+  min-height: 48px;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 /* Sino-Vietnamese Clickable Terms (Chu Thích Thuật Ngữ) */
@@ -670,6 +700,7 @@ body.theme-rpg {
   display: flex;
   flex-direction: column;
   gap: 9px;
+  width: 100%;
 }
 
 .choice-btn {
@@ -685,6 +716,9 @@ body.theme-rpg {
   cursor: pointer;
   transition: var(--transition-fast);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  min-width: 0;
+  box-sizing: border-box;
+  width: 100%;
 }
 
 .choice-btn:hover {
@@ -706,15 +740,19 @@ body.theme-rpg {
   font-size: 0.88rem;
   margin-right: 12px;
   min-width: 18px;
+  flex-shrink: 0;
 }
 
 .choice-content {
   flex-grow: 1;
+  min-width: 0;
   font-family: var(--font-serif);
   font-size: 1rem;
   text-align: left;
   line-height: 1.4;
   color: #f6ecdc;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .choice-meta {
@@ -935,6 +973,10 @@ body.theme-rpg {
   border-radius: var(--radius-md);
   width: 92%;
   max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  -webkit-overflow-scrolling: touch;
   padding: 24px 28px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 35px var(--gold-glow);
   animation: modalEnter 0.28s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1269,8 +1311,125 @@ body.theme-rpg {
 }
 
 /* ==========================================================================
-   Mobile Responsive HUD Overrides
+   Mobile Responsive Overrides (Dialogue & UI)
    ========================================================================== */
+@media (max-width: 768px) {
+  body.theme-rpg {
+    padding: 0;
+  }
+
+  #game-wrapper {
+    width: 100vw;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-width: 0;
+    border-radius: 0;
+  }
+
+  /* Dialogue Box: Tự co giãn theo màn hình điện thoại, không tràn viền */
+  .dialogue-box {
+    width: calc(100% - 16px);
+    bottom: 8px;
+    max-height: calc(100% - 56px);
+    border-width: 1.5px;
+    border-radius: var(--radius-sm);
+  }
+
+  .dialogue-inner {
+    flex-direction: column;
+    padding: 12px 14px 14px 14px;
+    gap: 8px;
+  }
+
+  /* Chuyển cột nhân vật thành thanh ngang phía trên */
+  .speaker-column {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    border-right: none;
+    border-bottom: 1px solid rgba(205, 163, 79, 0.2);
+    padding-right: 32px;
+    padding-bottom: 8px;
+    margin-bottom: 4px;
+    gap: 10px;
+  }
+
+  .avatar-frame-wrap {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+
+  .speaker-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .speaker-name {
+    font-size: 0.95rem;
+    margin-bottom: 2px;
+  }
+
+  .speaker-role {
+    font-size: 0.68rem;
+    padding: 1px 6px;
+  }
+
+  .dialogue-main {
+    width: 100%;
+  }
+
+  .dialogue-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 12px;
+    min-height: auto;
+  }
+
+  .dialogue-choices-grid {
+    gap: 7px;
+    width: 100%;
+  }
+
+  .choice-btn {
+    padding: 8px 12px;
+  }
+
+  .choice-id {
+    font-size: 0.78rem;
+    margin-right: 8px;
+  }
+
+  .choice-content {
+    font-size: 0.88rem;
+    line-height: 1.35;
+  }
+
+  .dialogue-close-btn {
+    top: 8px;
+    right: 8px;
+    width: 26px;
+    height: 26px;
+    font-size: 1.05rem;
+  }
+
+  .feedback-panel {
+    padding: 8px 12px;
+    font-size: 0.88rem;
+    margin-bottom: 8px;
+  }
+
+  .court-record-exact-italic {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    padding: 8px 12px;
+  }
+}
+
 @media (max-width: 640px) {
   #rpg-hud {
     height: 44px;
@@ -1311,6 +1470,108 @@ body.theme-rpg {
   }
   .tally-value {
     font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dialogue-box {
+    width: calc(100% - 10px);
+    bottom: 5px;
+    max-height: calc(100% - 48px);
+  }
+
+  .dialogue-inner {
+    padding: 10px 10px 12px 10px;
+    gap: 6px;
+  }
+
+  .speaker-column {
+    padding-bottom: 6px;
+    gap: 8px;
+  }
+
+  .avatar-frame-wrap {
+    width: 38px;
+    height: 38px;
+  }
+
+  .speaker-name {
+    font-size: 0.88rem;
+  }
+
+  .speaker-role {
+    font-size: 0.62rem;
+    padding: 1px 4px;
+  }
+
+  .dialogue-text {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+
+  .choice-btn {
+    padding: 7px 10px;
+  }
+
+  .choice-id {
+    font-size: 0.72rem;
+    margin-right: 6px;
+  }
+
+  .choice-content {
+    font-size: 0.82rem;
+    line-height: 1.3;
+  }
+
+  .feedback-panel {
+    padding: 8px 10px;
+    font-size: 0.84rem;
+    margin-bottom: 8px;
+  }
+
+  .court-record-exact-italic {
+    font-size: 0.86rem;
+    line-height: 1.45;
+    padding: 8px 10px;
+  }
+}
+
+/* Mobile landscape (màn hình nằm ngang hẹp về chiều cao) */
+@media (max-height: 520px) {
+  .dialogue-box {
+    max-height: calc(100% - 32px);
+    bottom: 4px;
+  }
+  .dialogue-inner {
+    padding: 8px 10px;
+    gap: 5px;
+  }
+  .speaker-column {
+    padding-bottom: 4px;
+    gap: 6px;
+  }
+  .avatar-frame-wrap {
+    width: 32px;
+    height: 32px;
+  }
+  .speaker-name {
+    font-size: 0.82rem;
+  }
+  .speaker-role {
+    font-size: 0.6rem;
+  }
+  .dialogue-text {
+    font-size: 0.84rem;
+    line-height: 1.4;
+    margin-bottom: 6px;
+    min-height: auto;
+  }
+  .dialogue-choices-grid {
+    gap: 4px;
+  }
+  .choice-btn {
+    padding: 5px 8px;
   }
 }
 
