@@ -356,7 +356,7 @@ function applyEmbeddedDataFallback() {
         "mission": "Ngươi tự nhủ điều gì?",
         "choices": [
           {
-            "id": "M1-A",
+            "id": "A",
             "text": "Phép là phép. Ta chấm theo lệ.",
             "score": 30,
             "immediate_feedback": "Ngươi gấp sách, thổi nến.",
@@ -364,7 +364,7 @@ function applyEmbeddedDataFallback() {
             "next_stage": "M2"
           },
           {
-            "id": "M1-B",
+            "id": "B",
             "text": "Văn chương là gốc. Lệ chỉ là cành.",
             "score": 30,
             "immediate_feedback": "Ngươi ngồi thêm một lúc nữa.",
@@ -372,7 +372,7 @@ function applyEmbeddedDataFallback() {
             "next_stage": "M2"
           },
           {
-            "id": "M1-C",
+            "id": "C",
             "text": "Chưa vào trường, chưa biết được.",
             "score": 30,
             "immediate_feedback": "Ngươi thổi nến, không kết luận gì.",
@@ -392,7 +392,7 @@ function applyEmbeddedDataFallback() {
         "mission": "Ngươi xử lý quyển thi này thế nào?",
         "choices": [
           {
-            "id": "M2-A",
+            "id": "A",
             "text": "Phê trượt, đúng theo trường quy.",
             "score": 50,
             "immediate_feedback": "Ngươi hạ bút. Tay hơi chậm lại.",
@@ -400,7 +400,7 @@ function applyEmbeddedDataFallback() {
             "next_stage": "M3"
           },
           {
-            "id": "M2-B",
+            "id": "B",
             "text": "Trình quan Chánh chủ khảo xin ý.",
             "score": 40,
             "immediate_feedback": "Câu trả lời nhận được: lệ đã rõ.",
@@ -408,7 +408,7 @@ function applyEmbeddedDataFallback() {
             "next_stage": "M3"
           },
           {
-            "id": "M2-C",
+            "id": "C",
             "text": "Gác riêng quyển ấy. Chấm tiếp đã.",
             "score": 35,
             "immediate_feedback": "Quyển thi nằm lại một góc bàn.",
@@ -437,21 +437,21 @@ function applyEmbeddedDataFallback() {
         "mission": "Ngươi đáp lại thế nào?",
         "choices": [
           {
-            "id": "M3-A",
+            "id": "A",
             "text": "Không. Việc này là tội.",
             "score": 50,
             "immediate_feedback": "Ông ấy không nói thêm. Đĩa muội đèn vẫn để đó.",
             "next_stage": "M4"
           },
           {
-            "id": "M3-B",
+            "id": "B",
             "text": "Để tôi xem lại những quyển ấy.",
             "score": 45,
             "immediate_feedback": "Ngươi cầm quyển đầu tiên lên.",
             "next_stage": "M4"
           },
           {
-            "id": "M3-C",
+            "id": "C",
             "text": "Hai mươi tư người... ông nói tiếp đi.",
             "score": 35,
             "immediate_feedback": "Phan Nhạ kể tên vài người. Ngươi nghe hết.",
@@ -470,14 +470,14 @@ function applyEmbeddedDataFallback() {
         "mission": "Ngươi có chữa những chữ phạm quy ấy không?",
         "choices": [
           {
-            "id": "M4-A",
+            "id": "A",
             "text": "Chữa. Cứu người tài trước đã.",
             "score": 50,
             "immediate_feedback": "Quyết định khớp với lịch sử. Ngươi cùng Phan Nhạ nhúng ngọn bút vào muội đèn...",
             "next_stage": "M5"
           },
           {
-            "id": "M4-B",
+            "id": "B",
             "text": "Không chữa. Giữ mình, giữ phép.",
             "score": 50,
             "immediate_feedback": "Ngươi rụt tay lại. Lịch sử bắt đầu rẽ sang một nhánh giả tưởng...",
@@ -544,14 +544,14 @@ function applyEmbeddedDataFallback() {
         "mission": "Ngươi khai thế nào?",
         "choices": [
           {
-            "id": "M5-A",
+            "id": "A",
             "text": "Nhận hết. Việc do tôi làm.",
             "score": 50,
             "immediate_feedback": "Ngươi viết, không thêm một chữ biện bạch.",
             "next_stage": "SUMMARY"
           },
           {
-            "id": "M5-B",
+            "id": "B",
             "text": "Khai rõ vì tiếc người tài.",
             "score": 50,
             "immediate_feedback": "\"Tôi thấy các bài hay sính bút làm vậy chứ không ai gửi gắm, dặn dò gì cả.\"",
@@ -559,7 +559,7 @@ function applyEmbeddedDataFallback() {
             "next_stage": "SUMMARY"
           },
           {
-            "id": "M5-C",
+            "id": "C",
             "text": "Phủ nhận toàn bộ.",
             "score": 15,
             "immediate_feedback": "Lời khai không khớp với vật chứng còn đó.",

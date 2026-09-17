@@ -1160,9 +1160,9 @@ class RPGGame {
       textEl.innerHTML = "Đêm. Trên bàn là tập <span class='glossary-term' onclick='openGlossary(\"trường quy\")'>trường quy</span>. <span class='glossary-term' onclick='openGlossary(\"phạm húy\")'>Phạm húy</span>, <span class='glossary-term' onclick='openGlossary(\"khiếm tị\")'>khiếm tị</span>, viết sai tên vua: trượt, bất kể văn hay đến đâu. Ta lật tới trang cuối rồi đặt bút xuống... Ta tự nhủ điều gì?";
 
       const choices = [
-        { id: "M1-A", text: "Phép là phép. Ta chấm theo lệ.", score: 30, flag: "TRONG_PHEP", fb: "Ngươi gấp sách, thổi nến." },
-        { id: "M1-B", text: "Văn chương là gốc. Lệ chỉ là cành.", score: 30, flag: "TRONG_TAI", fb: "Ngươi ngồi thêm một lúc nữa." },
-        { id: "M1-C", text: "Chưa vào trường, chưa biết được.", score: 30, flag: "TRUNG_DUNG", fb: "Ngươi thổi nến, không kết luận gì." }
+        { id: "A", text: "Phép là phép. Ta chấm theo lệ.", score: 30, flag: "TRONG_PHEP", fb: "Ngươi gấp sách, thổi nến." },
+        { id: "B", text: "Văn chương là gốc. Lệ chỉ là cành.", score: 30, flag: "TRONG_TAI", fb: "Ngươi ngồi thêm một lúc nữa." },
+        { id: "C", text: "Chưa vào trường, chưa biết được.", score: 30, flag: "TRUNG_DUNG", fb: "Ngươi thổi nến, không kết luận gì." }
       ];
 
       choices.forEach(c => {
@@ -1204,9 +1204,9 @@ class RPGGame {
       textEl.innerHTML = "Ngày chấm thứ hai. Quyển thứ mười bảy: văn khí mạnh, lập luận sắc, đáng hạng ưu. Nhưng đến dòng thứ tư, tay ta dừng bút — một chữ <span class='glossary-term' onclick='openGlossary(\"phạm húy\")'>phạm húy</span>! Quyển này theo <span class='glossary-term' onclick='openGlossary(\"trường quy\")'>trường quy</span> phải trượt. Xử lý thế nào?";
 
       const choices = [
-        { id: "M2-A", text: "Phê trượt, đúng theo trường quy.", score: 50, fb: "Ngươi hạ bút. Tay hơi chậm lại." },
-        { id: "M2-B", text: "Trình quan Chánh chủ khảo xin ý.", score: 40, fb: "Câu trả lời nhận được: lệ đã rõ." },
-        { id: "M2-C", text: "Gác riêng quyển ấy. Chấm tiếp đã.", score: 35, flag: { da_gac_rieng: true }, fb: "Quyển thi nằm lại một góc bàn." }
+        { id: "A", text: "Phê trượt, đúng theo trường quy.", score: 50, fb: "Ngươi hạ bút. Tay hơi chậm lại." },
+        { id: "B", text: "Trình quan Chánh chủ khảo xin ý.", score: 40, fb: "Câu trả lời nhận được: lệ đã rõ." },
+        { id: "C", text: "Gác riêng quyển ấy. Chấm tiếp đã.", score: 35, flag: { da_gac_rieng: true }, fb: "Quyển thi nằm lại một góc bàn." }
       ];
 
       choices.forEach(c => {
@@ -1260,9 +1260,9 @@ class RPGGame {
       textEl.innerHTML = `${opener} Toàn văn hay. Chỉ vướng vài chữ. Ông ấy đặt xuống đĩa <span class='glossary-term' onclick='openGlossary(\"muội đèn\")'>muội đèn</span>: 'Chữa một nét, cứu một đời. Ông tính sao?'${mascotLine}`;
 
       const choices = [
-        { id: "M3-A", text: "Không. Việc này là tội.", score: 50, fb: "Ông ấy không nói thêm. Đĩa muội đèn vẫn để đó." },
-        { id: "M3-B", text: "Để tôi xem lại những quyển ấy.", score: 45, fb: "Ngươi cầm quyển đầu tiên lên." },
-        { id: "M3-C", text: "Hai mươi tư người... ông nói tiếp đi.", score: 35, fb: "Phan Nhạ kể tên vài người. Ngươi nghe hết." }
+        { id: "A", text: "Không. Việc này là tội.", score: 50, fb: "Ông ấy không nói thêm. Đĩa muội đèn vẫn để đó." },
+        { id: "B", text: "Để tôi xem lại những quyển ấy.", score: 45, fb: "Ngươi cầm quyển đầu tiên lên." },
+        { id: "C", text: "Hai mươi tư người... ông nói tiếp đi.", score: 35, fb: "Phan Nhạ kể tên vài người. Ngươi nghe hết." }
       ];
 
       choices.forEach(c => {
@@ -1304,8 +1304,8 @@ class RPGGame {
       textEl.innerHTML = "Canh ba. Trường thi lặng như tờ. Trước mặt: hai mươi tư quyển thi, một đĩa <span class='glossary-term' onclick='openGlossary(\"muội đèn\")'>muội đèn</span>, một ngọn nến gần tàn. Ngoài kia, những người viết chúng đang chờ tin. Ngươi có chữa những chữ phạm quy ấy không?";
 
       const choices = [
-        { id: "M4-A", text: "Chữa. Cứu người tài trước đã.", score: 50, target: "M5", fb: "Khớp sử liệu! Ngươi cùng Phan Nhạ nhúng ngọn bút vào muội đèn..." },
-        { id: "M4-B", text: "Không chữa. Giữ mình, giữ phép.", score: 50, target: "END_ALT", fb: "Ngươi rụt tay lại. Lịch sử bắt đầu rẽ sang nhánh giả tưởng..." }
+        { id: "A", text: "Chữa. Cứu người tài trước đã.", score: 50, target: "M5", fb: "Khớp sử liệu! Ngươi cùng Phan Nhạ nhúng ngọn bút vào muội đèn..." },
+        { id: "B", text: "Không chữa. Giữ mình, giữ phép.", score: 50, target: "END_ALT", fb: "Ngươi rụt tay lại. Lịch sử bắt đầu rẽ sang nhánh giả tưởng..." }
       ];
 
       choices.forEach(c => {
@@ -1426,15 +1426,15 @@ class RPGGame {
       textEl.innerHTML = greeting;
 
       const choices = [
-        { id: "M5-A", text: "Nhận hết. Việc do tôi làm.", score: 50, fb: "Ngươi viết, không thêm một chữ biện bạch." },
+        { id: "A", text: "Nhận hết. Việc do tôi làm.", score: 50, fb: "Ngươi viết, không thêm một chữ biện bạch." },
         {
-          id: "M5-B",
+          id: "B",
           text: "Khai rõ vì tiếc người tài.",
           score: 50,
           verbatim: true,
           fb: `"Tôi thấy các bài hay sính bút làm vậy chứ không ai gửi gắm, dặn dò gì cả."`
         },
-        { id: "M5-C", text: "Phủ nhận toàn bộ.", score: 15, fb: "Lời khai không khớp với vật chứng còn đó." }
+        { id: "C", text: "Phủ nhận toàn bộ.", score: 15, fb: "Lời khai không khớp với vật chứng còn đó." }
       ];
 
       choices.forEach(c => {
