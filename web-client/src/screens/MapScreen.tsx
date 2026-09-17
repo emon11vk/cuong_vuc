@@ -1,18 +1,26 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { XR, createXRStore } from '@react-three/xr';
 import { useGameStore } from '../store/gameStore';
 import { MapLoader } from '../components/Map/MapLoader';
 import { TimelineSlider } from '../components/UI/TimelineSlider';
 import { NavigationPanel } from '../components/UI/NavigationPanel';
+import { TopHeaderBar } from '../components/UI/TopHeaderBar';
+import { HistoricalChronicleModal } from '../components/UI/HistoricalChronicleModal';
+import { GameMissionModal } from '../components/game/GameMissionModal';
 import { ARAssetSpawner } from '../components/AR/ARAssetSpawner';
 
 // Create XR store for react-three/xr v6
 const xrStore = createXRStore();
 
-export const MapScreen = () => {
+export const MapScreen: React.FC = () => {
   const loadLocationData = useGameStore((state) => state.loadLocationData);
+  const isARMode = useGameStore((state) => state.isARMode);
+  const setARMode = useGameStore((state) => state.setARMode);
+
   const [arSupported, setArSupported] = useState(false);
+  const [isNavOpen, setIsNavOpen] = useState(true);
+  const [isChronicleOpen, setIsChronicleOpen] = useState(false);
 
   useEffect(() => {
     loadLocationData();
@@ -24,24 +32,24 @@ export const MapScreen = () => {
     }
   }, [loadLocationData]);
 
-  const isARMode = useGameStore((state) => state.isARMode);
-  const setARMode = useGameStore((state) => state.setARMode);
+  const handleEnterAR = () => {
+    setARMode(true);
+    xrStore.enterAR();
+  };
 
   return (
-    <div className="w-screen h-screen overflow-hidden bg-gray-900 relative">
-      {arSupported && (
-        <div className="absolute top-4 right-4 z-50">
-          <button 
-            onClick={() => {
-              setARMode(true);
-              xrStore.enterAR();
-            }}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg font-bold shadow-lg cursor-pointer hover:bg-blue-500 pointer-events-auto"
-          >
-            Enter AR
-          </button>
-        </div>
-      )}
+    <div className="w-screen h-screen overflow-hidden bg-[#0c0806] relative">
+      {/* Cinematic Historical Vignette */}
+      <div className="vintage-vignette" />
+
+      {/* Top Tactical Header Bar */}
+      <TopHeaderBar
+        onOpenChronicle={() => setIsChronicleOpen(true)}
+        isNavOpen={isNavOpen}
+        onToggleNav={() => setIsNavOpen(!isNavOpen)}
+        arSupported={arSupported}
+        onEnterAR={handleEnterAR}
+      />
 
       {/* Lớp Bản đồ 2D/3D (MapLibre) nằm dưới cùng */}
       <MapLoader />
@@ -59,10 +67,23 @@ export const MapScreen = () => {
         </div>
       )}
       
+      {/* Tactical Overlay: Navigation & Timeline Controls */}
       <div className="absolute inset-0 pointer-events-none z-20">
-        <NavigationPanel />
+        <NavigationPanel 
+          isOpen={isNavOpen} 
+          onClose={() => setIsNavOpen(false)} 
+        />
         <TimelineSlider />
       </div>
+
+      {/* Modal Sổ Tay Sử Lược 60 Ngày Đêm */}
+      <HistoricalChronicleModal
+        isOpen={isChronicleOpen}
+        onClose={() => setIsChronicleOpen(false)}
+      />
+
+      {/* Modal nhiệm vụ game tương tác tại Đại học Ngoại Thương */}
+      <GameMissionModal />
     </div>
   );
 };

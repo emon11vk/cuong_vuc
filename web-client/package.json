@@ -17,8 +17,6 @@
     "framer-motion": "^13.1.1",
     "lucide-react": "^1.46.0",
     "maplibre-gl": "^6.6.0",
-    "phaser": "^4.2.1",
-    "phaser3-rex-plugins": "^1.80.20",
     "puppeteer": "^25.9.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

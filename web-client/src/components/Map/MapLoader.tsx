@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import Map, { Marker, GeolocateControl, NavigationControl, Source, Layer } from 'react-map-gl/maplibre';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useGameStore } from '../../store/gameStore';
-import { useNavigate } from 'react-router-dom';
 import { ThreeDModelLayer } from './ThreeDModelLayer';
 import { CameraModeControl } from './CameraModeControl';
 import {
@@ -12,16 +11,6 @@ import {
   hanoi1946RoadsGeoJSON,
   hanoi1946LabelsGeoJSON
 } from '../../data/hanoi1946GeoData';
-import { MapPin } from 'lucide-react';
-
-const QUESTS = [
-  { id: 'level1', name: 'Đục Tường', sublabel: 'Chợ Đồng Xuân', lat: 21.0371, lng: 105.8504 },
-  { id: 'level2', name: 'Đêm Kỳ Tập', sublabel: 'Cửa Bắc', lat: 21.0378, lng: 105.8427 },
-  { id: 'level3', name: 'Rút Lui', sublabel: 'Cầu Long Biên', lat: 21.0423, lng: 105.8569 },
-  { id: 'chua_lang1', name: 'Bùn & Sen', sublabel: 'Chùa Láng', lat: 21.0215, lng: 105.8021 },
-  { id: 'chua_lang2', name: 'Phục Kích', sublabel: 'Đê Láng', lat: 21.0205, lng: 105.8035 },
-  { id: 'chua_lang3', name: 'Mê Trận', sublabel: 'Khu FTU', lat: 21.0232, lng: 105.8048 },
-];
 
 export const MapLoader: React.FC = () => {
   const fetchUserLocation = useGameStore((state) => state.fetchUserLocation);
@@ -30,9 +19,18 @@ export const MapLoader: React.FC = () => {
   const cameraMode = useGameStore((state) => state.cameraMode);
   const sliderValue = useGameStore((state) => state.sliderValue);
   const routeGeoJSON = useGameStore((state) => state.routeGeoJSON);
+  const setGameModalOpen = useGameStore((state) => state.setGameModalOpen);
   const [labelLayerId, setLabelLayerId] = useState<string | undefined>(undefined);
   const mapRef = useRef<any>(null);
-  const navigate = useNavigate();
+
+  const FTU_COORDS = { lat: 21.0227, lng: 105.8045 };
+  const distToFTU = userLocation 
+    ? Math.sqrt(
+        Math.pow(userLocation.lat - FTU_COORDS.lat, 2) + 
+        Math.pow(userLocation.lng - FTU_COORDS.lng, 2)
+      ) 
+    : 999;
+  const isNearFTU = distToFTU < 0.0008; // Khoảng cách ~80m quanh khuôn viên Ngoại Thương
 
   const keysPressed = useRef(new Set<string>());
   const requestRef = useRef<number>(0);
@@ -40,6 +38,17 @@ export const MapLoader: React.FC = () => {
   useEffect(() => {
     fetchUserLocation();
   }, [fetchUserLocation]);
+
+  // Phím tắt [E] hoặc [F] để vào nhiệm vụ khi ở gần FTU
+  useEffect(() => {
+    const handleTriggerKey = (e: KeyboardEvent) => {
+      if ((e.key === 'e' || e.key === 'E' || e.key === 'f' || e.key === 'F') && isNearFTU) {
+        setGameModalOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleTriggerKey);
+    return () => window.removeEventListener('keydown', handleTriggerKey);
+  }, [isNearFTU, setGameModalOpen]);
 
   // Xử lý chuyển đổi Góc nhìn tức thời
   useEffect(() => {
@@ -55,7 +64,7 @@ export const MapLoader: React.FC = () => {
         mapRef.current.jumpTo({ pitch: 60, zoom: 17 });
       }
     }
-  }, [cameraMode]);
+  }, [cameraMode, userLocation]);
 
   // Xử lý Mouselook (Xoay camera bằng chuột như game FPS)
   useEffect(() => {
@@ -395,74 +404,44 @@ export const MapLoader: React.FC = () => {
           </div>
         </Marker>
 
-        {/* --- QUEST MARKERS --- */}
-        {QUESTS.map((quest) => {
-          const dist = Math.sqrt(Math.pow(userLocation.lat - quest.lat, 2) + Math.pow(userLocation.lng - quest.lng, 2));
-          const isClose = dist < 0.005;
+        {/* Điểm Ghim Nhiệm Vụ Đặc Biệt: Trường Đại Học Ngoại Thương (FTU) */}
+        <Marker longitude={FTU_COORDS.lng} latitude={FTU_COORDS.lat} anchor="bottom">
+          <div 
+            onClick={() => setGameModalOpen(true)}
+            className="cursor-pointer group flex flex-col items-center pointer-events-auto select-none transition-transform duration-200 hover:scale-110 active:scale-95"
+          >
+            {/* Tag name */}
+            <div 
+              className="px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide shadow-xl flex items-center gap-1.5 whitespace-nowrap mb-1"
+              style={{
+                background: 'linear-gradient(135deg, rgba(161, 35, 35, 0.95) 0%, rgba(120, 21, 21, 0.95) 100%)',
+                color: '#f8f1e5',
+                border: '1.5px solid #d4a017',
+                boxShadow: '0 4px 15px rgba(0,0,0,0.6), 0 0 10px rgba(212, 160, 23, 0.4)'
+              }}
+            >
+              <span className="text-xs">🏛️</span>
+              <span>ĐH Ngoại Thương</span>
+              <span className="px-1.5 py-0.2 rounded text-[9px] bg-amber-400/30 text-amber-200 border border-amber-300/40">
+                NHIỆM VỤ
+              </span>
+            </div>
 
-          return (
-            <Marker key={quest.id} longitude={quest.lng} latitude={quest.lat} anchor="bottom">
-              <div
-                className="flex flex-col items-center cursor-pointer z-20 group"
-                style={{ gap: '4px' }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (document.pointerLockElement) {
-                    document.exitPointerLock();
-                  }
-                  navigate(`/minigame/${quest.id}`);
+            {/* Glowing Pin */}
+            <div className="relative flex items-center justify-center">
+              <div className="w-8 h-8 rounded-full bg-red-600/30 animate-ping absolute" />
+              <div 
+                className="w-7 h-7 rounded-full flex items-center justify-center border-2 border-amber-300 shadow-lg"
+                style={{
+                  background: 'radial-gradient(circle, #cb2d2d 0%, #781515 100%)',
                 }}
               >
-                {/* Pin icon — no bounce, subtle glow ring pulse only */}
-                <div className="relative flex items-center justify-center">
-                  {/* Glow ring: pulses slowly */}
-                  <div
-                    className="absolute w-10 h-10 rounded-full animate-pulse pointer-events-none"
-                    style={{ background: 'rgba(234,179,8,0.25)', animationDuration: '2.4s' }}
-                  />
-                  {/* Icon: still, scales on hover */}
-                  <div
-                    className="relative z-10 rounded-full p-2 border-2 transition-transform duration-200 group-hover:scale-110 group-active:scale-95"
-                    style={{
-                      background: isClose ? '#1a3d1a' : '#0f0f0f',
-                      borderColor: isClose ? '#22c55e' : '#eab308',
-                      color: isClose ? '#22c55e' : '#eab308',
-                      boxShadow: isClose ? '0 0 12px rgba(34,197,94,0.5)' : '0 0 10px rgba(234,179,8,0.4)',
-                    }}
-                  >
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                </div>
-
-                {/* Always-visible name badge (primary label for mobile) */}
-                <div
-                  className="flex flex-col items-center rounded px-1.5 py-0.5"
-                  style={{
-                    background: 'rgba(18,10,4,0.82)',
-                    backdropFilter: 'blur(4px)',
-                    border: '1px solid rgba(212,160,23,0.3)',
-                    maxWidth: '90px',
-                  }}
-                >
-                  <span
-                    className="text-[10px] font-bold leading-tight text-center truncate w-full"
-                    style={{ color: '#f5c842', fontFamily: "'Playfair Display', serif" }}
-                  >
-                    {quest.name}
-                  </span>
-                  {isClose && (
-                    <span
-                      className="text-[8px] font-bold uppercase tracking-wider mt-0.5"
-                      style={{ color: '#22c55e' }}
-                    >
-                      Sẵn sàng
-                    </span>
-                  )}
-                </div>
+                <span className="text-white text-xs font-black">⚔️</span>
               </div>
-            </Marker>
-          );
-        })}
+              <div className="w-1.5 h-2 bg-amber-400 mt-7 absolute rounded-b-sm" />
+            </div>
+          </div>
+        </Marker>
 
         {/* 6. Lớp vẽ Lộ trình đường đi (Routing) bằng OSRM */}
         {routeGeoJSON && (
@@ -499,6 +478,55 @@ export const MapLoader: React.FC = () => {
         )}
 
       </Map>
+
+      {/* Thông báo Hỏa Tốc Quân Lệnh - Tiếp cận địa bàn Nhiệm vụ Ngoại Thương */}
+      {isNearFTU && (
+        <div 
+          onClick={() => setGameModalOpen(true)}
+          className="absolute bottom-28 sm:bottom-24 left-1/2 -translate-x-1/2 z-40 cursor-pointer pointer-events-auto flex items-center gap-3.5 px-4 sm:px-5 py-3 rounded-2xl border shadow-2xl transition-all hover:scale-105 btn-tactile animate-pulse"
+          style={{
+            background: 'linear-gradient(135deg, rgba(28, 14, 8, 0.98) 0%, rgba(68, 18, 18, 0.98) 100%)',
+            borderColor: 'rgba(245, 212, 122, 0.85)',
+            boxShadow: '0 15px 45px rgba(0,0,0,0.9), 0 0 25px rgba(229, 186, 99, 0.45)',
+          }}
+        >
+          <div 
+            className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-base text-amber-200 shrink-0 shadow-inner"
+            style={{
+              background: 'linear-gradient(135deg, #cb2d2d 0%, #8b1818 100%)',
+              border: '1.5px solid rgba(245, 212, 122, 0.75)'
+            }}
+          >
+            ⚔️
+          </div>
+          <div>
+            <div className="text-xs sm:text-sm font-bold font-cinzel text-amber-300 tracking-wide flex items-center gap-2">
+              <span>HỎA TỐC: ĐỊA BÀN ĐẠI HỌC NGOẠI THƯƠNG</span>
+              <span className="text-[10px] bg-red-900/80 text-red-200 px-2 py-0.5 rounded font-mono border border-red-500/50">
+                SẴN SÀNG
+              </span>
+            </div>
+            <p className="text-xs text-stone-300 mt-0.5 font-body">
+              Nhấn phím <kbd className="px-1.5 py-0.5 bg-black/60 text-amber-400 font-mono rounded border border-amber-500/40 text-[11px] font-bold">[E]</kbd> hoặc bấm vào đây để bước vào trận đánh!
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Tactical HUD Coordinates Readout (Bottom Left) */}
+      <div className="hidden sm:flex absolute bottom-6 left-6 z-30 pointer-events-auto items-center gap-2.5 px-3.5 py-2 rounded-xl glass-lacquer text-xs select-none shadow-xl">
+        <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+        <div className="flex flex-col">
+          <span className="font-mono text-[9px] text-amber-400/90 font-bold uppercase tracking-wider">
+            TỌA ĐỘ TÁC CHIẾN 1946
+          </span>
+          <span className="font-mono text-[11px] text-stone-200">
+            {userLocation 
+              ? `${userLocation.lat.toFixed(5)}°B • ${userLocation.lng.toFixed(5)}°Đ`
+              : '21.02270°B • 105.80450°Đ'}
+          </span>
+        </div>
+      </div>
 
       {/* Giao diện Hồng tâm FPS */}
       {cameraMode === 'fpv' && (

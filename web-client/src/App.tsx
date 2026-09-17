@@ -8,9 +8,8 @@ function App() {
       <Routes>
         {/* The main map is the default route */}
         <Route path="/" element={<MapScreen />} />
-        
-        {/* The minigames are loaded here based on the ID */}
-        <Route path="/minigame/:id" element={<GameScreen />} />
+        {/* Dedicated game mission route */}
+        <Route path="/game" element={<GameScreen />} />
       </Routes>
     </BrowserRouter>
   );

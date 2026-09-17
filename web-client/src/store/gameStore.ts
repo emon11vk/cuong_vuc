@@ -9,6 +9,7 @@ interface GameState {
   sliderValue: number; // 0 for past, 1 for present
   cameraMode: 'fpv' | 'tpv'; // First-person vs Third-person
   routeGeoJSON: any | null; // Dữ liệu đường đi
+  isGameModalOpen: boolean;
   
   setLocation: (location: HistoricalLocation) => void;
   setUserLocation: (lat: number, lng: number) => void;
@@ -17,6 +18,7 @@ interface GameState {
   setSliderValue: (val: number) => void;
   setCameraMode: (mode: 'fpv' | 'tpv') => void;
   setRouteGeoJSON: (geojson: any) => void;
+  setGameModalOpen: (open: boolean) => void;
   loadLocationData: () => Promise<void>;
   fetchUserLocation: () => void;
 }
@@ -29,6 +31,7 @@ export const useGameStore = create<GameState>((set) => ({
   sliderValue: 1,
   cameraMode: 'tpv',
   routeGeoJSON: null,
+  isGameModalOpen: false,
 
   setLocation: (location) => set({ currentLocation: location }),
   setUserLocation: (lat, lng) => set({ userLocation: { lat, lng } }),
@@ -37,6 +40,7 @@ export const useGameStore = create<GameState>((set) => ({
   setSliderValue: (val) => set({ sliderValue: val }),
   setCameraMode: (mode) => set({ cameraMode: mode }),
   setRouteGeoJSON: (geojson) => set({ routeGeoJSON: geojson }),
+  setGameModalOpen: (open) => set({ isGameModalOpen: open }),
   
   fetchUserLocation: () => {
     if (navigator.geolocation) {

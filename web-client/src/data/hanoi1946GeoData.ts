@@ -209,6 +209,11 @@ export const hanoi1946LabelsGeoJSON: any = {
       type: 'Feature',
       properties: { name: 'BÃI PHÚC XÁ', category: 'terrain' },
       geometry: { type: 'Point', coordinates: [105.8590, 21.0420] }
+    },
+    {
+      type: 'Feature',
+      properties: { name: 'ĐẠI HỌC NGOẠI THƯƠNG (FTU)', category: 'mission' },
+      geometry: { type: 'Point', coordinates: [105.8045, 21.0227] }
     }
   ]
 };

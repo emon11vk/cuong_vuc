@@ -1,0 +1,1320 @@
+/* ==========================================================================
+   Cao Bá Quát — Đêm Chấm Thi (1841)
+   Taste Skill Aesthetic Redesign: Triều Nguyễn Cung Đình & Dạ Trường Thi
+   Materiality: Sơn Mài Thâm Trầm, Khảm Kim, Chu Sa Triện Son, Giấy Dó & Thẻ Bài
+   ========================================================================== */
+
+:root {
+  /* Imperial Palette (Bảng màu Triều Nguyễn) */
+  --lacquer-black: #0c0a08;
+  --lacquer-deep: #14100c;
+  --lacquer-panel: rgba(18, 14, 11, 0.96);
+  --lacquer-border: #3d2c1e;
+  --lacquer-border-light: rgba(205, 163, 79, 0.28);
+
+  /* Gold & Bronze Leaf (Vàng Thếp Cổ & Đồng Thau) */
+  --gold-leaf: #cda34f;
+  --gold-bright: #e5ba63;
+  --gold-dim: #8e6e30;
+  --gold-glow: rgba(205, 163, 79, 0.32);
+
+  /* Cinnabar & Vermilion (Chu Sa & Triện Son Đình Thần) */
+  --cinnabar-red: #a12323;
+  --cinnabar-deep: #781515;
+  --cinnabar-bright: #cb2d2d;
+  --cinnabar-glow: rgba(161, 35, 35, 0.45);
+
+  /* Scholar's Jade & Pine (Ngọc Bích & Thanh Trúc) */
+  --jade-green: #275640;
+  --jade-light: #3e7b5e;
+  --jade-glow: rgba(39, 86, 64, 0.4);
+
+  /* Paper & Text (Giấy Dó, Lụa Cổ & Mực Nho) */
+  --parchment-bg: #f3ebd8;
+  --parchment-border: #8d7355;
+  --ink-black: #1a140f;
+  --text-primary: #f8f1e5;
+  --text-secondary: #c4b6a1;
+  --text-muted: #8e806e;
+
+  /* Typography */
+  --font-serif: 'Playfair Display', 'Noto Serif', Georgia, serif;
+  --font-title: 'Playfair Display', 'Cinzel Decorative', Georgia, serif;
+  --font-sans: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-calligraphy: 'Ma Shan Zheng', 'Noto Serif TC', cursive, serif;
+
+  /* Geometry & Mechanics */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+  --shadow-dramatic: 0 20px 50px rgba(0, 0, 0, 0.95), 0 0 30px rgba(0, 0, 0, 0.8);
+  --transition-fast: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   Base Layout & Reset
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body.theme-rpg {
+  background-color: var(--lacquer-black);
+  background-image: 
+    radial-gradient(circle at 50% 20%, rgba(36, 26, 18, 0.6) 0%, rgba(12, 10, 8, 0.98) 75%),
+    linear-gradient(rgba(205, 163, 79, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(205, 163, 79, 0.02) 1px, transparent 1px);
+  background-size: 100% 100%, 48px 48px, 48px 48px;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100dvh;
+  padding: 12px;
+}
+
+/* Outer Theater Wrapper with Imperial Inlaid Woodwork */
+#game-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  max-width: 1140px;
+  max-height: 740px;
+  display: flex;
+  flex-direction: column;
+  background: var(--lacquer-deep);
+  box-shadow: var(--shadow-dramatic), 0 0 0 1px var(--lacquer-border), 0 0 25px rgba(205, 163, 79, 0.12);
+  border: 3px solid #38271a;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+/* Imperial Corner Inlays (Hoa văn góc triều đình) */
+.imperial-corner {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-color: var(--gold-leaf);
+  pointer-events: none;
+  z-index: 25;
+  opacity: 0.85;
+}
+
+.corner-tl {
+  top: 6px;
+  left: 6px;
+  border-top: 2px solid var(--gold-leaf);
+  border-left: 2px solid var(--gold-leaf);
+}
+.corner-tr {
+  top: 6px;
+  right: 6px;
+  border-top: 2px solid var(--gold-leaf);
+  border-right: 2px solid var(--gold-leaf);
+}
+.corner-bl {
+  bottom: 6px;
+  left: 6px;
+  border-bottom: 2px solid var(--gold-leaf);
+  border-left: 2px solid var(--gold-leaf);
+}
+.corner-br {
+  bottom: 6px;
+  right: 6px;
+  border-bottom: 2px solid var(--gold-leaf);
+  border-right: 2px solid var(--gold-leaf);
+}
+
+/* ==========================================================================
+   Top HUD Bar (Khóa Thi Triều Đình)
+   ========================================================================== */
+#rpg-hud {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 20px;
+  background: linear-gradient(180deg, rgba(24, 18, 14, 0.98) 0%, rgba(16, 12, 9, 0.96) 100%);
+  border-bottom: 1px solid var(--lacquer-border-light);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+  z-index: 20;
+  height: 52px;
+}
+
+.hud-section {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Imperial Reign Seal (Ngự Triện Niên Hiệu) */
+.era-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(161, 35, 35, 0.28) 0%, rgba(120, 21, 21, 0.16) 100%);
+  border: 1px solid rgba(203, 45, 45, 0.5);
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 0 8px rgba(161, 35, 35, 0.2);
+}
+
+.era-seal-mark {
+  font-family: var(--font-calligraphy);
+  font-size: 0.92rem;
+  color: #ff6b6b;
+  line-height: 1;
+}
+
+.era-text {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffd8d8;
+  text-transform: uppercase;
+}
+
+.stage-tag-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.stage-tag {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
+}
+
+/* Scroll Edict Quest Box (Chiếu Chỉ Nhiệm Vụ) */
+.quest-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(90deg, rgba(38, 28, 20, 0.85) 0%, rgba(26, 19, 14, 0.9) 100%);
+  border: 1px solid rgba(205, 163, 79, 0.35);
+  padding: 5px 16px;
+  border-radius: var(--radius-pill);
+  max-width: 500px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: var(--transition-fast);
+}
+
+.quest-icon {
+  display: flex;
+  align-items: center;
+  color: var(--gold-leaf);
+  flex-shrink: 0;
+}
+
+#quest-text {
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  color: #f7eedf;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Ivory & Jade Tallies (Thẻ Bài Công Trạng & Khuynh Hướng) */
+.score-tally {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(28, 22, 17, 0.9);
+  border: 1px solid rgba(205, 163, 79, 0.3);
+  padding: 3px 12px;
+  border-radius: var(--radius-sm);
+}
+
+.tally-label {
+  font-family: var(--font-serif);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tally-value {
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+}
+
+.flag-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  background: linear-gradient(135deg, rgba(39, 86, 64, 0.3) 0%, rgba(25, 60, 44, 0.2) 100%);
+  border: 1px solid var(--jade-light);
+  color: #a3e6c2;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 0 8px rgba(39, 86, 64, 0.3);
+}
+
+.flag-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #52c98a;
+  box-shadow: 0 0 6px #52c98a;
+}
+
+.badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-serif);
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, rgba(205, 163, 79, 0.22) 0%, rgba(142, 110, 48, 0.15) 100%);
+  border: 1px solid var(--gold-leaf);
+  color: #ffe6a3;
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  animation: badgeGlow 2.2s infinite alternate ease-in-out;
+}
+
+.badge-seal-char {
+  font-family: var(--font-calligraphy);
+  color: var(--gold-leaf);
+  font-size: 0.85rem;
+}
+
+@keyframes badgeGlow {
+  from { box-shadow: 0 0 4px var(--gold-glow); }
+  to { box-shadow: 0 0 16px rgba(229, 186, 99, 0.6); }
+}
+
+/* Bronze Bell Audio Button */
+.icon-btn {
+  background: rgba(30, 22, 16, 0.8);
+  border: 1px solid rgba(205, 163, 79, 0.3);
+  color: var(--gold-leaf);
+  border-radius: var(--radius-sm);
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-fast);
+}
+
+.icon-btn:hover {
+  background: rgba(45, 34, 25, 0.95);
+  border-color: var(--gold-bright);
+  color: #fff;
+  transform: scale(1.05);
+  box-shadow: 0 0 10px var(--gold-glow);
+}
+
+.icon-btn:active {
+  transform: scale(0.95);
+}
+
+/* ==========================================================================
+   Historical Watershed Warning Banner
+   ========================================================================== */
+.rpg-banner-warning {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  background: linear-gradient(135deg, rgba(140, 24, 24, 0.97) 0%, rgba(65, 12, 12, 0.97) 100%);
+  border: 2px solid #ff4d4d;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 77, 77, 0.5);
+  border-radius: var(--radius-sm);
+  padding: 10px 22px;
+  text-align: center;
+  max-width: 720px;
+  width: 90%;
+  color: #fff4e6;
+  animation: warningPulse 2.4s infinite alternate ease-in-out;
+}
+
+@keyframes warningPulse {
+  0% { transform: translateX(-50%) scale(0.99); box-shadow: 0 4px 20px rgba(180, 20, 20, 0.6); }
+  100% { transform: translateX(-50%) scale(1.01); box-shadow: 0 8px 35px rgba(255, 60, 60, 0.85); }
+}
+
+.warning-title {
+  font-family: var(--font-title);
+  color: #ffde8a;
+  font-size: 0.88rem;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.warning-seal {
+  color: #ff4d4d;
+  font-size: 1rem;
+}
+
+.warning-desc {
+  font-family: var(--font-serif);
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: #ffe6d4;
+}
+
+.rpg-alt-sticky {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  background: linear-gradient(135deg, #7c1a1a 0%, #4a1010 100%);
+  border: 1.5px solid #ff6666;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+  border-radius: var(--radius-sm);
+  padding: 6px 18px;
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Canvas Viewport & Nocturnal Atmosphere
+   ========================================================================== */
+#canvas-container {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  height: calc(100% - 52px);
+  background: #090706;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+#rpg-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Candlelight Vignette & Midnight Shadows */
+.ambient-vignette-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.85), inset 0 0 160px rgba(8, 6, 4, 0.7);
+  z-index: 5;
+}
+
+.candle-flicker-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 60%, rgba(230, 160, 60, 0.05) 0%, transparent 65%);
+  z-index: 6;
+  animation: candleBreath 3.5s infinite ease-in-out;
+}
+
+@keyframes candleBreath {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  35% { opacity: 0.85; transform: scale(1.02); }
+  70% { opacity: 0.5; transform: scale(0.98); }
+}
+
+/* Interaction Prompt Tag ([E] Nói chuyện) */
+.prompt-bubble {
+  position: absolute;
+  top: 72px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, rgba(26, 20, 15, 0.95) 0%, rgba(16, 12, 9, 0.98) 100%);
+  border: 1.5px solid var(--gold-leaf);
+  border-radius: var(--radius-pill);
+  padding: 5px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 14px var(--gold-glow);
+  z-index: 15;
+  animation: promptBob 1.4s infinite alternate ease-in-out;
+}
+
+@keyframes promptBob {
+  0% { transform: translateX(-50%) translateY(0); }
+  100% { transform: translateX(-50%) translateY(-5px); }
+}
+
+.prompt-key {
+  font-family: var(--font-title);
+  background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-dim) 100%);
+  color: #1a1208;
+  font-weight: 800;
+  font-size: 0.72rem;
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+#prompt-label {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  color: #fff;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Controls Hint Bar at Bottom */
+#controls-hint {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(14, 11, 8, 0.82);
+  border: 1px solid rgba(205, 163, 79, 0.2);
+  padding: 4px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+  z-index: 8;
+  backdrop-filter: blur(4px);
+}
+
+#controls-hint b {
+  color: var(--gold-bright);
+}
+
+.hint-sep {
+  color: var(--gold-dim);
+}
+
+/* ==========================================================================
+   Dialogue & Narrative Choice Overlay (Theatrical Staging)
+   ========================================================================== */
+.dialogue-box {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 94%;
+  max-width: 980px;
+  background: linear-gradient(180deg, rgba(22, 17, 13, 0.98) 0%, rgba(14, 11, 8, 0.99) 100%);
+  border: 2px solid var(--gold-leaf);
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 45px rgba(0, 0, 0, 0.95), 0 0 30px rgba(205, 163, 79, 0.2);
+  z-index: 50;
+  backdrop-filter: blur(12px);
+  animation: dialogueSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes dialogueSlideUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.dialogue-inner {
+  position: relative;
+  display: flex;
+  padding: 20px 24px;
+  gap: 24px;
+}
+
+/* Speaker Column & Lacquered Portrait Frame */
+.speaker-column {
+  width: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border-right: 1px solid rgba(205, 163, 79, 0.25);
+  padding-right: 20px;
+  flex-shrink: 0;
+}
+
+.avatar-frame-wrap {
+  position: relative;
+  width: 84px;
+  height: 84px;
+  margin-bottom: 10px;
+}
+
+.speaker-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px solid var(--gold-leaf);
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.8), 0 0 12px var(--gold-glow);
+}
+
+.avatar-gold-rim {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  border-radius: 50%;
+  border: 1px dashed rgba(205, 163, 79, 0.45);
+  pointer-events: none;
+}
+
+/* Authentic Historical Character Portraits */
+.avatar-quat {
+  background-image: url('assets/avatar_quat.jpg');
+}
+.avatar-chanh-khao {
+  background-image: url('assets/avatar_chanh_khao.jpg');
+}
+.avatar-phan-nha {
+  background-image: url('assets/avatar_phan_nha.jpg');
+}
+.avatar-nguc-quan {
+  background-image: url('assets/avatar_nguc_quan.jpg');
+}
+.avatar-linh-le {
+  background-image: url('assets/avatar_chanh_khao.jpg');
+  filter: sepia(0.35) saturate(1.15);
+}
+.avatar-ghost {
+  background-image: url('assets/avatar_quat.jpg');
+  filter: grayscale(0.8) drop-shadow(0 0 10px rgba(130, 190, 255, 0.85));
+}
+
+.speaker-name {
+  font-family: var(--font-title);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+  letter-spacing: 0.5px;
+  margin-bottom: 3px;
+}
+
+.speaker-role {
+  font-size: 0.72rem;
+  font-family: var(--font-serif);
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.45);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(205, 163, 79, 0.15);
+}
+
+.dialogue-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.dialogue-text {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  line-height: 1.75;
+  color: #faf2e6;
+  margin-bottom: 16px;
+  min-height: 52px;
+}
+
+/* Sino-Vietnamese Clickable Terms (Chu Thích Thuật Ngữ) */
+.glossary-term {
+  color: var(--gold-bright);
+  text-decoration: underline dotted var(--gold-leaf);
+  text-underline-offset: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 0 3px;
+  border-radius: 2px;
+  transition: var(--transition-fast);
+}
+
+.glossary-term:hover {
+  background: rgba(205, 163, 79, 0.22);
+  color: #fff;
+  box-shadow: 0 0 8px var(--gold-glow);
+}
+
+/* Branching Choices: Carved Wooden Tablets (Thẻ Bài Chọn Lối Đi) */
+.dialogue-choices-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.choice-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, rgba(32, 24, 18, 0.95) 0%, rgba(24, 18, 14, 0.95) 100%);
+  border: 1px solid rgba(205, 163, 79, 0.35);
+  border-left: 3px solid var(--gold-leaf);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.choice-btn:hover {
+  background: linear-gradient(90deg, rgba(48, 36, 26, 0.98) 0%, rgba(36, 26, 19, 0.98) 100%);
+  border-color: var(--gold-bright);
+  border-left-color: #ffd27a;
+  transform: translateX(6px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 12px var(--gold-glow);
+}
+
+.choice-btn:active {
+  transform: translateX(3px) scale(0.99);
+}
+
+.choice-id {
+  font-family: var(--font-title);
+  color: var(--gold-bright);
+  font-weight: 700;
+  font-size: 0.88rem;
+  margin-right: 12px;
+  min-width: 18px;
+}
+
+.choice-content {
+  flex-grow: 1;
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  text-align: left;
+  line-height: 1.4;
+  color: #f6ecdc;
+}
+
+.choice-meta {
+  font-size: 0.75rem;
+  font-family: var(--font-serif);
+  color: var(--text-secondary);
+  background: rgba(14, 10, 8, 0.7);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(205, 163, 79, 0.15);
+}
+
+/* Feedback Box & Court Record Quote (Đại Nam Thực Lục Trích Lục) */
+.feedback-panel {
+  background: linear-gradient(135deg, rgba(32, 22, 16, 0.95) 0%, rgba(20, 14, 10, 0.95) 100%);
+  border-left: 3px solid var(--gold-leaf);
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.court-record-exact-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: #ffe0a3;
+  line-height: 1.7;
+  padding: 12px 16px;
+  background: linear-gradient(135deg, rgba(58, 18, 14, 0.75) 0%, rgba(32, 10, 8, 0.8) 100%);
+  border-left: 4px solid var(--cinnabar-bright);
+  border-radius: var(--radius-sm);
+  margin-top: 8px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.verbatim-badge {
+  display: inline-block;
+  font-family: var(--font-title);
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  background: var(--cinnabar-red);
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.return-btn {
+  background: linear-gradient(135deg, var(--cinnabar-red) 0%, var(--cinnabar-deep) 100%);
+  color: #ffffff;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 0.98rem;
+  padding: 12px 24px;
+  border: 1px solid #ff7a7a;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  box-shadow: 0 4px 18px var(--cinnabar-glow);
+  animation: returnPulse 1.6s infinite alternate ease-in-out;
+  transition: var(--transition-fast);
+}
+
+@keyframes returnPulse {
+  0% { transform: scale(0.99); box-shadow: 0 0 10px rgba(161, 35, 35, 0.4); }
+  100% { transform: scale(1.02); box-shadow: 0 0 24px rgba(203, 45, 45, 0.85); }
+}
+
+.return-btn:active {
+  transform: scale(0.97);
+}
+
+.dialogue-close-btn {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: var(--transition-fast);
+}
+
+.dialogue-close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* ==========================================================================
+   Virtual Touch Controls (Mobile)
+   ========================================================================== */
+#touch-controls {
+  display: none;
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  right: 0;
+  width: 100%;
+  padding: 0 20px;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: none;
+  z-index: 40;
+  box-sizing: border-box;
+}
+
+.dpad-cross {
+  position: relative;
+  width: 136px;
+  height: 136px;
+  pointer-events: auto;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.dpad-btn {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  background: rgba(22, 14, 10, 0.92);
+  border: 1.5px solid rgba(229, 186, 99, 0.55);
+  border-radius: 10px;
+  color: var(--gold-bright);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7);
+  transition: transform 0.1s ease, background 0.1s ease;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.dpad-btn:active {
+  background: rgba(161, 35, 35, 0.85);
+  border-color: #f5d47a;
+  transform: scale(0.92);
+}
+
+.btn-up { top: 0; left: 46px; }
+.btn-down { bottom: 0; left: 46px; }
+.btn-left { top: 46px; left: 0; }
+.btn-right { top: 46px; right: 0; }
+
+.action-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #a12323 0%, #681111 100%);
+  border: 2px solid #f5d47a;
+  color: #f5d47a;
+  font-family: var(--font-title);
+  font-weight: 800;
+  font-size: 1.4rem;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8), 0 0 16px rgba(229, 186, 99, 0.35);
+  transition: transform 0.1s ease, background 0.1s ease;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn:active {
+  transform: scale(0.92);
+  background: linear-gradient(135deg, #cb2d2d 0%, #8b1818 100%);
+}
+
+@media (max-width: 1024px), (pointer: coarse), (hover: none) {
+  #touch-controls {
+    display: flex !important;
+  }
+  #controls-hint {
+    display: none !important;
+  }
+}
+
+/* ==========================================================================
+   Modals: Mini-Game (Quyển Thi Giấy Dó), Từ Điển, Tổng Kết Đình Thần
+   ========================================================================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(8, 6, 4, 0.86);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+}
+
+.scroll-inspect-card, .modal-card, .summary-card {
+  background: linear-gradient(180deg, #1d1611 0%, #120e0a 100%);
+  border: 2px solid var(--gold-leaf);
+  border-radius: var(--radius-md);
+  width: 92%;
+  max-width: 560px;
+  padding: 24px 28px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.95), 0 0 35px var(--gold-glow);
+  animation: modalEnter 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+@keyframes modalEnter {
+  from { transform: scale(0.92); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Scroll Roller Cylinders (Trục Cuộn Gỗ Quyển Thi) */
+.scroll-roller {
+  height: 8px;
+  background: linear-gradient(90deg, #4a3424 0%, #856142 50%, #4a3424 100%);
+  border-radius: 4px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.scroll-roller-top {
+  margin-bottom: 16px;
+}
+
+.scroll-roller-bottom {
+  margin-top: 18px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(205, 163, 79, 0.3);
+  padding-bottom: 12px;
+  margin-bottom: 14px;
+}
+
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-seal-badge {
+  font-family: var(--font-calligraphy);
+  background: var(--cinnabar-red);
+  color: #fff;
+  font-size: 0.9rem;
+  padding: 2px 7px;
+  border-radius: 2px;
+}
+
+.modal-header h3 {
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  color: var(--gold-bright);
+}
+
+.modal-desc {
+  font-family: var(--font-serif);
+  font-size: 0.94rem;
+  color: #dfd3c1;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.modal-note-sub {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+  font-style: italic;
+}
+
+/* Ancient Parchment Scroll Paper Grid (Giấy Dó Trường Thi) */
+.scroll-chars-grid {
+  background: #f4ecda;
+  background-image: radial-gradient(#e5d8be 10%, transparent 11%);
+  background-size: 12px 12px;
+  color: var(--ink-black);
+  padding: 20px;
+  border-radius: var(--radius-sm);
+  border: 2px solid #8d7152;
+  box-shadow: inset 0 0 20px rgba(110, 80, 50, 0.25);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.han-tile {
+  font-family: var(--font-calligraphy), serif;
+  font-size: 2.2rem;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  transition: transform 0.15s, background-color 0.15s, color 0.15s;
+  color: #1a1208;
+}
+
+.han-tile:hover {
+  transform: scale(1.18);
+  background: rgba(161, 35, 35, 0.18);
+  color: var(--cinnabar-bright);
+}
+
+.han-tile:active {
+  transform: scale(1.08);
+}
+
+.hunt-result {
+  margin-top: 14px;
+  font-family: var(--font-serif);
+  font-size: 0.95rem;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.hunt-result.success {
+  background: rgba(39, 86, 64, 0.35);
+  border: 1.5px solid var(--jade-light);
+  color: #8dedc2;
+  box-shadow: 0 0 12px rgba(39, 86, 64, 0.4);
+}
+
+/* Glossary specifics */
+.glossary-card {
+  max-width: 480px;
+}
+
+.lexicon-seal {
+  font-family: var(--font-calligraphy);
+  background: rgba(205, 163, 79, 0.2);
+  color: var(--gold-bright);
+  border: 1px solid var(--gold-leaf);
+  font-size: 1rem;
+  padding: 1px 7px;
+  border-radius: 2px;
+}
+
+.term-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.term-info h3 {
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--gold-bright);
+}
+
+.han-badge {
+  font-family: var(--font-calligraphy), serif;
+  font-size: 1.4rem;
+  background: rgba(205, 163, 79, 0.15);
+  color: #ffde94;
+  padding: 2px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(205, 163, 79, 0.3);
+}
+
+.term-genz-def {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: #f5ece0;
+  margin-bottom: 14px;
+}
+
+.advisor-tag {
+  font-size: 0.75rem;
+  font-family: var(--font-serif);
+  color: #ffab40;
+  background: rgba(255, 171, 64, 0.1);
+  border: 1px dashed #ffab40;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+}
+
+/* ==========================================================================
+   Summary Epilogue: Imperial Verdict Decree (Bản Án Đình Thần)
+   ========================================================================== */
+.summary-card {
+  max-width: 720px;
+  text-align: center;
+}
+
+.summary-seal-mark {
+  font-family: var(--font-calligraphy);
+  font-size: 1.4rem;
+  color: #ff4d4d;
+  letter-spacing: 4px;
+  border: 2px solid #ff4d4d;
+  display: inline-block;
+  padding: 4px 18px;
+  border-radius: var(--radius-sm);
+  background: rgba(161, 35, 35, 0.12);
+  box-shadow: 0 0 15px rgba(255, 77, 77, 0.25);
+  margin-bottom: 6px;
+}
+
+.summary-sub {
+  font-family: var(--font-serif);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+  font-style: italic;
+}
+
+.summary-heading {
+  font-family: var(--font-title);
+  font-size: 1.7rem;
+  color: var(--gold-bright);
+  margin-bottom: 22px;
+  letter-spacing: 0.5px;
+}
+
+.summary-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.metric-box {
+  background: linear-gradient(180deg, rgba(32, 24, 18, 0.8) 0%, rgba(20, 15, 11, 0.9) 100%);
+  border: 1px solid rgba(205, 163, 79, 0.35);
+  border-radius: var(--radius-sm);
+  padding: 14px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+.metric-val {
+  font-family: var(--font-title);
+  font-size: 1.9rem;
+  font-weight: 700;
+  color: var(--gold-bright);
+}
+
+.metric-lbl {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.summary-text-block {
+  text-align: left;
+  background: linear-gradient(135deg, rgba(28, 20, 15, 0.92) 0%, rgba(18, 13, 9, 0.95) 100%);
+  border-left: 4px solid var(--gold-leaf);
+  padding: 18px 22px;
+  border-radius: var(--radius-sm);
+  margin-bottom: 24px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6);
+}
+
+.decree-section {
+  margin-bottom: 12px;
+}
+.decree-section:last-child {
+  margin-bottom: 0;
+}
+
+.decree-section h4 {
+  font-family: var(--font-title);
+  color: var(--gold-bright);
+  font-size: 0.98rem;
+  margin-bottom: 4px;
+  letter-spacing: 0.3px;
+}
+
+.decree-section p {
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  color: #f0e6d6;
+  line-height: 1.7;
+}
+
+.primary-btn {
+  background: linear-gradient(135deg, var(--gold-bright) 0%, var(--gold-dim) 100%);
+  color: #1a1208;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 12px 28px;
+  border: 1px solid #fff;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7), 0 0 15px var(--gold-glow);
+  transition: var(--transition-fast);
+}
+
+.primary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.8), 0 0 22px rgba(229, 186, 99, 0.7);
+}
+
+.primary-btn:active {
+  transform: translateY(0);
+}
+
+.btn-refresh-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.3rem;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: var(--transition-fast);
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+/* ==========================================================================
+   Mobile Responsive HUD Overrides
+   ========================================================================== */
+@media (max-width: 640px) {
+  #rpg-hud {
+    height: 44px;
+    padding: 4px 10px;
+  }
+  .hud-section {
+    gap: 6px;
+  }
+  .era-tag {
+    padding: 2px 6px;
+  }
+  .era-seal-mark {
+    display: none;
+  }
+  .era-text {
+    font-size: 0.68rem;
+  }
+  .stage-tag {
+    font-size: 0.72rem;
+    white-space: nowrap;
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .quest-box {
+    max-width: 140px;
+    padding: 3px 8px;
+    gap: 4px;
+  }
+  #quest-text {
+    font-size: 0.7rem;
+  }
+  .score-tally {
+    padding: 2px 6px;
+  }
+  .tally-label {
+    display: none;
+  }
+  .tally-value {
+    font-size: 0.85rem;
+  }
+}
+
+.hidden {
+  display: none !important;
+}
+

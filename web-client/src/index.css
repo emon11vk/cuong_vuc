@@ -2,92 +2,206 @@
 @source "../index.html";
 @source "./";
 
-/* ─── Design tokens ──────────────────────────────────────────── */
+/* ─── Design Tokens: Sơn Mài & Đồng Thau (Wartime Cartography) ── */
 :root {
+  --font-cinzel: 'Playfair Display', 'Cinzel', Georgia, serif;
   --font-display: 'Playfair Display', Georgia, serif;
-  --font-body: 'Inter', system-ui, sans-serif;
+  --font-body: 'Be Vietnam Pro', 'Inter', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 
-  /* Wartime palette */
-  --color-parchment: #f4edd8;
-  --color-parchment-dark: #e8d9b8;
-  --color-sepia-900: #1c1007;
-  --color-sepia-800: #2e1c0a;
-  --color-sepia-700: #3d2512;
-  --color-amber-war: #d4a017;
-  --color-amber-bright: #f5c842;
-  --color-red-danger: #c0392b;
-  --color-green-safe: #2d6a4f;
+  /* Lacquer & Sepia Wood */
+  --color-lacquer-950: #0c0806;
+  --color-lacquer-900: #160e0a;
+  --color-lacquer-800: #22150f;
+  --color-lacquer-700: #332017;
+  --color-lacquer-600: #4a3023;
+
+  /* Antique Bronze & Imperial Gold */
+  --color-gold-base: #c59b27;
+  --color-gold-amber: #e5ba63;
+  --color-gold-bright: #f5d47a;
+  --color-gold-dim: rgba(197, 155, 39, 0.35);
+
+  /* War Accent Colors */
+  --color-crimson-war: #991b1b;
+  --color-crimson-bright: #cb2d2d;
+  --color-parchment-light: #f6eedb;
+  --color-parchment-muted: #d8c7a5;
+  --color-emerald-scout: #10b981;
 }
 
-/* ─── Base ───────────────────────────────────────────────────── */
+/* ─── Base Reset ─────────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
 }
 
-body {
+html, body, #root {
+  width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #111827;
+  background-color: var(--color-lacquer-950);
   font-family: var(--font-body);
+  color: var(--color-parchment-light);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* ─── Browser surfaces ──────────────────────────────────────── */
-/* Text selection — amber/sepia to match the wartime world */
+/* ─── Typography Utility Classes ─────────────────────────────── */
+.font-cinzel {
+  font-family: var(--font-cinzel);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* ─── Surface & Texture Materials ────────────────────────────── */
+/* Antique Lacquer Glassmorphism */
+.glass-lacquer {
+  background: rgba(18, 12, 8, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(229, 186, 99, 0.3);
+  box-shadow: 
+    0 12px 36px rgba(0, 0, 0, 0.75),
+    inset 0 1px 0 rgba(245, 212, 122, 0.2);
+}
+
+.glass-lacquer-hover {
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.glass-lacquer-hover:hover {
+  background: rgba(28, 18, 12, 0.94);
+  border-color: rgba(229, 186, 99, 0.6);
+  box-shadow: 
+    0 14px 40px rgba(0, 0, 0, 0.85),
+    0 0 15px rgba(229, 186, 99, 0.25),
+    inset 0 1px 0 rgba(245, 212, 122, 0.35);
+}
+
+/* Cinematic Historical Vignette across the screen edge */
+.vintage-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  box-shadow: inset 0 0 100px rgba(10, 6, 4, 0.85), inset 0 0 40px rgba(0, 0, 0, 0.95);
+  background: radial-gradient(circle at center, transparent 60%, rgba(12, 8, 6, 0.6) 100%);
+}
+
+/* Subtle gold edge highlight */
+.gold-border {
+  border: 1px solid rgba(229, 186, 99, 0.35);
+}
+
+.gold-glow {
+  box-shadow: 0 0 18px rgba(229, 186, 99, 0.3);
+}
+
+.crimson-badge {
+  background: linear-gradient(135deg, #a12323 0%, #6d1212 100%);
+  border: 1px solid rgba(245, 212, 122, 0.5);
+  box-shadow: 0 2px 8px rgba(161, 35, 35, 0.5);
+}
+
+/* ─── Browser Selection & Scrollbars ─────────────────────────── */
 ::selection {
-  background-color: #d4a01760;
-  color: #1c1007;
+  background-color: rgba(229, 186, 99, 0.35);
+  color: #f6eedb;
 }
 
-/* Custom scrollbar for result dropdowns */
 .hanoi-scrollbar::-webkit-scrollbar {
   width: 5px;
 }
 .hanoi-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(20, 14, 10, 0.5);
 }
 .hanoi-scrollbar::-webkit-scrollbar-thumb {
-  background: #d4a017;
-  border-radius: 3px;
+  background: var(--color-gold-base);
+  border-radius: 4px;
+}
+.hanoi-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--color-gold-bright);
 }
 
 /* Focus ring — amber glow consistent across all interactive elements */
 :focus-visible {
-  outline: 2px solid var(--color-amber-war);
+  outline: 2px solid var(--color-gold-amber);
   outline-offset: 2px;
 }
 
-/* ─── Range input (era toggle fallback) ─────────────────────── */
-input[type="range"].era-slider {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 100%;
-  height: 6px;
-  border-radius: 3px;
-  background: #3d2512;
-  cursor: pointer;
+/* ─── Tactile Button Physics ─────────────────────────────────── */
+.btn-tactile {
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), filter 0.15s ease, background-color 0.15s ease;
 }
-input[type="range"].era-slider::-webkit-slider-thumb {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--color-amber-war);
-  border: 2px solid var(--color-parchment);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.6);
-  cursor: pointer;
+.btn-tactile:active {
+  transform: scale(0.96) translateY(1px);
 }
 
-/* ─── MapLibre control overrides ────────────────────────────── */
-.maplibregl-ctrl-group button.maplibregl-ctrl-camera {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+/* ─── Audio Waveform Visualizer Animation ─────────────────────── */
+@keyframes sound-wave-1 {
+  0%, 100% { height: 4px; }
+  50% { height: 14px; }
+}
+@keyframes sound-wave-2 {
+  0%, 100% { height: 12px; }
+  50% { height: 6px; }
+}
+@keyframes sound-wave-3 {
+  0%, 100% { height: 6px; }
+  50% { height: 16px; }
 }
 
-/* Push MapLibre native controls down a bit so they don't collide with Enter AR */
+.wave-bar-1 { animation: sound-wave-1 0.75s ease-in-out infinite; }
+.wave-bar-2 { animation: sound-wave-2 0.6s ease-in-out infinite 0.15s; }
+.wave-bar-3 { animation: sound-wave-3 0.85s ease-in-out infinite 0.3s; }
+
+/* ─── MapLibre Control Overrides (Wartime Brass Style) ───────── */
+.maplibregl-ctrl-group {
+  background-color: rgba(22, 14, 10, 0.9) !important;
+  border: 1px solid rgba(229, 186, 99, 0.35) !important;
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.maplibregl-ctrl-group button {
+  background-color: transparent !important;
+  border-bottom: 1px solid rgba(229, 186, 99, 0.2) !important;
+  width: 32px !important;
+  height: 32px !important;
+}
+.maplibregl-ctrl-group button:last-child {
+  border-bottom: none !important;
+}
+
+.maplibregl-ctrl-group button:hover {
+  background-color: rgba(229, 186, 99, 0.15) !important;
+}
+
+.maplibregl-ctrl-icon {
+  filter: invert(80%) sepia(50%) saturate(400%) hue-rotate(5deg) brightness(95%) contrast(90%);
+}
+
 .maplibregl-ctrl-top-right {
-  top: 3rem !important;
+  top: 4.5rem !important;
+  right: 1rem !important;
+}
+
+@media (max-width: 640px) {
+  .maplibregl-ctrl-top-right {
+    top: 5rem !important;
+    right: 0.5rem !important;
+  }
 }

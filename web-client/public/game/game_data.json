@@ -1,0 +1,388 @@
+{
+  "project": {
+    "title": "Cao Bá Quát — Đêm Chấm Thi",
+    "year_setting": 1841,
+    "location": "Trường thi Thừa Thiên, Kinh thành Huế",
+    "genre": "Historical Narrative Choice Game",
+    "historical_character": "Cao Bá Quát (Hiệu: Chu Thần, Chức vụ: Hành tẩu bộ Lễ, Sơ khảo trường thi)",
+    "historical_context": "Năm Tân Sửu (1841), thời vua Thiệu Trị. Cao Bá Quát cùng Phan Nhạ trong kỳ thi Hương tại trường thi Thừa Thiên phát hiện nhiều quyển thi của sĩ tử có tài nhưng vướng lỗi phạm húy, khiếm tị, đã dùng muội đèn chữa bài thi để cứu thí sinh."
+  },
+  "glossary": {
+    "phạm húy": {
+      "word": "Phạm húy",
+      "han_tu": "犯諱",
+      "definition_genz": "Viết trúng tên thật của vua, chúa, hoàng tộc thời xưa. Lỗi này là án tử cho bài thi, bị loại ngay lập tức dù văn chương đỉnh cỡ nào.",
+      "advisor_note": "⚠ Cần cố vấn duyệt cách diễn giải cho người đọc phổ thông."
+    },
+    "khiếm tị": {
+      "word": "Khiếm tị",
+      "han_tu": "欠避",
+      "definition_genz": "Quên né chữ kiêng hoặc thiếu nét né âm húy theo quy tắc trường thi (thiếu tôn kính ngầm), nhẹ hơn phạm húy trực tiếp nhưng vẫn rớt đài.",
+      "advisor_note": "⚠ Cần cố vấn duyệt cách diễn giải cho người đọc phổ thông."
+    },
+    "trường quy": {
+      "word": "Trường quy",
+      "han_tu": "場規",
+      "definition_genz": "Bộ luật nội quy siêu nghiêm ngặt trong phòng thi khoa cử phong kiến, sai một ly là đi cả đời học vấn.",
+      "advisor_note": "⚠ Cần cố vấn duyệt cách diễn giải cho người đọc phổ thông."
+    },
+    "sơ khảo": {
+      "word": "Sơ khảo",
+      "han_tu": "初考",
+      "definition_genz": "Quan chấm thi vòng 1, có nhiệm vụ đọc và chấm ban đầu trước khi chuyển lên quan Phúc khảo và Chánh/Phó chủ khảo."
+    },
+    "hành tẩu": {
+      "word": "Hành tẩu",
+      "han_tu": "行走",
+      "definition_genz": "Chức quan tập sự, chuyên phụ trách giấy tờ sự vụ tại các bộ (ở đây là bộ Lễ triều Nguyễn)."
+    },
+    "muội đèn": {
+      "word": "Muội đèn",
+      "han_tu": "燈煤",
+      "definition_genz": "Bồ hóng than cạo từ đĩa dầu thắp nến/đèn dầu, thời xưa trộn với nước để tạo màu đen tiệp màu mực son/mực tàu nhằm chữa nét chữ.",
+      "advisor_note": "⚠ Cần cố vấn xác nhận cách mô tả công dụng."
+    },
+    "trảm quyết": {
+      "word": "Trảm quyết",
+      "han_tu": "斬決",
+      "definition_genz": "Bản án tử hình xử chém đầu ngay lập tức, không chờ đến mùa thu xét giảm án."
+    },
+    "tờ cung": {
+      "word": "Tờ cung",
+      "han_tu": "供狀",
+      "definition_genz": "Văn bản ghi lời nhận tội hoặc khai báo trước cơ quan tư pháp/hội đồng thẩm án phong kiến."
+    }
+  },
+  "flags_definition": {
+    "khuynh_huong": {
+      "type": "string",
+      "values": ["TRONG_PHEP", "TRONG_TAI", "TRUNG_DUNG"],
+      "default": null,
+      "description": "Định tính cách nhân vật; chỉ đổi cách xưng hô của NPC và 1-2 dòng thoại flavor tại M3, M5. Tuyệt đối không rẽ nhánh nội dung riêng."
+    },
+    "da_gac_rieng": {
+      "type": "boolean",
+      "default": false,
+      "description": "Set nếu người chơi chọn M2-C. Ảnh hưởng câu mở đầu tại M3."
+    },
+    "huy_hieu_an": {
+      "type": "boolean",
+      "default": false,
+      "description": "Vật phẩm ẩn nice-to-have ở M3: Tìm thấy chữ phạm húy trong quyển thi."
+    }
+  },
+  "stages": [
+    {
+      "id": "M0",
+      "type": "intro",
+      "title": "Mở đầu",
+      "time_limit": 0,
+      "period": "Trước ngày vào trường thi, năm 1841",
+      "location": "Kinh thành Huế",
+      "mascot_dialogue": "Ngươi là Cao Bá Quát, hiệu Chu Thần — người ta gọi ngươi là Thánh của văn chương Bắc Hà.",
+      "narrative": "Huế, năm 1841. Vua Thiệu Trị vừa lên ngôi. Ngươi giữ chức Hành tẩu, đang tập sự ở bộ Lễ, vừa được cử làm Sơ khảo trường thi Thừa Thiên. Hàng nghìn quyển thi đang chờ chấm — trong đó có những quyển sẽ định lại cả phần đời còn lại của ngươi.",
+      "assets": {
+        "bg": "hu_trang_thi_toan_canh",
+        "audio": "ambient_hue_night_soft"
+      },
+      "dev_notes": "Có nút Bỏ qua cho người chơi lại lần hai. Không tính điểm.",
+      "next_stage": "M1"
+    },
+    {
+      "id": "M1",
+      "type": "chon_khuynh_huong",
+      "title": "Đêm trước ngày vào trường",
+      "time_limit": 40,
+      "period": "Đêm trước giờ đóng cửa trường thi",
+      "location": "Thư phòng riêng, quán trọ quan lại",
+      "narrative": "Đêm. Trên bàn là tập [[trường quy]]. [[Phạm húy]], [[khiếm tị]], viết sai tên vua: trượt, bất kể văn hay đến đâu. Ngươi lật tới trang cuối rồi đặt bút xuống, chưa ngủ.",
+      "mission": "Ngươi tự nhủ điều gì?",
+      "choices": [
+        {
+          "id": "M1-A",
+          "text": "Phép là phép. Ta chấm theo lệ.",
+          "score": 30,
+          "immediate_feedback": "Ngươi gấp sách, thổi nến.",
+          "set_flags": {
+            "khuynh_huong": "TRONG_PHEP"
+          },
+          "next_stage": "M2"
+        },
+        {
+          "id": "M1-B",
+          "text": "Văn chương là gốc. Lệ chỉ là cành.",
+          "score": 30,
+          "immediate_feedback": "Ngươi ngồi thêm một lúc nữa.",
+          "set_flags": {
+            "khuynh_huong": "TRONG_TAI"
+          },
+          "next_stage": "M2"
+        },
+        {
+          "id": "M1-C",
+          "text": "Chưa vào trường, chưa biết được.",
+          "score": 30,
+          "immediate_feedback": "Ngươi thổi nến, không kết luận gì.",
+          "set_flags": {
+            "khuynh_huong": "TRUNG_DUNG"
+          },
+          "next_stage": "M2"
+        }
+      ],
+      "design_notes": "Ba lựa chọn cố tình ngang điểm (30đ) — màn định khuynh hướng, không có đáp án đúng.",
+      "historical_notes": "⚠ Cần cố vấn duyệt cách diễn giải trường quy, phạm húy, khiếm tị cho người đọc phổ thông.",
+      "assets": {
+        "bg": "desk_candle_truong_quy",
+        "audio": "ambient_flicker_wind"
+      }
+    },
+    {
+      "id": "M2",
+      "type": "thuong",
+      "title": "Quyển thi thứ mười bảy",
+      "time_limit": 45,
+      "period": "Ngày chấm thứ hai",
+      "location": "Nội trường thi Thừa Thiên",
+      "narrative": "Ngày chấm thứ hai. Quyển thứ mười bảy: văn khí mạnh, lập luận sắc, đáng hạng ưu. Nhưng đến dòng thứ tư, ngươi dừng bút — một chữ [[phạm húy]]. Theo [[trường quy]], quyển này phải trượt. Người viết hẳn không hề hay biết mình vừa mất cả kỳ thi vì một nét chữ.",
+      "mission": "Ngươi xử lý quyển thi này thế nào?",
+      "choices": [
+        {
+          "id": "M2-A",
+          "text": "Phê trượt, đúng theo trường quy.",
+          "score": 50,
+          "immediate_feedback": "Ngươi hạ bút. Tay hơi chậm lại.",
+          "set_flags": {},
+          "next_stage": "M3"
+        },
+        {
+          "id": "M2-B",
+          "text": "Trình quan Chánh chủ khảo xin ý.",
+          "score": 40,
+          "immediate_feedback": "Câu trả lời nhận được: lệ đã rõ.",
+          "set_flags": {},
+          "next_stage": "M3"
+        },
+        {
+          "id": "M2-C",
+          "text": "Gác riêng quyển ấy. Chấm tiếp đã.",
+          "score": 35,
+          "immediate_feedback": "Quyển thi nằm lại một góc bàn.",
+          "set_flags": {
+            "da_gac_rieng": true
+          },
+          "next_stage": "M3"
+        }
+      ],
+      "historical_notes": "⚠ Chi tiết 'quyển thứ mười bảy' là hư cấu dựng cảnh, không phải sử liệu — cần ghi rõ trong chú thích để tránh hiểu nhầm.",
+      "assets": {
+        "bg": "scroll_chinese_characters_zoom",
+        "audio": "pen_scratching_paper"
+      }
+    },
+    {
+      "id": "M3",
+      "type": "thuong",
+      "title": "Đĩa muội đèn",
+      "time_limit": 50,
+      "period": "Đêm trường thi, canh hai",
+      "location": "Phòng chấm Sơ khảo",
+      "flavor_openers": {
+        "da_gac_rieng_true": "Phan Nhạ bước tới nhìn góc bàn ngươi: 'Quyển bài khi chiều ông gác riêng đó, tôi cũng vừa xem qua...'",
+        "da_gac_rieng_false": "Phan Nhạ tới bên bàn ngươi, vẻ mặt trầm tư kéo ghế ngồi xuống."
+      },
+      "mascot_voice": {
+        "TRONG_PHEP": "Ngươi đã tự nhủ sẽ chấm theo lệ. Đêm nay lệ ấy đang nhìn ngươi.",
+        "TRONG_TAI": "Ngươi từng nhủ văn chương là gốc. Đêm nay những tài năng ấy đang đặt trong tay ngươi.",
+        "TRUNG_DUNG": "Ngươi từng nhủ chưa vào trường chưa biết. Giờ ngươi đã ở giữa lòng trường thi."
+      },
+      "narrative": "Phan Nhạ hạ giọng: 'Tôi đếm được hai mươi tư quyển như thế. Toàn văn hay. Chỉ vướng vài chữ.' Ông đặt xuống một đĩa [[muội đèn]], thứ dùng để chữa nét chữ. 'Chữa một nét, cứu một đời. Ông tính sao?'",
+      "mission": "Ngươi đáp lại thế nào?",
+      "hidden_item": {
+        "id": "khiem_ti_char_hunt",
+        "name": "Soi Chữ Phạm Quy",
+        "badge_name": "Kê Thê Tầm Văn",
+        "description": "Tìm chữ phạm quy bị ẩn trong bài thi mẫu. Tìm được: +1 Huy hiệu (Không bắt buộc, không chặn tiến trình sang M4)."
+      },
+      "choices": [
+        {
+          "id": "M3-A",
+          "text": "Không. Việc này là tội.",
+          "score": 50,
+          "immediate_feedback": "Ông ấy không nói thêm. Đĩa muội đèn vẫn để đó.",
+          "set_flags": {},
+          "next_stage": "M4"
+        },
+        {
+          "id": "M3-B",
+          "text": "Để tôi xem lại những quyển ấy.",
+          "score": 45,
+          "immediate_feedback": "Ngươi cầm quyển đầu tiên lên.",
+          "set_flags": {},
+          "next_stage": "M4"
+        },
+        {
+          "id": "M3-C",
+          "text": "Hai mươi tư người... ông nói tiếp đi.",
+          "score": 35,
+          "immediate_feedback": "Phan Nhạ kể tên vài người. Ngươi nghe hết.",
+          "set_flags": {},
+          "next_stage": "M4"
+        }
+      ],
+      "historical_notes": "⚠ Chi tiết muội đèn — khá chắc chắn trong sử liệu, vẫn cần cố vấn xác nhận cách mô tả công dụng.",
+      "assets": {
+        "bg": "lamp_soot_dish_candle",
+        "interactive_scroll": "scroll_with_hidden_character",
+        "audio": "whispering_wind_night"
+      }
+    },
+    {
+      "id": "M4",
+      "type": "sinh_tu",
+      "title": "SINH TỬ — Canh ba",
+      "time_limit": 60,
+      "period": "Canh ba đêm ấy",
+      "location": "Bàn chấm thi trường Thừa Thiên",
+      "warning_banner": {
+        "text": "Quyết định sau đây đã được sử sách chép lại. Chọn khác đi, ngươi sẽ thấy một dòng lịch sử chưa từng xảy ra.",
+        "style": "historical_warning"
+      },
+      "narrative": "Canh ba. Trường thi lặng như không người. Trước mặt ngươi: hai mươi tư quyển thi, một đĩa [[muội đèn]], một ngọn nến gần tàn. Ngoài kia, những người viết chúng đang chờ tin. Ngươi đặt tay lên quyển đầu tiên.",
+      "mission": "Ngươi có chữa những chữ phạm quy ấy không?",
+      "choices": [
+        {
+          "id": "M4-A",
+          "text": "Chữa. Cứu người tài trước đã.",
+          "score": 50,
+          "historical_match": true,
+          "immediate_feedback": "Quyết định khớp với lịch sử. Ngươi cùng Phan Nhạ nhúng ngọn bút vào muội đèn...",
+          "next_stage": "M5"
+        },
+        {
+          "id": "M4-B",
+          "text": "Không chữa. Giữ mình, giữ phép.",
+          "score": 50,
+          "historical_match": false,
+          "immediate_feedback": "Ngươi rụt tay lại. Lịch sử bắt đầu rẽ sang một nhánh giả tưởng...",
+          "next_stage": "END_ALT"
+        }
+      ],
+      "design_notes": "Chỉ 2 lựa chọn nhị nguyên. Hai lựa chọn cùng 50 điểm — không phạt người chơi vì giữ đúng pháp luật. Luật trừ 30% của màn sinh_tu KHÔNG áp dụng ở đây.",
+      "assets": {
+        "bg": "dying_candle_scrolls_table",
+        "audio": "tense_clock_ticking"
+      }
+    },
+    {
+      "id": "END_ALT",
+      "type": "gia_tuong",
+      "title": "Dòng lịch sử chưa từng xảy ra",
+      "time_limit": 0,
+      "sticky_label": {
+        "text": "⚠ GIẢ TƯỞNG — Những gì sau đây không xảy ra trong lịch sử",
+        "style": "red_banner_sticky"
+      },
+      "beats": [
+        {
+          "beat_index": 1,
+          "title": "Đêm ấy trôi qua êm",
+          "lines": [
+            "Trường thi kết thúc êm.",
+            "Hai mươi tư quyển văn hay bị phê trượt vì vài nét chữ. Không ai hay biết, không có án nào mang tên ngươi."
+          ],
+          "tone": "cold_neutral",
+          "bg": "alt_peaceful_exam_end"
+        },
+        {
+          "beat_index": 2,
+          "title": "Đêm sau, và đêm sau nữa",
+          "lines": [
+            "Ngươi không ngủ được.",
+            "Càng chắc mình đã đọc đúng thứ văn hay hiếm có, càng khó chợp mắt. Đêm nào cũng vậy."
+          ],
+          "tone": "darkening_restless",
+          "bg": "alt_insomnia_night"
+        },
+        {
+          "beat_index": 3,
+          "title": "Giấc mơ",
+          "lines": [
+            "Trong cơn mơ chập chờn, năm gương mặt hiện về — những người lẽ ra đã đỗ cử nhân.",
+            "Không ai lớn tiếng, chỉ lặng lẽ hỏi: 'Ngài đọc được văn hay của tôi, sao còn để tôi trượt vì một nét chữ?'"
+          ],
+          "tone": "blurred_ghostly_dream",
+          "bg": "alt_ghostly_five_faces"
+        },
+        {
+          "beat_index": 4,
+          "title": "Tỉnh giấc",
+          "lines": [
+            "Ngươi choàng tỉnh giữa canh khuya, mồ hôi lạnh.",
+            "Ngọn nến trước mặt vẫn cháy, đĩa muội đèn vẫn còn nguyên đó. Đêm ấy vẫn chưa qua."
+          ],
+          "tone": "m4_candlelight_rekindle",
+          "bg": "dying_candle_scrolls_table"
+        }
+      ],
+      "single_button": {
+        "text": "Trở lại đêm ấy",
+        "action": "return_to_stage",
+        "target_stage": "M4",
+        "preserve_score": true
+      },
+      "historical_notes": "⚠ Đây là đoạn suy đoán sâu nhất trong toàn cốt truyện — dựng cả nội tâm và một giấc mơ cho một nhân vật lịch sử có thật — bắt buộc phải có cố vấn Sử duyệt riêng trước khi test.",
+      "assets": {
+        "audio": "dream_surreal_chime_fade"
+      }
+    },
+    {
+      "id": "M5",
+      "type": "thuong",
+      "title": "Tờ cung",
+      "time_limit": 50,
+      "period": "Vụ việc bị phát giác",
+      "location": "Ngục thất bộ Hình",
+      "npc_addressing": {
+        "TRONG_PHEP": "Ngục quan cười gằn: 'Kẻ luôn miệng xưng trọng phép tắc, hóa ra lại to gan đổi trắng thay đen nơi trường quy!'",
+        "TRONG_TAI": "Ngục quan lắc đầu: 'Chỉ vì tiếc mấy câu văn của lũ hàn sĩ mà chuốc vạ diệt thân, có đáng không?'",
+        "TRONG_DUNG": "Ngục quan gõ bàn: 'Cao Bá Quát! Nay tang chứng rành rành, người còn do dự gì nữa?'"
+      },
+      "narrative": "Việc bị phát giác. Ngươi bị bắt, bị tra khảo. Bản án đầu tiên đưa ra là [[trảm quyết]] — chém ngay. Trước mặt là [[tờ cung]] và một cây bút. Người ta chờ ngươi viết.",
+      "mission": "Ngươi khai thế nào?",
+      "choices": [
+        {
+          "id": "M5-A",
+          "text": "Nhận hết. Việc do tôi làm.",
+          "score": 50,
+          "immediate_feedback": "Ngươi viết, không thêm một chữ biện bạch.",
+          "next_stage": "SUMMARY"
+        },
+        {
+          "id": "M5-B",
+          "text": "Khai rõ vì tiếc người tài.",
+          "score": 50,
+          "immediate_feedback": "\"Tôi thấy các bài hay sính bút làm vậy chứ không ai gửi gắm, dặn dò gì cả.\"",
+          "verbatim_quote": true,
+          "quote_style": "court_record_exact_italic",
+          "next_stage": "SUMMARY"
+        },
+        {
+          "id": "M5-C",
+          "text": "Phủ nhận toàn bộ.",
+          "score": 15,
+          "immediate_feedback": "Lời khai không khớp với vật chứng còn đó.",
+          "next_stage": "SUMMARY"
+        }
+      ],
+      "historical_notes": "Sử liệu: Lời khai ở M5-B là nguyên văn đã được xác nhận từ hồ sơ án thời Thiệu Trị — giữ đúng từng chữ. Hiển thị bằng kiểu chữ in nghiêng trong ngoặc kép.",
+      "assets": {
+        "bg": "prison_dark_stone_scroll",
+        "audio": "chains_prison_cold_ambient"
+      }
+    }
+  ],
+  "epilogue": {
+    "historical_truth": "Trong lịch sử, vua Thiệu Trị sau khi thẩm định kỹ đã giảm án từ 'Trảm quyết' xuống 'Giảo giam hậu' (giam chờ thắt cổ), sau đó tha tội chết, đày đi hiệu lực ở quân thứ Trấn Tây (Campuchia), rồi được cử đi sứ Singapore (Hạ Châu). 24 sĩ tử được vớt bài sau đó đều bị hủy kết quả và thi lại.",
+    "character_assessment": "Dù hành động phạm vào trường quy nghiêm ngặt của triều đình, động cơ của Cao Bá Quát xuất phát từ tấm lòng mến mộ hiền tài, không vụ lợi cá nhân hay ăn hối lộ. Tinh thần khảng khái 'thấy bài hay sính bút' đã tạc nên nhân cách Chu Thần một đời bất khuất."
+  }
+}
