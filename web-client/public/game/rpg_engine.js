@@ -1671,10 +1671,10 @@ function openGlossary(termKey) {
   const noteEl = document.getElementById('modal-term-note');
 
   const dict = {
-    "phạm húy": { w: "Phạm húy", han: "犯諱", def: "Viết trúng tên thật của vua, chúa, hoàng tộc thời xưa. Lỗi này bị đánh trượt ngay lập tức dù văn hay tới đâu.", note: "⚠ Cần cố vấn duyệt cách diễn giải cho Gen Z" },
-    "khiếm tị": { w: "Khiếm tị", han: "欠避", def: "Quên né chữ kiêng hoặc thiếu nét né âm húy theo quy tắc trường thi, nhẹ hơn phạm húy nhưng vẫn rớt đài.", note: "⚠ Cần cố vấn duyệt cách diễn giải" },
-    "trường quy": { w: "Trường quy", han: "場規", def: "Bộ luật nội quy thi cử phong kiến siêu nghiêm ngặt, sai sót một ly là hỏng cả sự nghiệp khoa cử.", note: "⚠ Cần cố vấn duyệt" },
-    "muội đèn": { w: "Muội đèn", han: "燈煤", def: "Bồ hóng than cạo từ đáy đĩa dầu thắp nến, trộn nước tạo mực đen tiệp màu để chữa nét chữ phạm quy.", note: "⚠ Cố vấn xác nhận công dụng" },
+    "phạm húy": { w: "Phạm húy", han: "犯諱", def: "Viết trúng tên thật của vua, chúa, hoàng tộc thời xưa. Lỗi này bị đánh trượt ngay lập tức dù văn hay tới đâu." },
+    "khiếm tị": { w: "Khiếm tị", han: "欠避", def: "Quên né chữ kiêng hoặc thiếu nét né âm húy theo quy tắc trường thi, nhẹ hơn phạm húy nhưng vẫn rớt đài." },
+    "trường quy": { w: "Trường quy", han: "場規", def: "Bộ luật nội quy thi cử phong kiến siêu nghiêm ngặt, sai sót một ly là hỏng cả sự nghiệp khoa cử." },
+    "muội đèn": { w: "Muội đèn", han: "燈煤", def: "Bồ hóng than cạo từ đáy đĩa dầu thắp nến, trộn nước tạo mực đen tiệp màu để chữa nét chữ phạm quy." },
     "trảm quyết": { w: "Trảm quyết", han: "斬決", def: "Bản án tử hình xử chém đầu ngay lập tức, không đợi xét giảm vào mùa thu." },
     "tờ cung": { w: "Tờ cung", han: "供狀", def: "Văn bản ghi lời khai báo, nhận tội trước hội đồng thẩm án triều đình." }
   };
@@ -1684,10 +1684,7 @@ function openGlossary(termKey) {
   wordEl.innerText = item.w;
   hanEl.innerText = item.han;
   defEl.innerText = item.def;
-  if (item.note) {
-    noteEl.innerText = item.note;
-    noteEl.classList.remove('hidden');
-  } else {
+  if (noteEl) {
     noteEl.classList.add('hidden');
   }
 

@@ -291,20 +291,17 @@ function applyEmbeddedDataFallback() {
       "phạm húy": {
         "word": "Phạm húy",
         "han_tu": "犯諱",
-        "definition_genz": "Viết trúng tên thật của vua, chúa, hoàng tộc thời xưa. Lỗi này là án tử cho bài thi, bị loại ngay lập tức dù văn chương đỉnh cỡ nào.",
-        "advisor_note": "⚠ Cần cố vấn duyệt cách diễn giải cho người đọc phổ thông."
+        "definition_genz": "Viết trúng tên thật của vua, chúa, hoàng tộc thời xưa. Lỗi này là án tử cho bài thi, bị loại ngay lập tức dù văn chương đỉnh cỡ nào."
       },
       "khiếm tị": {
         "word": "Khiếm tị",
         "han_tu": "欠避",
-        "definition_genz": "Quên né chữ kiêng hoặc thiếu nét né âm húy theo quy tắc trường thi (thiếu tôn kính ngầm), nhẹ hơn phạm húy trực tiếp nhưng vẫn rớt đài.",
-        "advisor_note": "⚠ Cần cố vấn duyệt cách diễn giải cho người đọc phổ thông."
+        "definition_genz": "Quên né chữ kiêng hoặc thiếu nét né âm húy theo quy tắc trường thi (thiếu tôn kính ngầm), nhẹ hơn phạm húy trực tiếp nhưng vẫn rớt đài."
       },
       "trường quy": {
         "word": "Trường quy",
         "han_tu": "場規",
-        "definition_genz": "Bộ luật nội quy siêu nghiêm ngặt trong phòng thi khoa cử phong kiến, sai một ly là đi cả đời học vấn.",
-        "advisor_note": "⚠ Cần cố vấn duyệt cách diễn giải cho người đọc phổ thông."
+        "definition_genz": "Bộ luật nội quy siêu nghiêm ngặt trong phòng thi khoa cử phong kiến, sai một ly là đi cả đời học vấn."
       },
       "sơ khảo": {
         "word": "Sơ khảo",
@@ -319,8 +316,7 @@ function applyEmbeddedDataFallback() {
       "muội đèn": {
         "word": "Muội đèn",
         "han_tu": "燈煤",
-        "definition_genz": "Bồ hóng than cạo từ đĩa dầu thắp nến/đèn dầu, thời xưa trộn với nước để tạo màu đen tiệp màu mực son/mực tàu nhằm chữa nét chữ.",
-        "advisor_note": "⚠ Cần cố vấn xác nhận cách mô tả công dụng."
+        "definition_genz": "Bồ hóng than cạo từ đĩa dầu thắp nến/đèn dầu, thời xưa trộn với nước để tạo màu đen tiệp màu mực son/mực tàu nhằm chữa nét chữ."
       },
       "trảm quyết": {
         "word": "Trảm quyết",
