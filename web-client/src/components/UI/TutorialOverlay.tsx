@@ -11,7 +11,7 @@ interface StepContent {
   hint: string;
 }
 
-const TOTAL_STEPS = 7;
+const TOTAL_STEPS = 6;
 
 function getStepContent(step: number): StepContent {
   switch (step) {
@@ -42,17 +42,8 @@ function getStepContent(step: number): StepContent {
           'Kéo sang trái để nhìn lại Hà Nội thời kháng chiến, sang phải để xem thành phố ngày nay.',
         hint: '💡 Thử kéo về 0 để thấy ụ pháo và chiến lũy hiển thị trên bản đồ.',
       };
+    
     case 4:
-      return {
-        icon: <Glasses className="w-7 h-7 text-amber-400" />,
-        title: 'Chế Độ AR – Thực Tế Tăng Cường',
-        description:
-          'Nhấn nút "Vào AR" ở góc trên bên phải để kích hoạt WebXR. Thiết bị của bạn sẽ chiếu ' +
-          'mô hình 3D các công trình lịch sử lên thế giới thực qua camera, đặt bạn ngay giữa ' +
-          'trận địa 1946.',
-        hint: '💡 Cần trình duyệt hỗ trợ WebXR và cho phép truy cập camera.',
-      };
-    case 5:
       return {
         icon: <Sparkles className="w-7 h-7 text-amber-400" />,
         title: 'Nhiệm Vụ & Sử Lược',
@@ -61,7 +52,7 @@ function getStepContent(step: number): StepContent {
           'khám phá các công trình lịch sử, thu thập thông tin, hoàn thành các thử thách và lựa chọn các hành động để hoàn thành cốt truyện. Mỗi lựa chọn sẽ ảnh hưởng đến kết quả và trải nghiệm của bạn.',
         hint: '💡 Chúc bạn khám phá và ghi nhớ lịch sử hào hùng của Thủ đô!',
       };
-    case 6:
+    case 5:
       return {
         icon: <Sparkles className="w-7 h-7 text-amber-400" />,
         title: 'Cách chơi & Di chuyển',
@@ -70,7 +61,7 @@ function getStepContent(step: number): StepContent {
           'click E để tương tác với các điểm di tích, click Q để mở menu nhiệm vụ. ',
         hint: '💡 Chúc bạn khám phá và ghi nhớ lịch sử hào hùng của Thủ đô!',
       };
-    case 7:
+    case 6:
       return {
         icon: <Sparkles className="w-7 h-7 text-amber-400" />,
         title: 'Chúc Bạn Có Một Trải Nghiệm Vui Vẻ!',
