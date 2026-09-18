@@ -10,7 +10,9 @@ interface GameState {
   cameraMode: 'fpv' | 'tpv'; // First-person vs Third-person
   routeGeoJSON: any | null; // Dữ liệu đường đi
   isGameModalOpen: boolean;
-  
+  isTutorialActive: boolean;
+  tutorialStep: number;
+
   setLocation: (location: HistoricalLocation) => void;
   setUserLocation: (lat: number, lng: number) => void;
   setEraId: (id: string) => void;
@@ -21,6 +23,10 @@ interface GameState {
   setGameModalOpen: (open: boolean) => void;
   loadLocationData: () => Promise<void>;
   fetchUserLocation: () => void;
+  startTutorial: () => void;
+  nextStep: () => void;
+  prevStep: () => void;
+  endTutorial: () => void;
 }
 
 export const useGameStore = create<GameState>((set) => ({
@@ -32,6 +38,8 @@ export const useGameStore = create<GameState>((set) => ({
   cameraMode: 'tpv',
   routeGeoJSON: null,
   isGameModalOpen: false,
+  isTutorialActive: false,
+  tutorialStep: 0,
 
   setLocation: (location) => set({ currentLocation: location }),
   setUserLocation: (lat, lng) => set({ userLocation: { lat, lng } }),
@@ -41,6 +49,10 @@ export const useGameStore = create<GameState>((set) => ({
   setCameraMode: (mode) => set({ cameraMode: mode }),
   setRouteGeoJSON: (geojson) => set({ routeGeoJSON: geojson }),
   setGameModalOpen: (open) => set({ isGameModalOpen: open }),
+  startTutorial: () => set({ isTutorialActive: true, tutorialStep: 0 }),
+  nextStep: () => set((state) => ({ tutorialStep: state.tutorialStep + 1 })),
+  prevStep: () => set((state) => ({ tutorialStep: Math.max(0, state.tutorialStep - 1) })),
+  endTutorial: () => set({ isTutorialActive: false, tutorialStep: 0 }),
   
   fetchUserLocation: () => {
     if (typeof navigator !== 'undefined' && navigator.geolocation) {
