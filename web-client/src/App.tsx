@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { MapScreen } from './screens/MapScreen';
 import { GameScreen } from './screens/GameScreen';
@@ -32,6 +33,17 @@ function HelpButton() {
 // ─── App ─────────────────────────────────────────────────────────────────────
 
 function App() {
+  const startTutorial = useGameStore((state) => state.startTutorial);
+
+  // Show tutorial automatically on the very first visit.
+  // localStorage persists across refreshes, so subsequent loads skip this.
+  useEffect(() => {
+    if (!localStorage.getItem('hasSeenTutorial')) {
+      localStorage.setItem('hasSeenTutorial', 'true');
+      startTutorial();
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps -- intentionally runs once on mount
+
   return (
     // Root shell: full-screen, relative — gives TutorialOverlay and HelpButton
     // a stable stacking context that is always above any child canvas/map layer.
