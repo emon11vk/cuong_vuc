@@ -11,20 +11,29 @@ interface StepContent {
   hint: string;
 }
 
-const TOTAL_STEPS = 4;
+const TOTAL_STEPS = 7;
 
 function getStepContent(step: number): StepContent {
   switch (step) {
     case 1:
       return {
         icon: <Map className="w-7 h-7 text-amber-400" />,
-        title: 'Bản Đồ Tác Chiến',
+        title: 'Warning',
         description:
-          'Đây là bản đồ tương tác tái hiện Hà Nội 1946 – 2026. Kéo để di chuyển, cuộn để zoom. ' +
-          'Nhấn vào bất kỳ điểm di tích nào để xem thông tin lịch sử chi tiết về 60 Ngày Đêm Kháng Chiến.',
+          'Đây chỉ là bản prototype, chỉ mang tính giả định về gameplay chứ không chính xác về vị trí ' +
+          'diễn ra sự kiện cũng như vị trí của người dùng. Vui lòng không sử dụng bản đồ này để tham gia giao thông hay di chuyển ngoài đời thực.',
         hint: '💡 Nhấn giữ và kéo để khám phá từng con phố cổ.',
       };
     case 2:
+      return {
+        icon: <Map className="w-7 h-7 text-amber-400" />,
+        title: 'Bản Đồ Tác Chiến',
+        description:
+          'Đây là bản đồ tương tác tái hiện Hà Nội 1946 – 2026. Kéo để di chuyển, cuộn để zoom. ' +
+          'Nhấn vào bất kỳ điểm di tích nào để xem thông tin lịch sử chi tiết.',
+        hint: '💡 Nhấn giữ và kéo để khám phá từng con phố cổ.',
+      };
+    case 3:
       return {
         icon: <Clock className="w-7 h-7 text-amber-400" />,
         title: 'Thanh Thời Gian',
@@ -33,7 +42,7 @@ function getStepContent(step: number): StepContent {
           'Kéo sang trái để nhìn lại Hà Nội thời kháng chiến, sang phải để xem thành phố ngày nay.',
         hint: '💡 Thử kéo về 0 để thấy ụ pháo và chiến lũy hiển thị trên bản đồ.',
       };
-    case 3:
+    case 4:
       return {
         icon: <Glasses className="w-7 h-7 text-amber-400" />,
         title: 'Chế Độ AR – Thực Tế Tăng Cường',
@@ -43,14 +52,32 @@ function getStepContent(step: number): StepContent {
           'trận địa 1946.',
         hint: '💡 Cần trình duyệt hỗ trợ WebXR và cho phép truy cập camera.',
       };
-    case 4:
+    case 5:
       return {
         icon: <Sparkles className="w-7 h-7 text-amber-400" />,
         title: 'Nhiệm Vụ & Sử Lược',
         description:
-          'Nhấn "Nhiệm Vụ FTU" để mở nhiệm vụ tác chiến tại Đại Học Ngoại Thương. Đọc "Sử Lược 1946" ' +
-          'để khám phá toàn bộ biên niên sử 60 Ngày Đêm. Tìm kiếm địa danh bằng thanh điều hướng phía trên.',
+          'Nhấn "Nhiệm Vụ FTU" để mở nhiệm vụ tác chiến tại Đại Học Ngoại Thương. Nhiệm vụ của người chơi là ' +
+          'khám phá các công trình lịch sử, thu thập thông tin, hoàn thành các thử thách và lựa chọn các hành động để hoàn thành cốt truyện. Mỗi lựa chọn sẽ ảnh hưởng đến kết quả và trải nghiệm của bạn.',
         hint: '💡 Chúc bạn khám phá và ghi nhớ lịch sử hào hùng của Thủ đô!',
+      };
+    case 6:
+      return {
+        icon: <Sparkles className="w-7 h-7 text-amber-400" />,
+        title: 'Cách chơi & Di chuyển',
+        description:
+          'Di chuyển bằng nút W/A/S/D hoặc click chuột trái vào một điểm trên bản đồ, ' +
+          'click E để tương tác với các điểm di tích, click Q để mở menu nhiệm vụ. ',
+        hint: '💡 Chúc bạn khám phá và ghi nhớ lịch sử hào hùng của Thủ đô!',
+      };
+    case 7:
+      return {
+        icon: <Sparkles className="w-7 h-7 text-amber-400" />,
+        title: 'Chúc Bạn Có Một Trải Nghiệm Vui Vẻ!',
+        description:
+          ':33333333',
+          
+        hint: '💡 Bạn có thể click vào icon "?" góc dưới bên phải để xem lại hướng dẫn.',
       };
     default:
       return {
