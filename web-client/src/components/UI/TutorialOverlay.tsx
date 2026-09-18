@@ -58,7 +58,7 @@ function getStepContent(step: number): StepContent {
         title: 'Cách chơi & Di chuyển',
         description:
           'Di chuyển bằng nút W/A/S/D hoặc click chuột trái vào một điểm trên bản đồ, ' +
-          'click E để tương tác với các điểm di tích, click Q để mở menu nhiệm vụ. ',
+          'click E để tương tác với các điểm di tích, nhiệm vụ của mỗi màn chơi đều được hiện ở góc trên màn hình',
         hint: '💡 Chúc bạn khám phá và ghi nhớ lịch sử hào hùng của Thủ đô!',
       };
     case 6:
