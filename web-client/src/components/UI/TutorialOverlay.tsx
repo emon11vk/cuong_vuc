@@ -64,11 +64,10 @@ function getStepContent(step: number): StepContent {
     case 6:
       return {
         icon: <Sparkles className="w-7 h-7 text-amber-400" />,
-        title: 'Chúc Bạn Có Một Trải Nghiệm Vui Vẻ!',
+        title: 'Sẵn Sàng Khám Phá!',
         description:
-          ':33333333',
-          
-        hint: '💡 Bạn có thể click vào icon "?" góc dưới bên phải để xem lại hướng dẫn.',
+          'Nhấn nút "Chơi Game FTU" trên thanh điều hướng hoặc bấm nút bên dưới để trực tiếp bước vào trường thi Thừa Thiên 1841, nhập vai danh sĩ Cao Bá Quát trong vụ án chữa bài thi chấn động lịch sử.',
+        hint: '💡 Bạn có thể mở lại hướng dẫn bất kỳ lúc nào bằng nút (?) ở góc màn hình.',
       };
     default:
       return {
@@ -88,6 +87,7 @@ export const TutorialOverlay: React.FC = () => {
   const nextStep         = useGameStore((state) => state.nextStep);
   const prevStep         = useGameStore((state) => state.prevStep);
   const endTutorial      = useGameStore((state) => state.endTutorial);
+  const setGameModalOpen = useGameStore((state) => state.setGameModalOpen);
 
   if (!isTutorialActive) return null;
 
@@ -99,6 +99,7 @@ export const TutorialOverlay: React.FC = () => {
   const handleNext = () => {
     if (isLast) {
       endTutorial();
+      setGameModalOpen(true);
     } else {
       nextStep();
     }
@@ -235,7 +236,7 @@ export const TutorialOverlay: React.FC = () => {
             }}
             aria-label={isLast ? 'Hoàn thành hướng dẫn' : 'Bước tiếp theo'}
           >
-            {isLast ? 'Hoàn Thành' : 'Tiếp Theo'}
+            {isLast ? '⚔️ Vào Chơi Game Ngay' : 'Tiếp Theo'}
             {!isLast && <ChevronRight className="w-4 h-4" />}
           </button>
         </div>

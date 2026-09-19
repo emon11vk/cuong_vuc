@@ -57,7 +57,7 @@
 
   /* Typography */
   --font-serif: 'Playfair Display', 'Noto Serif', Georgia, serif;
-  --font-title: 'Playfair Display', 'Cinzel Decorative', Georgia, serif;
+  --font-title: 'Playfair Display', 'Noto Serif', Georgia, serif;
   --font-sans: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-calligraphy: 'Ma Shan Zheng', 'Noto Serif TC', cursive, serif;
 
@@ -348,17 +348,18 @@ body.theme-rpg {
    ========================================================================== */
 .rpg-banner-warning {
   position: absolute;
-  top: 60px;
+  top: 58px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 30;
-  background: linear-gradient(135deg, rgba(140, 24, 24, 0.97) 0%, rgba(65, 12, 12, 0.97) 100%);
-  border: 2px solid #ff4d4d;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 77, 77, 0.5);
+  z-index: 25;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(140, 24, 24, 0.95) 0%, rgba(65, 12, 12, 0.95) 100%);
+  border: 1.5px solid #ff4d4d;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.8), 0 0 25px rgba(255, 77, 77, 0.4);
   border-radius: var(--radius-sm);
-  padding: 10px 22px;
+  padding: 8px 18px;
   text-align: center;
-  max-width: 720px;
+  max-width: 680px;
   width: 90%;
   color: #fff4e6;
   animation: warningPulse 2.4s infinite alternate ease-in-out;
@@ -462,15 +463,17 @@ body.theme-rpg {
   top: 72px;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(180deg, rgba(26, 20, 15, 0.95) 0%, rgba(16, 12, 9, 0.98) 100%);
+  background: linear-gradient(180deg, rgba(26, 20, 15, 0.96) 0%, rgba(16, 12, 9, 0.98) 100%);
   border: 1.5px solid var(--gold-leaf);
   border-radius: var(--radius-pill);
-  padding: 5px 16px;
+  padding: 6px 18px;
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.8), 0 0 14px var(--gold-glow);
-  z-index: 15;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.9), 0 0 16px var(--gold-glow);
+  z-index: 60;
+  cursor: pointer;
+  pointer-events: auto;
   animation: promptBob 1.4s infinite alternate ease-in-out;
 }
 
@@ -1452,11 +1455,30 @@ body.theme-rpg {
 /* Mobile Compact HUD (<= 640px) */
 @media (max-width: 640px) {
   #rpg-hud {
-    height: 44px;
-    padding: 4px 10px;
+    height: auto;
+    min-height: 44px;
+    padding: 6px 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
   }
-  .hud-section {
+  .hud-left {
+    order: 1;
     gap: 6px;
+    flex: 1 1 auto;
+  }
+  .hud-right {
+    order: 2;
+    gap: 5px;
+    margin-left: auto;
+  }
+  .hud-center {
+    order: 3;
+    width: 100%;
+    margin-top: 2px;
   }
   .era-tag {
     padding: 2px 6px;
@@ -1470,17 +1492,26 @@ body.theme-rpg {
   .stage-tag {
     font-size: 0.72rem;
     white-space: nowrap;
-    max-width: 110px;
+    max-width: 140px;
     overflow: hidden;
     text-overflow: ellipsis;
   }
   .quest-box {
-    max-width: 140px;
-    padding: 3px 8px;
-    gap: 4px;
+    max-width: 100%;
+    width: 100%;
+    padding: 5px 10px;
+    gap: 6px;
+    border-radius: var(--radius-sm);
+    background: rgba(36, 26, 18, 0.94);
+    border-color: rgba(205, 163, 79, 0.4);
   }
   #quest-text {
-    font-size: 0.7rem;
+    font-size: 0.75rem;
+    white-space: normal;
+    line-height: 1.35;
+    overflow: visible;
+    text-overflow: clip;
+    color: #fff4e6;
   }
   .score-tally {
     padding: 2px 6px;
@@ -1489,7 +1520,45 @@ body.theme-rpg {
     display: none;
   }
   .tally-value {
-    font-size: 0.85rem;
+    font-size: 0.82rem;
+  }
+  .prompt-bubble {
+    top: auto;
+    bottom: 160px;
+    z-index: 65;
+    padding: 6px 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.9), 0 0 16px var(--gold-glow);
+  }
+  .rpg-banner-warning {
+    top: 96px;
+    padding: 6px 12px;
+    font-size: 0.74rem;
+    width: 95%;
+  }
+}
+
+.choice-continue-btn {
+  background: linear-gradient(135deg, rgba(205, 163, 79, 0.28) 0%, rgba(142, 110, 48, 0.4) 100%) !important;
+  border: 1.5px solid #f5d47a !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.8), 0 0 16px rgba(229, 186, 99, 0.4) !important;
+  padding: 10px 18px !important;
+  margin-top: 8px !important;
+  animation: pulseContinue 1.8s infinite alternate ease-in-out;
+}
+
+.choice-continue-btn:hover {
+  background: linear-gradient(135deg, rgba(205, 163, 79, 0.45) 0%, rgba(161, 35, 35, 0.5) 100%) !important;
+  border-color: #fff !important;
+}
+
+@keyframes pulseContinue {
+  0% {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7), 0 0 8px rgba(229, 186, 99, 0.2);
+    border-color: rgba(229, 186, 99, 0.7);
+  }
+  100% {
+    box-shadow: 0 4px 22px rgba(0, 0, 0, 0.8), 0 0 22px rgba(229, 186, 99, 0.6);
+    border-color: #fff;
   }
 }
 

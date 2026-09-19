@@ -91,8 +91,8 @@
       "time_limit": 40,
       "period": "Đêm trước giờ đóng cửa trường thi",
       "location": "Thư phòng riêng, quán trọ quan lại",
-      "narrative": "Đêm. Trên bàn là tập [[trường quy]]. [[Phạm húy]], [[khiếm tị]], viết sai tên vua: trượt, bất kể văn hay đến đâu. Ngươi lật tới trang cuối rồi đặt bút xuống, chưa ngủ.",
-      "mission": "Ngươi tự nhủ điều gì?",
+      "narrative": "Đêm nay ta sẽ phải đối diện với một số lượng đề thi khá lớn đây, nhìn những trang sách này làm lòng ta tự nhủ không biết ta nên chấm thi theo phong cách nào:",
+      "mission": "Ngươi tự nhủ nên chọn khuynh hướng chấm thi nào?",
       "choices": [
         {
           "id": "A",
@@ -139,12 +139,12 @@
       "time_limit": 45,
       "period": "Ngày chấm thứ hai",
       "location": "Nội trường thi Thừa Thiên",
-      "narrative": "Ngày chấm thứ hai. Quyển thứ mười bảy: văn khí mạnh, lập luận sắc, đáng hạng ưu. Nhưng đến dòng thứ tư, ngươi dừng bút — một chữ [[phạm húy]]. Theo [[trường quy]], quyển này phải trượt. Người viết hẳn không hề hay biết mình vừa mất cả kỳ thi vì một nét chữ.",
+      "narrative": "Ngày chấm thứ hai. Quyển thứ mười bảy: văn khí mạnh, lập luận sắc, đáng hạng ưu. Nhưng đến dòng thứ tư, ngươi dừng bút — một chữ [[phạm húy]]. Theo quy định, quyển này phải trượt. Người viết hẳn không hề hay biết mình vừa mất cả kỳ thi vì một nét chữ.",
       "mission": "Ngươi xử lý quyển thi này thế nào?",
       "choices": [
         {
           "id": "A",
-          "text": "Phê trượt, đúng theo trường quy.",
+          "text": "Phê trượt, đúng theo quy định.",
           "score": 50,
           "immediate_feedback": "Ngươi hạ bút. Tay hơi chậm lại.",
           "set_flags": {},

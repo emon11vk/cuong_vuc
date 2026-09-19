@@ -32,7 +32,7 @@ export const GameScreen: React.FC = () => {
 
           <div>
             <div className="flex items-center gap-2">
-              <span className="text-sm font-bold tracking-wide" style={{ color: '#e5ba63', fontFamily: "'Cinzel Decorative', Georgia, serif" }}>
+              <span className="text-sm font-bold tracking-wide" style={{ color: '#e5ba63', fontFamily: "'Playfair Display', Georgia, serif" }}>
                 NHIỆM VỤ ĐỊA BÀN: TRƯỜNG ĐẠI HỌC NGOẠI THƯƠNG
               </span>
               <span 

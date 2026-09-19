@@ -153,18 +153,20 @@ export const TopHeaderBar: React.FC<TopHeaderBarProps> = ({
         {/* Primary CTA: Launch FTU Mission Game */}
         <button
           onClick={() => setGameModalOpen(true)}
-          className="flex items-center gap-1 px-2.5 sm:px-3.5 py-1.5 rounded-lg text-xs font-bold text-white transition-all cursor-pointer btn-tactile shadow-lg"
+          className="flex items-center gap-1.5 px-3 sm:px-4 py-1.5 rounded-lg text-xs font-bold text-white transition-all cursor-pointer btn-tactile shadow-lg relative overflow-hidden group hover:scale-105 active:scale-95"
           style={{
-            background: 'linear-gradient(135deg, #a12323 0%, #781515 100%)',
-            border: '1.5px solid rgba(245, 212, 122, 0.75)',
-            boxShadow: '0 0 15px rgba(203, 45, 45, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.25)'
+            background: 'linear-gradient(135deg, #b82626 0%, #781515 100%)',
+            border: '1.5px solid rgba(245, 212, 122, 0.85)',
+            boxShadow: '0 0 18px rgba(203, 45, 45, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
           }}
-          title="Mở Nhiệm Vụ Tác Chiến Tại Đại Học Ngoại Thương"
-          aria-label="Mở nhiệm vụ tác chiến"
+          title="Mở Game Nhập Vai Lịch Sử: Cao Bá Quát 1841 (Đại Học Ngoại Thương)"
+          aria-label="Mở game nhập vai lịch sử Cao Bá Quát"
         >
-          <Swords className="w-3.5 h-3.5 text-amber-300" />
-          <span className="hidden sm:inline">Nhiệm Vụ FTU</span>
-          <span className="sm:hidden text-[11px]">FTU</span>
+          <Swords className="w-3.5 h-3.5 text-amber-300 animate-pulse" />
+          <span className="hidden sm:inline tracking-wide font-semibold">Chơi Game (Cao Bá Quát)</span>
+          <span className="sm:hidden text-[11.5px] font-bold tracking-wide">Chơi Game FTU</span>
+          {/* Subtle glowing aura */}
+          <span className="absolute inset-0 rounded-lg bg-amber-400/10 pointer-events-none group-hover:bg-amber-400/20 transition-colors" />
         </button>
       </div>
     </header>

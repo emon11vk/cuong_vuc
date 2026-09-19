@@ -6,13 +6,21 @@
  */
 
 // ==========================================================================
-// 1. Audio System (Web Audio API)
+// 1. Audio System (Web Audio API & Background Music)
+// Background tracks by Kevin MacLeod (incompetech.com)
+// Licensed under Creative Commons: By Attribution 4.0 License
+// - "Eastern Thought" (Hue imperial court / traditional examination ambience)
+// - "Temple of the Manes" (Dark imperial prison / tense historical watershed)
 // ==========================================================================
 class RPGSound {
   constructor() {
     this.ctx = null;
     this.enabled = true;
     this.lastFootstep = 0;
+    this.bgmAudio = null;
+    this.currentTrack = null;
+    this.targetVolume = 0.35;
+    this.userInteracted = false;
   }
 
   init() {
@@ -23,6 +31,60 @@ class RPGSound {
     if (this.ctx && this.ctx.state === 'suspended') {
       this.ctx.resume();
     }
+    this.initBGM();
+  }
+
+  initBGM() {
+    if (!this.bgmAudio) {
+      this.bgmAudio = new Audio();
+      this.bgmAudio.loop = true;
+      this.bgmAudio.volume = this.targetVolume;
+    }
+  }
+
+  playBGM(trackPath) {
+    if (!trackPath) return;
+    this.initBGM();
+    if (this.currentTrack === trackPath && !this.bgmAudio.paused) return;
+
+    this.currentTrack = trackPath;
+    if (!this.enabled) return;
+
+    this.bgmAudio.src = trackPath;
+    this.bgmAudio.volume = this.targetVolume;
+    const p = this.bgmAudio.play();
+    if (p && typeof p.catch === 'function') {
+      p.catch(() => {
+        // Autoplay policy prevented playback until first user interaction
+      });
+    }
+  }
+
+  unlockOnUserInteraction() {
+    if (this.userInteracted) return;
+    this.userInteracted = true;
+    this.init();
+    if (this.enabled && this.bgmAudio && this.currentTrack && this.bgmAudio.paused) {
+      this.bgmAudio.play().catch(() => {});
+    }
+  }
+
+  toggleBGM() {
+    this.enabled = !this.enabled;
+    this.initBGM();
+    if (this.enabled) {
+      if (this.currentTrack) {
+        this.bgmAudio.play().catch(() => {});
+      } else {
+        this.playBGM('/audio/eastern_thought.mp3');
+      }
+      this.playGong();
+    } else {
+      if (this.bgmAudio) {
+        this.bgmAudio.pause();
+      }
+    }
+    return this.enabled;
   }
 
   playGong() {
@@ -57,7 +119,7 @@ class RPGSound {
   playFootstep() {
     if (!this.enabled) return;
     const now = performance.now();
-    if (now - this.lastFootstep < 280) return;
+    if (now - this.lastFootstep < 320) return;
     this.lastFootstep = now;
     this.init();
     if (!this.ctx) return;
@@ -67,13 +129,14 @@ class RPGSound {
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
     osc.type = 'triangle';
-    osc.frequency.setValueAtTime(65 + Math.random() * 20, t);
-    gain.gain.setValueAtTime(0.04, t);
-    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.08);
+    osc.frequency.setValueAtTime(75 + Math.random() * 15, t);
+    osc.frequency.exponentialRampToValueAtTime(30, t + 0.07);
+    gain.gain.setValueAtTime(0.025, t);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.07);
     osc.connect(gain);
     gain.connect(this.ctx.destination);
     osc.start(t);
-    osc.stop(t + 0.08);
+    osc.stop(t + 0.07);
   }
 
   playInteract() {
@@ -169,6 +232,71 @@ class RPGSound {
       osc.start(now + i * 0.09);
       osc.stop(now + i * 0.09 + 1.2);
     });
+  }
+
+  playPaperRustle() {
+    if (!this.enabled) return;
+    this.init();
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+
+    // Crisp parchment rustle (Tiếng sột soạt lật trang giấy dó cổ)
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.18);
+    const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.35));
+    }
+
+    const whiteNoise = this.ctx.createBufferSource();
+    whiteNoise.buffer = noiseBuffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(1800, now);
+    filter.Q.setValueAtTime(1.6, now);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.12, now);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.18);
+
+    whiteNoise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    whiteNoise.start(now);
+  }
+
+  playBrushStroke() {
+    if (!this.enabled) return;
+    this.init();
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+
+    // Ink brush dipping into soot / sweeping on silk (Tiếng chấm bút muội đèn)
+    const bufferSize = Math.floor(this.ctx.sampleRate * 0.22);
+    const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      output[i] = Math.random() * 2 - 1;
+    }
+
+    const whiteNoise = this.ctx.createBufferSource();
+    whiteNoise.buffer = noiseBuffer;
+
+    const filter = this.ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(800, now);
+    filter.frequency.exponentialRampToValueAtTime(320, now + 0.22);
+
+    const gain = this.ctx.createGain();
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.linearRampToValueAtTime(0.08, now + 0.04);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+
+    whiteNoise.connect(filter);
+    filter.connect(gain);
+    gain.connect(this.ctx.destination);
+    whiteNoise.start(now);
   }
 }
 
@@ -406,9 +534,19 @@ class SpriteRenderer {
     ctx.translate(x, y);
 
     if (isHighlighted) {
-      ctx.strokeStyle = '#ffbb33';
-      ctx.lineWidth = 2;
+      const pulse = Math.sin(time * 0.008) * 0.5 + 0.5;
+      ctx.strokeStyle = `rgba(245, 212, 122, ${0.6 + pulse * 0.4})`;
+      ctx.lineWidth = 2.5;
       ctx.strokeRect(-4, -4, w + 8, h + 8);
+      // Floating glowing indicator arrow above highlighted object
+      const bounce = Math.sin(time * 0.01) * 3;
+      ctx.fillStyle = '#f5d47a';
+      ctx.beginPath();
+      ctx.moveTo(w / 2, -18 + bounce);
+      ctx.lineTo(w / 2 - 5, -25 + bounce);
+      ctx.lineTo(w / 2 + 5, -25 + bounce);
+      ctx.closePath();
+      ctx.fill();
     }
 
     if (type === 'desk_truong_quy') {
@@ -444,10 +582,34 @@ class SpriteRenderer {
       for (let i = 0; i < 4; i++) {
         ctx.fillRect(14 + i * 4, 6 - i * 2, 34, 8);
       }
-      ctx.fillStyle = '#ff4500';
+      // Flickering candlelight flame on M4 midnight decision desk
+      const flicker = Math.sin(time * 0.03) * 1.5;
+      ctx.fillStyle = '#ff5500';
       ctx.beginPath();
-      ctx.arc(w - 18, 6, 3, 0, Math.PI * 2);
+      ctx.arc(w - 18, 6 + flicker, 4, 0, Math.PI * 2);
       ctx.fill();
+      ctx.fillStyle = '#ffdd44';
+      ctx.beginPath();
+      ctx.arc(w - 18, 5 + flicker, 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Pulsing golden beacon arrow above M4 decision desk
+      const bounce = Math.sin(time * 0.008) * 4;
+      ctx.fillStyle = '#f5d47a';
+      ctx.beginPath();
+      ctx.moveTo(w / 2, -18 + bounce);
+      ctx.lineTo(w / 2 - 7, -26 + bounce);
+      ctx.lineTo(w / 2 + 7, -26 + bounce);
+      ctx.closePath();
+      ctx.fill();
+
+      // Helper prompt directly on canvas for immediate clarity
+      ctx.font = 'bold 11px "Playfair Display", "Be Vietnam Pro", serif';
+      ctx.fillStyle = '#ffe082';
+      ctx.textAlign = 'center';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.9)';
+      ctx.shadowBlur = 4;
+      ctx.fillText('⚡ CHẠM ĐỂ QUYẾT ĐỊNH ⚡', w / 2, -30 + bounce);
     } else if (type === 'prison_interrogation_desk') {
       ctx.fillStyle = '#221e1a';
       ctx.fillRect(0, 0, w, h);
@@ -462,7 +624,7 @@ class SpriteRenderer {
       ctx.fillStyle = '#f8ecd6';
       ctx.fillRect(4, 4, w - 8, h - 8);
       ctx.fillStyle = '#8b1e1e';
-      ctx.font = 'bold 10px serif';
+      ctx.font = 'bold 10px "Playfair Display", "Be Vietnam Pro", serif';
       ctx.fillText('📜 BẢN THẢO', 6, h / 2 + 4);
     } else if (type === 'door_gate') {
       ctx.fillStyle = 'rgba(90, 20, 20, 0.85)';
@@ -471,7 +633,7 @@ class SpriteRenderer {
       ctx.lineWidth = 2;
       ctx.strokeRect(0, 0, w, h);
       ctx.fillStyle = '#ffea9f';
-      ctx.font = 'bold 11px "Cinzel", serif';
+      ctx.font = 'bold 11px "Playfair Display", "Be Vietnam Pro", serif';
       ctx.textAlign = 'center';
       ctx.fillText('LỐI ĐI ➜', w / 2, h / 2 + 4);
     }
@@ -706,7 +868,7 @@ const ROOMS = {
         w: 120,
         h: 60,
         label: "24 Quyển Thi & Muội Đèn [E]",
-        interactRadius: 85,
+        interactRadius: 135,
         dialogueKey: "M4_DECISION"
       }
     ]
@@ -801,6 +963,8 @@ class Player {
     this.animFrame = 0;
     this.isMoving = false;
     this.targetMove = null;
+    this.targetInteractable = null;
+    this.stuckTimer = 0;
   }
 
   update(dt, keys, colliders) {
@@ -808,25 +972,53 @@ class Player {
       this.isMoving = false;
       this.vx = 0;
       this.vy = 0;
+      this.targetMove = null;
+      this.targetInteractable = null;
+      this.stuckTimer = 0;
       return;
     }
 
     let dx = 0;
     let dy = 0;
 
+    const keyActive = Boolean(
+      keys['w'] || keys['ArrowUp'] || keys['W'] ||
+      keys['s'] || keys['ArrowDown'] || keys['S'] ||
+      keys['a'] || keys['ArrowLeft'] || keys['A'] ||
+      keys['d'] || keys['ArrowRight'] || keys['D']
+    );
+
+    // If keyboard or D-pad is active, cancel any previous targetMove immediately
+    if (keyActive) {
+      this.targetMove = null;
+      this.targetInteractable = null;
+      this.stuckTimer = 0;
+    }
+
     if (keys['w'] || keys['ArrowUp'] || keys['W']) dy -= 1;
     if (keys['s'] || keys['ArrowDown'] || keys['S']) dy += 1;
     if (keys['a'] || keys['ArrowLeft'] || keys['A']) dx -= 1;
     if (keys['d'] || keys['ArrowRight'] || keys['D']) dx += 1;
 
-    if (this.targetMove) {
-      const distSq = (this.targetMove.x - this.x) ** 2 + (this.targetMove.y - this.y) ** 2;
-      if (distSq > 36) {
+    if (this.targetMove && !keyActive) {
+      const dist = Math.hypot(this.targetMove.x - this.x, this.targetMove.y - this.y);
+      const step = this.speed * dt;
+      if (dist <= step || dist <= 8) {
+        this.x = this.targetMove.x;
+        this.y = this.targetMove.y;
+        this.targetMove = null;
+        this.stuckTimer = 0;
+        this.isMoving = false;
+        if (this.targetInteractable && window.rpgEngineInstance) {
+          const act = this.targetInteractable;
+          this.targetInteractable = null;
+          rpgState.activeInteractable = act;
+          window.rpgEngineInstance.handleInteraction();
+        }
+      } else {
         const angle = Math.atan2(this.targetMove.y - this.y, this.targetMove.x - this.x);
         dx = Math.cos(angle);
         dy = Math.sin(angle);
-      } else {
-        this.targetMove = null;
       }
     }
 
@@ -852,17 +1044,51 @@ class Player {
       this.animFrame = (this.animTimer * 5) % 2;
       rpgAudio.playFootstep();
 
+      const prevX = this.x;
+      const prevY = this.y;
+
       const newX = this.x + this.vx * dt;
+      let movedX = false;
       if (!this.checkCollision(newX, this.y, colliders)) {
         this.x = newX;
+        movedX = true;
       }
 
       const newY = this.y + this.vy * dt;
+      let movedY = false;
       if (!this.checkCollision(this.x, newY, colliders)) {
         this.y = newY;
+        movedY = true;
+      }
+
+      // Detect if stuck against collider while trying to move towards targetMove
+      if (this.targetMove) {
+        const movedDist = Math.hypot(this.x - prevX, this.y - prevY);
+        if (movedDist < 0.25 || (!movedX && !movedY)) {
+          this.stuckTimer = (this.stuckTimer || 0) + dt;
+          if (this.stuckTimer > 0.18) {
+            // Cancel stuck pathing and trigger interaction if close to target
+            const act = this.targetInteractable;
+            this.targetMove = null;
+            this.targetInteractable = null;
+            this.stuckTimer = 0;
+            this.isMoving = false;
+            if (act && window.rpgEngineInstance) {
+              const cx = act.x + (act.w || 0) / 2;
+              const cy = act.y + (act.h || 0) / 2;
+              if (Math.hypot(this.x - cx, this.y - cy) < (act.interactRadius || 70) + 35) {
+                rpgState.activeInteractable = act;
+                window.rpgEngineInstance.handleInteraction();
+              }
+            }
+          }
+        } else {
+          this.stuckTimer = 0;
+        }
       }
     } else {
       this.animFrame = 0;
+      this.stuckTimer = 0;
     }
   }
 
@@ -896,6 +1122,8 @@ class RPGGame {
     this.keys = {};
     this.lastTime = performance.now();
     this.currentRoom = ROOMS.M0;
+    this.justTransitioned = false;
+    window.rpgEngineInstance = this;
 
     this.setupInput();
     this.lightCanvas = document.createElement('canvas');
@@ -916,10 +1144,22 @@ class RPGGame {
   }
 
   setupInput() {
+    const unlockAudio = () => {
+      rpgAudio.unlockOnUserInteraction();
+    };
+    window.addEventListener('keydown', unlockAudio, { once: true });
+    window.addEventListener('click', unlockAudio, { once: true });
+    window.addEventListener('touchstart', unlockAudio, { once: true });
+
     window.addEventListener('keydown', (e) => {
       this.keys[e.key] = true;
-      if (e.key === 'e' || e.key === 'E' || e.key === ' ') {
-        this.handleInteraction();
+      if (e.key === 'e' || e.key === 'E' || e.key === ' ' || e.key === 'Enter') {
+        const continueBtn = document.querySelector('.choice-continue-btn');
+        if (continueBtn && !continueBtn.disabled) {
+          continueBtn.click();
+        } else {
+          this.handleInteraction();
+        }
       }
     });
 
@@ -927,40 +1167,106 @@ class RPGGame {
       this.keys[e.key] = false;
     });
 
+    let isTouching = false;
+    let lastTouchTime = 0;
+
     const handleCanvasInput = (clientX, clientY) => {
+      if (rpgState.dialogueOpen || rpgState.minigameOpen) return;
+
       const rect = this.canvas.getBoundingClientRect();
       const scaleX = this.canvas.width / rect.width;
       const scaleY = this.canvas.height / rect.height;
       const targetX = (clientX - rect.left) * scaleX;
       const targetY = (clientY - rect.top) * scaleY;
 
-      // Nếu người chơi chạm trực tiếp vào một NPC hoặc đối tượng, tiến lại gần và mở hội thoại
+      let clickedTarget = null;
+      let targetPos = { x: targetX, y: targetY };
+
+      // 1. Kiểm tra nếu chạm vào NPC
       if (this.currentRoom && this.currentRoom.npcs) {
         for (let npc of this.currentRoom.npcs) {
           const d = Math.hypot(targetX - npc.x, targetY - npc.y);
-          if (d < npc.interactRadius + 20) {
-            this.player.targetMove = { x: npc.x, y: npc.y };
-            setTimeout(() => {
-              if (rpgState.activeInteractable) {
-                this.handleInteraction();
-              }
-            }, 300);
-            return;
+          if (d < (npc.interactRadius || 65) + 30) {
+            clickedTarget = npc;
+            targetPos = { x: npc.x, y: npc.y + 25 };
+            break;
           }
         }
       }
+
+      // 2. Kiểm tra nếu chạm vào đồ vật (Bàn thi M1, M2, M4, đĩa muội đèn M3, cổng chuyển cảnh)
+      if (!clickedTarget && this.currentRoom && this.currentRoom.objects) {
+        for (let obj of this.currentRoom.objects) {
+          const cx = obj.x + obj.w / 2;
+          const cy = obj.y + obj.h / 2;
+          const d = Math.hypot(targetX - cx, targetY - cy);
+          if (d < (obj.interactRadius || 70) + 35) {
+            clickedTarget = obj;
+            if (obj.type === 'door_gate') {
+              if (obj.x > 700) {
+                targetPos = { x: obj.x - 35, y: cy };
+              } else if (obj.y < 200) {
+                targetPos = { x: cx, y: obj.y + obj.h + 25 };
+              } else {
+                targetPos = { x: cx, y: cy };
+              }
+            } else {
+              targetPos = { x: cx, y: obj.y + obj.h + 28 };
+            }
+            break;
+          }
+        }
+      }
+
+      if (clickedTarget) {
+        this.player.targetInteractable = clickedTarget;
+        this.player.targetMove = targetPos;
+        const curD = Math.hypot(
+          this.player.x - (clickedTarget.x + (clickedTarget.w || 0) / 2),
+          this.player.y - (clickedTarget.y + (clickedTarget.h || 0) / 2)
+        );
+        if (curD < (clickedTarget.interactRadius || 70) + 20) {
+          rpgState.activeInteractable = clickedTarget;
+          this.handleInteraction();
+        }
+      } else {
+        this.player.targetInteractable = null;
+        this.player.targetMove = targetPos;
+      }
+    };
+
+    const handlePointerMove = (clientX, clientY) => {
+      if (!isTouching || rpgState.dialogueOpen || rpgState.minigameOpen) return;
+      const rect = this.canvas.getBoundingClientRect();
+      const scaleX = this.canvas.width / rect.width;
+      const scaleY = this.canvas.height / rect.height;
+      const targetX = (clientX - rect.left) * scaleX;
+      const targetY = (clientY - rect.top) * scaleY;
+      this.player.targetInteractable = null;
       this.player.targetMove = { x: targetX, y: targetY };
     };
 
     this.canvas.addEventListener('click', (e) => {
+      if (performance.now() - lastTouchTime < 450) return; // Bỏ qua ghost click từ mobile
       handleCanvasInput(e.clientX, e.clientY);
     });
 
     this.canvas.addEventListener('touchstart', (e) => {
       if (e.touches && e.touches.length > 0) {
+        isTouching = true;
+        lastTouchTime = performance.now();
         handleCanvasInput(e.touches[0].clientX, e.touches[0].clientY);
       }
     }, { passive: true });
+
+    this.canvas.addEventListener('touchmove', (e) => {
+      if (e.touches && e.touches.length > 0) {
+        handlePointerMove(e.touches[0].clientX, e.touches[0].clientY);
+      }
+    }, { passive: true });
+
+    window.addEventListener('touchend', () => { isTouching = false; });
+    window.addEventListener('touchcancel', () => { isTouching = false; });
 
     // Hỗ trợ phím điều hướng ảo (Virtual D-Pad) cho điện thoại
     const bindBtn = (id, key) => {
@@ -969,6 +1275,9 @@ class RPGGame {
 
       const press = (e) => {
         if (e && e.cancelable) e.preventDefault();
+        this.player.targetMove = null;
+        this.player.targetInteractable = null;
+        this.player.stuckTimer = 0;
         this.keys[key] = true;
       };
       const release = (e) => {
@@ -994,7 +1303,12 @@ class RPGGame {
     if (actionBtn) {
       const doAction = (e) => {
         if (e && e.cancelable) e.preventDefault();
-        this.handleInteraction();
+        const continueBtn = document.querySelector('.choice-continue-btn');
+        if (continueBtn && !continueBtn.disabled) {
+          continueBtn.click();
+        } else {
+          this.handleInteraction();
+        }
       };
       actionBtn.addEventListener('click', doAction);
       actionBtn.addEventListener('touchstart', doAction, { passive: false });
@@ -1014,10 +1328,9 @@ class RPGGame {
     const audioBtn = document.getElementById('rpg-audio-btn');
     if (audioBtn) {
       audioBtn.addEventListener('click', () => {
-        rpgAudio.enabled = !rpgAudio.enabled;
-        audioBtn.title = rpgAudio.enabled ? "Tắt âm thanh nhã nhạc" : "Bật âm thanh nhã nhạc";
-        audioBtn.style.opacity = rpgAudio.enabled ? "1" : "0.4";
-        if (rpgAudio.enabled) rpgAudio.playGong();
+        const active = rpgAudio.toggleBGM();
+        audioBtn.title = active ? "Tắt âm thanh nhã nhạc" : "Bật âm thanh nhã nhạc";
+        audioBtn.style.opacity = active ? "1" : "0.4";
       });
     }
 
@@ -1064,6 +1377,8 @@ class RPGGame {
     this.player.x = room.playerStart.x;
     this.player.y = room.playerStart.y;
     this.player.targetMove = null;
+    this.justTransitioned = true;
+    setTimeout(() => { this.justTransitioned = false; }, 600);
 
     document.getElementById('hud-stage-name').innerText = room.name;
     document.getElementById('quest-text').innerText = room.objective;
@@ -1082,6 +1397,12 @@ class RPGGame {
       rpgAudio.playDreamChime();
     } else {
       altLabel.classList.add('hidden');
+    }
+
+    if (roomKey === 'M4' || roomKey === 'END_HISTORICAL') {
+      rpgAudio.playBGM('/audio/temple_of_the_manes.mp3');
+    } else {
+      rpgAudio.playBGM('/audio/eastern_thought.mp3');
     }
 
     rpgAudio.playGong();
@@ -1126,7 +1447,7 @@ class RPGGame {
       nameEl.innerText = "Quan Chánh Chủ Khảo";
       if (roleEl) roleEl.innerText = "Trường thi Thừa Thiên (1841)";
       avatarEl.className = "speaker-avatar avatar-chanh-khao";
-      textEl.innerHTML = "Chào Chu Thần Cao tiên sinh! Hàng nghìn quyển thi năm Tân Sửu đang chờ quý ngài chấm Sơ khảo. Vua Thiệu Trị tân cơ khai khoa, trường quy cực kỳ nghiêm mật. Xin mời tiên sinh bước vào trường!";
+      textEl.innerHTML = "Chào Chu Thần Cao tiên sinh! Hàng nghìn quyển thi năm Tân Sửu đang chờ quý ngài chấm Sơ khảo. Vua Thiệu Trị đã khai mạc cuộc thi, trường quy cực kỳ nghiêm mật. Xin mời tiên sinh bước vào trường!";
 
       const btn = document.createElement('button');
       btn.className = 'choice-btn';
@@ -1157,7 +1478,7 @@ class RPGGame {
       nameEl.innerText = "Cao Bá Quát (Chu Thần)";
       if (roleEl) roleEl.innerText = "Đêm suy ngẫm trường quy";
       avatarEl.className = "speaker-avatar avatar-quat";
-      textEl.innerHTML = "Đêm. Trên bàn là tập <span class='glossary-term' onclick='openGlossary(\"trường quy\")'>trường quy</span>. <span class='glossary-term' onclick='openGlossary(\"phạm húy\")'>Phạm húy</span>, <span class='glossary-term' onclick='openGlossary(\"khiếm tị\")'>khiếm tị</span>, viết sai tên vua: trượt, bất kể văn hay đến đâu. Ta lật tới trang cuối rồi đặt bút xuống... Ta tự nhủ điều gì?";
+      textEl.innerHTML = "Đêm nay ta sẽ phải đối diện với một số lượng đề thi khá lớn đây, nhìn những trang sách này làm lòng ta tự nhủ không biết ta nên chấm thi theo phong cách nào:";
 
       const choices = [
         { id: "A", text: "Phép là phép. Ta chấm theo lệ.", score: 30, flag: "TRONG_PHEP", fb: "Ngươi gấp sách, thổi nến." },
@@ -1170,11 +1491,10 @@ class RPGGame {
         btn.className = 'choice-btn';
         btn.innerHTML = `<span class="choice-id">${c.id}</span><span class="choice-content">${c.text}</span>`;
         btn.onclick = () => {
-          this.applyChoice("M1", c.score, { khuynh_huong: c.flag }, c.fb);
-          setTimeout(() => {
+          this.applyChoice("M1", c.score, { khuynh_huong: c.flag }, c.fb, false, () => {
             this.closeDialogue();
             document.getElementById('quest-text').innerText = "Đã định khuynh hướng. Hãy bước qua cửa vào Nội Trường chấm thi.";
-          }, 1200);
+          });
         };
         choicesEl.appendChild(btn);
       });
@@ -1182,6 +1502,8 @@ class RPGGame {
     // 4. M1 Door
     else if (key === 'M1_DOOR') {
       if (!rpgState.flags.khuynh_huong) {
+        this.player.x = Math.min(this.player.x, 820);
+        this.player.targetMove = null;
         nameEl.innerText = "Nội tâm Chu Thần";
         if (roleEl) roleEl.innerText = "Tự vấn";
         avatarEl.className = "speaker-avatar avatar-quat";
@@ -1201,10 +1523,10 @@ class RPGGame {
       nameEl.innerText = "Cao Bá Quát (Sơ Khảo)";
       if (roleEl) roleEl.innerText = "Ngày chấm thứ hai";
       avatarEl.className = "speaker-avatar avatar-quat";
-      textEl.innerHTML = "Ngày chấm thứ hai. Quyển thứ mười bảy: văn khí mạnh, lập luận sắc, đáng hạng ưu. Nhưng đến dòng thứ tư, tay ta dừng bút — một chữ <span class='glossary-term' onclick='openGlossary(\"phạm húy\")'>phạm húy</span>! Quyển này theo <span class='glossary-term' onclick='openGlossary(\"trường quy\")'>trường quy</span> phải trượt. Xử lý thế nào?";
+      textEl.innerHTML = "Ngày chấm thứ hai. Quyển thứ mười bảy: văn khí mạnh, lập luận sắc, đáng hạng ưu. Nhưng đến dòng thứ tư, tay ta dừng bút — một chữ <span class='glossary-term' onclick='openGlossary(\"phạm húy\")'>phạm húy</span>! Quyển này theo quy định phải trượt. Xử lý thế nào?";
 
       const choices = [
-        { id: "A", text: "Phê trượt, đúng theo trường quy.", score: 50, fb: "Ngươi hạ bút. Tay hơi chậm lại." },
+        { id: "A", text: "Phê trượt, đúng theo quy định.", score: 50, fb: "Ngươi hạ bút. Tay hơi chậm lại." },
         { id: "B", text: "Trình quan Chánh chủ khảo xin ý.", score: 40, fb: "Câu trả lời nhận được: lệ đã rõ." },
         { id: "C", text: "Gác riêng quyển ấy. Chấm tiếp đã.", score: 35, flag: { da_gac_rieng: true }, fb: "Quyển thi nằm lại một góc bàn." }
       ];
@@ -1214,11 +1536,10 @@ class RPGGame {
         btn.className = 'choice-btn';
         btn.innerHTML = `<span class="choice-id">${c.id}</span><span class="choice-content">${c.text}</span>`;
         btn.onclick = () => {
-          this.applyChoice("M2", c.score, c.flag || {}, c.fb);
-          setTimeout(() => {
+          this.applyChoice("M2", c.score, c.flag || {}, c.fb, false, () => {
             this.closeDialogue();
             document.getElementById('quest-text').innerText = "Đã xử lý quyển 17. Hãy tiến sang phòng Sơ khảo đêm gặp Phan Nhạ.";
-          }, 1200);
+          });
         };
         choicesEl.appendChild(btn);
       });
@@ -1226,6 +1547,8 @@ class RPGGame {
     // 6. M2 Door
     else if (key === 'M2_DOOR') {
       if (!rpgState.stageScoreAwarded["M2"]) {
+        this.player.x = Math.min(this.player.x, 820);
+        this.player.targetMove = null;
         nameEl.innerText = "Nội tâm Chu Thần";
         if (roleEl) roleEl.innerText = "Tự vấn";
         avatarEl.className = "speaker-avatar avatar-quat";
@@ -1270,11 +1593,10 @@ class RPGGame {
         btn.className = 'choice-btn';
         btn.innerHTML = `<span class="choice-id">${c.id}</span><span class="choice-content">${c.text}</span>`;
         btn.onclick = () => {
-          this.applyChoice("M3", c.score, {}, c.fb);
-          setTimeout(() => {
+          this.applyChoice("M3", c.score, {}, c.fb, false, () => {
             this.closeDialogue();
             document.getElementById('quest-text').innerText = "Thời khắc canh ba đã điểm. Tiến vào đại sảnh trường thi.";
-          }, 1200);
+          });
         };
         choicesEl.appendChild(btn);
       });
@@ -1282,6 +1604,8 @@ class RPGGame {
     // 8. M3 Door
     else if (key === 'M3_DOOR') {
       if (!rpgState.stageScoreAwarded["M3"]) {
+        this.player.x = Math.min(this.player.x, 820);
+        this.player.targetMove = null;
         nameEl.innerText = "Nội tâm Chu Thần";
         if (roleEl) roleEl.innerText = "Tự vấn";
         avatarEl.className = "speaker-avatar avatar-quat";
@@ -1313,11 +1637,11 @@ class RPGGame {
         btn.className = 'choice-btn';
         btn.innerHTML = `<span class="choice-id">${c.id}</span><span class="choice-content">${c.text}</span>`;
         btn.onclick = () => {
-          this.applyChoice("M4", c.score, {}, c.fb);
-          setTimeout(() => {
+          rpgAudio.playBrushStroke();
+          this.applyChoice("M4", c.score, {}, c.fb, false, () => {
             this.closeDialogue();
             this.setRoom(c.target);
-          }, 1300);
+          });
         };
         choicesEl.appendChild(btn);
       });
@@ -1442,18 +1766,17 @@ class RPGGame {
         btn.className = 'choice-btn';
         btn.innerHTML = `<span class="choice-id">${c.id}</span><span class="choice-content">${c.text}</span>`;
         btn.onclick = () => {
-          this.applyChoice("M5", c.score, {}, c.fb, c.verbatim);
-          setTimeout(() => {
+          this.applyChoice("M5", c.score, {}, c.fb, c.verbatim, () => {
             this.closeDialogue();
             this.showSummary();
-          }, 1800);
+          });
         };
         choicesEl.appendChild(btn);
       });
     }
   }
 
-  applyChoice(stageId, score, flags, feedback, isVerbatim = false) {
+  applyChoice(stageId, score, flags, feedback, isVerbatim = false, onProceed = null) {
     rpgAudio.playChoice();
     if (!rpgState.stageScoreAwarded[stageId]) {
       rpgState.score += score;
@@ -1486,8 +1809,27 @@ class RPGGame {
       fbBox.innerText = feedback;
     }
 
-    const btns = document.querySelectorAll('.dialogue-choices-grid .choice-btn');
-    btns.forEach(b => b.disabled = true);
+    // Replace choice options with a prominent manual 'Tiếp Tục' button
+    const choicesEl = document.getElementById('dialogue-choices');
+    choicesEl.innerHTML = '';
+
+    const nextBtn = document.createElement('button');
+    nextBtn.className = 'choice-btn choice-continue-btn';
+    nextBtn.innerHTML = `
+      <span class="choice-id" style="background: linear-gradient(135deg, #cda34f 0%, #8e6e30 100%); color: #120b07;">TIẾP TỤC</span>
+      <span class="choice-content">Nhấn để tiếp bước hành trình ▶</span>
+    `;
+
+    nextBtn.onclick = () => {
+      rpgAudio.playPaperRustle();
+      if (onProceed) {
+        onProceed();
+      } else {
+        this.closeDialogue();
+      }
+    };
+    choicesEl.appendChild(nextBtn);
+    nextBtn.focus();
   }
 
   closeDialogue() {
@@ -1551,6 +1893,13 @@ class RPGGame {
     const prompt = document.getElementById('interaction-prompt');
 
     if (closest && !rpgState.dialogueOpen && !rpgState.minigameOpen) {
+      // Auto-trigger level transition doors when player steps right up to them
+      if (closest.type === 'door_gate' && minD < 48 && !this.justTransitioned) {
+        prompt.classList.add('hidden');
+        this.handleInteraction();
+        return;
+      }
+
       prompt.classList.remove('hidden');
       const label = closest.name ? `Nói chuyện với ${closest.name}` : (closest.label || 'Tương tác');
       document.getElementById('prompt-label').innerText = label;
